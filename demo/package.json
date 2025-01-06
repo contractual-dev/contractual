@@ -1,0 +1,19 @@
+{
+  "name": "@contractual/demo",
+  "private": true,
+  "version": "0.0.0",
+  "license": "UNLICENSED",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "playwright test --config=playwright.config.ts"
+  },
+  "dependencies": {
+    "@contractual/client": "^0.0.0",
+    "@contractual/fixtures": "^0.0.0",
+    "@contractual/test": "^0.0.0",
+    "@playwright/test": "^1.49.1"
+  },
+  "engines": {
+    "node": ">=18.12.0"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "extends": "../../.eslintrc",
+  "overrides": [
+    {
+      "files": [
+        "generator/index.ts"
+      ]
+    }
+  ]
+}

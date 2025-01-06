@@ -1,0 +1,39 @@
+{
+  "name": "@contractual/types.fixtures",
+  "private": false,
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "type": "module",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/contractual-dev/contractual.git",
+    "directory": "packages/types/fixtures"
+  },
+  "bugs": {
+    "url": "https://github.com/contractual-dev/contractual/issues"
+  },
+  "homepage": "https://contractual.dev",
+  "contributors": [
+    {
+      "name": "Omer Morad",
+      "email": "omer.moradd@gmail.com"
+    }
+  ],
+  "scripts": {
+    "prebuild": "yarn rimraf dist",
+    "build": "yarn tsc -p tsconfig.build.json",
+    "tester": "jest --passWithNoTests",
+    "lint": "yarn eslint 'index.ts'"
+  },
+  "dependencies": {
+    "@contractual/client": "^0.0.0"
+  },
+  "files": [
+    "index.d.ts"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
