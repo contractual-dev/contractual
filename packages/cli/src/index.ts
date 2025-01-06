@@ -1,4 +1,4 @@
-import type { GenerateFixturesOptions } from '@contractual/fixtures/generator';
+import type { GenerateFixturesOptions } from '@contractual/generators.fixtures';
 import { Command } from 'commander';
 import generate from './commands/generate.command.js';
 import type { GenerateClientOptions } from './commands/types.js';

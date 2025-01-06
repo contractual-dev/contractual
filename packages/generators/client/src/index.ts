@@ -53,14 +53,13 @@ function createHandlebars() {
   return instance;
 }
 
-export const transformOpenApiFile = (openapiFilePath: string, distPath: string) => {
+export const transformOpenApiFile = (openapiFilePath: string) => {
   const parsed = SwaggerParser.parse(path.resolve(openapiFilePath));
-
   parsed.then(async (doc) => {
     await generateZodClientFromOpenAPI({
-      distPath: `${distPath}/client.ts`,
+      distPath: path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', 'client'),
       openApiDoc: doc as OpenAPIObject,
-      templatePath: path.resolve(__dirname, '../templates/client.hbs'),
+      templatePath: path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', 'client.templates.hbs'),
       prettierConfig: {
         tabWidth: 2,
         semi: true,

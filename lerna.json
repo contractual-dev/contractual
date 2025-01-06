@@ -21,8 +21,9 @@
   },
   "workspaces": [
     "demo",
-    "packages/*",
-    "packages/types/*"
+    "packages/generators/*",
+    "packages/types/*",
+    "packages/*"
   ],
   "npmClient": "yarn",
   "packages": [

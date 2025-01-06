@@ -1,6 +1,5 @@
-import { getClientPath } from '@contractual/client';
-import { generateFixtures, type GenerateFixturesOptions } from '@contractual/fixtures/generator';
-import { transformOpenApiFile } from './openapi.transformer.js';
+import { transformOpenApiFile } from '@contractual/generators.client';
+import { generateFixtures, type GenerateFixturesOptions } from '@contractual/generators.fixtures';
 import { type GenerateClientOptions, Target } from './types.js';
 
 export default async function generate<TTarget extends Target>(
@@ -12,7 +11,7 @@ export default async function generate<TTarget extends Target>(
       : never
 ) {
   if (target === Target.Client) {
-    return transformOpenApiFile((options as GenerateClientOptions).openapi, getClientPath());
+    return transformOpenApiFile((options as GenerateClientOptions).openapi);
   }
 
   if (target === Target.Fixtures) {

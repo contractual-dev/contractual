@@ -2,7 +2,7 @@ import { transformSync } from '@babel/core';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { createProgram, parseJsonConfigFileContent, readConfigFile, sys } from 'typescript';
-import type { RegisterFixturesReturnType } from '../src';
+import type { RegisterFixturesReturnType } from '@contractual/fixtures';
 
 export interface GenerateFixturesOptions {
   path: string;
@@ -53,15 +53,13 @@ export async function generateFixtures({ output, path: fixturesPath }: GenerateF
 
   const imports = fs.readdirSync(readFrom).map(async (file) => {
     const filePath = path.join(readFrom, file);
-    return import(filePath).then((module) => module.default) as Promise<
-      RegisterFixturesReturnType<never>
-    >;
+    return import(filePath).then((module) => module.default);
   });
 
   const result = await Promise.all(imports).then((fixturesModules) =>
-    fixturesModules.reduce(
+    fixturesModules.reduce<RegisterFixturesReturnType<never>>(
       (acc, fixtures) => ({ ...acc, [fixtures.operation]: fixtures.fixtures }),
-      {}
+      {} as RegisterFixturesReturnType<never>
     )
   );
 

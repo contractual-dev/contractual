@@ -10,10 +10,6 @@
       "import": "./dist/src/index.js",
       "require": "./dist/src/index.js"
     },
-    "./fixtures": {
-      "import": "./dist/fixtures/index.js",
-      "require": "./dist/fixtures/index.js"
-    },
     "./client": {
       "import": "./dist/client/index.js",
       "require": "./dist/client/index.js"
@@ -54,6 +50,8 @@
     "lint": "yarn eslint '{src,test}/**/*.ts'"
   },
   "files": [
+    "client",
+    "generator",
     "dist",
     "README.md"
   ],

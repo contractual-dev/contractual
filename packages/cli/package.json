@@ -47,17 +47,11 @@
     "README.md"
   ],
   "dependencies": {
-    "@apidevtools/swagger-parser": "^10.1.0",
-    "@contractual/client": "^0.0.0",
-    "commander": "^12.1.0",
-    "handlebars": "^4.7.8",
-    "openapi-types": "^7.2.3",
-    "openapi-zod-client": "^1.18.2",
-    "openapi3-ts": "^4.4.0",
-    "ts-node": "^10.9.2"
+    "@contractual/generators.client": "^0.0.0",
+    "@contractual/generators.fixtures": "^0.0.0",
+    "commander": "^12.1.0"
   },
   "devDependencies": {
-    "@contractual/client": "^0.0.0",
     "@contractual/fixtures": "^0.0.0"
   },
   "publishConfig": {

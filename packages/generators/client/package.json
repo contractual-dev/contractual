@@ -1,29 +1,15 @@
 {
-  "name": "@contractual/fixtures",
+  "name": "@contractual/generators.client",
   "private": false,
   "version": "0.0.0",
   "license": "Apache-2.0",
   "type": "module",
   "module": "dist/index.js",
   "main": "dist/index.js",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
-    },
-    "./config": {
-      "import": "./config/fixtures.json",
-      "require": "./config/fixtures.json"
-    },
-    "./fixtures": {
-      "import": "./dist/fixtures/index.js",
-      "require": "./dist/fixtures/index.js"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/contractual-dev/contractual.git",
-    "directory": "packages/fixtures"
+    "directory": "packages/generators/client"
   },
   "homepage": "https://contractual.dev",
   "bugs": {
@@ -33,6 +19,16 @@
     {
       "name": "Omer Morad",
       "email": "omer.moradd@gmail.com"
+    }
+  ],
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/contractual-dev"
+    },
+    {
+      "type": "opencollective",
+      "url": "https://opencollective.com/contractual-dev"
     }
   ],
   "engines": {
@@ -45,20 +41,17 @@
     "lint": "yarn eslint '{src,test}/**/*.ts'"
   },
   "files": [
-    "generator",
-    "config",
+    "client.template.hbs",
     "dist",
     "README.md"
   ],
   "dependencies": {
-    "@babel/core": "^7.26.0",
-    "@babel/generator": "^7.26.3",
-    "@babel/preset-typescript": "^7.26.0",
+    "@apidevtools/swagger-parser": "^10.1.0",
     "@contractual/client": "^0.0.0",
-    "@contractual/types.fixtures": "^0.0.0"
-  },
-  "devDependencies": {
-    "typescript": "~5.7.2"
+    "handlebars": "^4.7.8",
+    "openapi-types": "^7.2.3",
+    "openapi-zod-client": "^1.18.2",
+    "openapi3-ts": "^4.4.0"
   },
   "publishConfig": {
     "access": "public",
