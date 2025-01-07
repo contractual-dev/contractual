@@ -5,6 +5,7 @@
   "license": "Apache-2.0",
   "type": "module",
   "module": "dist/index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/contractual-dev/contractual.git",
@@ -35,7 +36,7 @@
   },
   "scripts": {
     "prebuild": "yarn rimraf dist",
-    "build": "yarn tsc -p tsconfig.build.json",
+    "build": "yarn tsc -p tsconfig.build.json --watch",
     "tester": "jest --coverage --verbose",
     "lint": "yarn eslint '{src,test}/**/*.ts'"
   },
@@ -44,6 +45,9 @@
     "README.md"
   ],
   "dependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/generator": "^7.26.3",
+    "@babel/preset-typescript": "^7.26.0",
     "@contractual/fixtures": "^0.0.0"
   },
   "peerDependencies": {

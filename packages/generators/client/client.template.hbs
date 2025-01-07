@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AppRouter } from '@ts-rest/core';
+import type { AppRouter } from '@ts-rest/core';
 
 {{#if imports}}
   {{#each imports}}
@@ -50,9 +50,3 @@ export const ApiOperations = {
   '{{toPlainWords alias}}': '{{alias}}',
 {{/each}}
 } satisfies Record<string, keyof typeof appRouter>;
-
-export const OperationToFixtures = {
-{{#each endpoints}}
-  '{{toPlainWords alias}}': async () => import('../fixtures/{{toDashes alias}}.fixtures').then(({ FixturesBuilder }) => FixturesBuilder),
-{{/each}}
-};

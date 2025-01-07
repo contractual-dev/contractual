@@ -2,11 +2,12 @@
   "extends": "../../../tsconfig.build.json",
   "compilerOptions": {
     "rootDir": "src",
-    "baseUrl": "..",
+    "baseUrl": ".",
     "outDir": "dist",
     "skipLibCheck": true
   },
   "exclude": [
+    "fixtures",
     "dist",
     "index.ts",
     "node_modules",

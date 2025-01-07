@@ -1,9 +1,9 @@
 {
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "target": "es6",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "esnext",
     "rootDir": "src",
     "baseUrl": ".",
     "outDir": "dist",
@@ -11,7 +11,7 @@
   },
   "exclude": [
     "index.ts",
-    "../client/index.ts",
+    "dist",
     "node_modules",
     "test",
     "**/*.spec.ts",

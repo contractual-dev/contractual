@@ -11,8 +11,8 @@
       "require": "./dist/src/index.js"
     },
     "./client": {
-      "import": "./dist/client/index.js",
-      "require": "./dist/client/index.js"
+      "import": "./client/index.js",
+      "require": "./client/index.js"
     }
   },
   "repository": {
@@ -45,7 +45,7 @@
   },
   "scripts": {
     "prebuild": "yarn rimraf dist",
-    "build": "yarn tsc -p tsconfig.build.json",
+    "build": "yarn tsc -p tsconfig.build.json --watch",
     "tester": "jest --coverage --verbose",
     "lint": "yarn eslint '{src,test}/**/*.ts'"
   },

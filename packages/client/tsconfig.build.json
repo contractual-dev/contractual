@@ -8,6 +8,7 @@
   },
   "exclude": [
     "index.ts",
+    "dist",
     "node_modules",
     "__test__/**/*",
     "**/*.spec.ts",

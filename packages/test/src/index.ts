@@ -1,4 +1,4 @@
-import type { appRouter } from '@contractual/client';
+import type { appRouter } from '@contractual/client/client';
 import { type ApiClient, type ApiClientInput, getApiClient } from '@contractual/client';
 import { ApiOperations } from '@contractual/client/client';
 import { Fixtures } from '@contractual/fixtures/fixtures';

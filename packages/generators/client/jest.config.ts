@@ -6,10 +6,7 @@ const config: Config = {
   id: 'generators.client',
   displayName: 'generators.client',
   collectCoverageFrom: ['src/**/*.ts', 'test/**/*.ts'],
-  coveragePathIgnorePatterns: [
-    'index.ts',
-    'types.ts',
-  ],
+  coveragePathIgnorePatterns: ['index.ts', 'types.ts'],
 };
 
 export default config;

@@ -8,8 +8,8 @@
   "main": "dist/index.js",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
+      "import": "./dist/src/index.js",
+      "require": "./dist/src/index.js"
     },
     "./config": {
       "import": "./config/fixtures.json",
@@ -51,9 +51,6 @@
     "README.md"
   ],
   "dependencies": {
-    "@babel/core": "^7.26.0",
-    "@babel/generator": "^7.26.3",
-    "@babel/preset-typescript": "^7.26.0",
     "@contractual/client": "^0.0.0",
     "@contractual/types.fixtures": "^0.0.0"
   },

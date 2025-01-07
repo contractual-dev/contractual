@@ -4,7 +4,7 @@
     "rootDir": "src",
     "baseUrl": "./",
     "outDir": "dist",
-    "target": "es6"
+    "target": "esnext"
   },
   "exclude": [
     "typings.d.ts",
