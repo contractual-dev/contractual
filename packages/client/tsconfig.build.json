@@ -1,13 +1,17 @@
 {
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
-    "rootDirs": ["src", "client"],
+    "rootDirs": [
+      "src",
+      "client"
+    ],
     "baseUrl": ".",
     "outDir": "dist",
     "skipLibCheck": true
   },
   "exclude": [
     "index.ts",
+    "client",
     "dist",
     "node_modules",
     "__test__/**/*",
