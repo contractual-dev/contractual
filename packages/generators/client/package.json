@@ -11,6 +11,12 @@
     "url": "https://github.com/contractual-dev/contractual.git",
     "directory": "packages/generators/client"
   },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
   "homepage": "https://contractual.dev",
   "bugs": {
     "url": "https://github.com/contractual-dev/contractual/issues"
@@ -36,7 +42,7 @@
   },
   "scripts": {
     "prebuild": "yarn rimraf dist",
-    "build": "yarn tsc -p tsconfig.build.json --watch",
+    "build": "yarn tsc -p tsconfig.build.json",
     "tester": "jest --coverage --verbose",
     "lint": "yarn eslint '{src,test}/**/*.ts'"
   },

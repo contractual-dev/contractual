@@ -88,6 +88,4 @@ export const transformOpenApiFile = async (openapiFilePath: string) => {
     },
     handlebars: createHandlebars(),
   });
-
-  return doc;
 };

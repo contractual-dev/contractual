@@ -28,7 +28,7 @@ export function test<TOperation extends keyof typeof ApiOperations>(
   ) =>
     Object.assign(
       <TFixture extends keyof (typeof Fixtures)[TOperation]>(fixture: TFixture) => {
-        const resolvedFixture = Fixtures[operation][fixture];
+        const resolvedFixture = (Fixtures as Record<TOperation, never>)[operation][fixture];
 
         return (
           client[clientMethod] as (

@@ -1,1 +1,1 @@
-export const Fixtures = {} as const;
+export const Fixtures = {} as unknown;
