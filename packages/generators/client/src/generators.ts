@@ -54,7 +54,7 @@ function createHandlebars() {
 }
 
 export const transformOpenApiFile = async (openapiFilePath: string) => {
-  const parsed = SwaggerParser.parse(path.resolve(openapiFilePath));
+  const doc = await SwaggerParser.parse(path.resolve(openapiFilePath));
 
   const writeToPath = path.resolve(
     path.dirname(new URL(import.meta.url).pathname),
@@ -63,33 +63,31 @@ export const transformOpenApiFile = async (openapiFilePath: string) => {
     'index.ts'
   );
 
-  parsed.then(async (doc) => {
-    await generateZodClientFromOpenAPI({
-      distPath: writeToPath,
-      openApiDoc: doc as OpenAPIObject,
-      templatePath: path.resolve(
-        path.dirname(new URL(import.meta.url).pathname),
-        '..',
-        'client.template.hbs'
-      ),
-      prettierConfig: {
-        tabWidth: 2,
-        semi: true,
-        singleQuote: true,
-        trailingComma: 'all',
-        bracketSpacing: true,
-        arrowParens: 'always',
-      },
-      options: {
-        additionalPropertiesDefaultValue: false,
-        withAllResponses: true,
-        withAlias: true,
-        withDescription: false,
-        withDefaultValues: false,
-      },
-      handlebars: createHandlebars(),
-    });
-
-    return doc;
+  await generateZodClientFromOpenAPI({
+    distPath: writeToPath,
+    openApiDoc: doc as OpenAPIObject,
+    templatePath: path.resolve(
+      path.dirname(new URL(import.meta.url).pathname),
+      '..',
+      'client.template.hbs'
+    ),
+    prettierConfig: {
+      tabWidth: 2,
+      semi: true,
+      singleQuote: true,
+      trailingComma: 'all',
+      bracketSpacing: true,
+      arrowParens: 'always',
+    },
+    options: {
+      additionalPropertiesDefaultValue: false,
+      withAllResponses: true,
+      withAlias: true,
+      withDescription: false,
+      withDefaultValues: false,
+    },
+    handlebars: createHandlebars(),
   });
+
+  return doc;
 };
