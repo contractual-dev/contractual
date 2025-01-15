@@ -20,13 +20,7 @@
         ]
       },
       "typescript": {
-        "alwaysTryTypes": true,
-        "project": [
-          "packages/*/tsconfig.json",
-          "packages/di/*/tsconfig.json",
-          "packages/doubles/*/tsconfig.json",
-          "packages/types/*/tsconfig.json"
-        ]
+        "alwaysTryTypes": true
       }
     }
   },
@@ -81,7 +75,6 @@
     ]
   },
   "env": {
-    "node": true,
-    "jest": true
+    "node": true
   }
 }

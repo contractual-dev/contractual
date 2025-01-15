@@ -18,7 +18,6 @@ export async function generateFixtures({ output, path: fixturesPath }: GenerateF
 
   // Parse and compile using TypeScript
   const configFileContent = readConfigFile(resolvedTsconfigPath, sys.readFile);
-  console.log('configFileContent', configFileContent);
 
   if (configFileContent.error) {
     throw new Error(`Error reading tsconfig.json: ${configFileContent.error.messageText}`);
@@ -33,11 +32,10 @@ export async function generateFixtures({ output, path: fixturesPath }: GenerateF
   createProgram(config.fileNames, config.options).emit();
 
   // Define input and output directories
-  const readFrom = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..', 'output');
-
+  const readFrom = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', 'output');
 
   if (!fs.existsSync(readFrom)) {
-    fs.mkdirSync(readFrom, { recursive: true });
+    fs.mkdirSync(readFrom);
   }
 
   const writeTo =
@@ -61,7 +59,7 @@ export async function generateFixtures({ output, path: fixturesPath }: GenerateF
   );
 
   const tsFilePath = path.join(writeTo, 'index.ts');
-  const tsContent = `export const Fixtures = ${JSON.stringify(result)};`;
+  const tsContent = `export const Fixtures = ${JSON.stringify(result)};\n`;
 
   fs.writeFileSync(tsFilePath, tsContent, { encoding: 'utf-8' });
 

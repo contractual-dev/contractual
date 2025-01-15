@@ -1,16 +1,21 @@
 {
-  "name": "@contractual/cli",
+  "name": "@contractual/generators.openapi",
   "private": false,
   "version": "0.0.0",
   "license": "Apache-2.0",
   "type": "module",
-  "bin": {
-    "contractual": "./bin/cli.js"
-  },
+  "module": "dist/index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/contractual-dev/contractual.git",
-    "directory": "packages/cli"
+    "directory": "packages/generators/fixtures"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
   },
   "homepage": "https://contractual.dev",
   "bugs": {
@@ -42,20 +47,27 @@
     "lint": "yarn eslint '{src,test}/**/*.ts'"
   },
   "files": [
-    "bin",
     "dist",
     "README.md"
   ],
   "dependencies": {
-    "@contractual/generators.client": "^0.0.0",
-    "@contractual/generators.fixtures": "^0.0.0",
-    "commander": "^12.1.0"
+    "@typespec/compiler": "^0.63.0",
+    "@typespec/http": "^0.63.0",
+    "@typespec/openapi": "^0.63.0",
+    "@typespec/openapi3": "^0.63.0",
+    "@typespec/rest": "^0.63.1",
+    "@typespec/versioning": "^0.63.0",
+    "openapi-diff": "^0.23.7"
   },
-  "devDependencies": {
-    "@contractual/fixtures": "^0.0.0"
+  "peerDependencies": {
+    "typescript": ">=5.x"
   },
   "publishConfig": {
     "access": "public",
     "provenance": true
+  },
+  "devDependencies": {
+    "openapi-types": "^12.1.3",
+    "typescript": "~5.7.2"
   }
 }

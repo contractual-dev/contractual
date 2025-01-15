@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import type { AppRouter } from '@ts-rest/core';
+import { AppRouter, initContract } from '@ts-rest/core';
+import { initClient } from '@ts-rest/core';
 
 export const baseError = z
   .object({
@@ -711,3 +712,8 @@ export const ApiOperations = {
   'update version': 'updateVersion',
   'delete version': 'deleteVersion',
 } satisfies Record<string, keyof typeof appRouter>;
+
+const clienter = initClient(appRouter, {
+  baseUrl: '',
+});
+

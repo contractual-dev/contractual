@@ -28,7 +28,8 @@
   "npmClient": "yarn",
   "packages": [
     "demo",
-    "packages/*",
-    "packages/types/*"
+    "packages/generators/*",
+    "packages/types/*",
+    "packages/*"
   ]
 }

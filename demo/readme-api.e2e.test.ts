@@ -18,10 +18,10 @@ test('create version', async ({ operation }) => {
 //   // createdVersionId = response.body._id;
 // });
 
-// test('delete version', async ({ operation }) => {
-//   const response = await operation(() => ({
-//     params: { versionId: createdVersionId },
-//   }));
-//
-//   expect(response.body._id).toBeDefined();
-// });
+test('delete version', async ({ operation }) => {
+  const response = await operation(() => ({
+    params: { versionId: createdVersionId },
+  }));
+
+  expect(response.body._id).toBeDefined();
+});
