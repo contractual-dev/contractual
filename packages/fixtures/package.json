@@ -1,6 +1,6 @@
 {
   "name": "@contractual/fixtures",
-  "private": false,
+  "private": true,
   "version": "0.0.0",
   "license": "Apache-2.0",
   "type": "module",
@@ -51,7 +51,7 @@
     "README.md"
   ],
   "dependencies": {
-    "@contractual/client": "^0.0.0",
+    "@contractual/contract": "^0.0.0",
     "@contractual/types.fixtures": "^0.0.0"
   },
   "devDependencies": {

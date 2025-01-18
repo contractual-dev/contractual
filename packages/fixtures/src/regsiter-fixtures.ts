@@ -1,5 +1,5 @@
-import type { ApiClientInput, ApiOperationToClientMethod } from '@contractual/client';
-import type { ApiOperations } from '@contractual/client/client';
+import type { ApiClientInput, ApiOperationToClientMethod } from '@contractual/contract';
+import type { ApiOperations } from '@contractual/contract/contract';
 import type {
   FixtureCallback,
   FixturesBuilder,

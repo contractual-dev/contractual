@@ -1,11 +1,11 @@
 export const Target = {
-  Client: 'Client',
+  Contract: 'Contracts',
   Fixtures: 'Fixtures',
 };
 
 export type Target = (typeof Target)[keyof typeof Target];
 
-export interface GenerateClientOptions {
-  openapi: string;
+export interface GenerateContractsOptions {
+  openapi?: string;
   output?: string;
 }

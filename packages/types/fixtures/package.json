@@ -27,7 +27,7 @@
     "lint": "yarn eslint 'index.ts'"
   },
   "dependencies": {
-    "@contractual/client": "^0.0.0"
+    "@contractual/contract": "^0.0.0"
   },
   "files": [
     "index.d.ts"

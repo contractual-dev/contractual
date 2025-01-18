@@ -29,7 +29,7 @@
     },
     {
       "type": "opencollective",
-      "url": "https://opencollective.com/contractual-dev"
+      "url": "https://opencollective.com/contractual"
     }
   ],
   "engines": {
@@ -47,9 +47,10 @@
     "README.md"
   ],
   "dependencies": {
-    "@contractual/generators.client": "^0.0.0",
+    "@contractual/generators.contract": "^0.0.0",
     "@contractual/generators.fixtures": "^0.0.0",
-    "commander": "^12.1.0"
+    "commander": "^12.1.0",
+    "inquirer": "^12.3.2"
   },
   "devDependencies": {
     "@contractual/fixtures": "^0.0.0"

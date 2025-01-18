@@ -1,6 +1,6 @@
-import type { ApiClient, ApiClientInput, ApiOperationToClientMethod } from '@contractual/client';
+import type { ApiClient, ApiClientInput, ApiOperationToClientMethod } from '@contractual/contract';
 import type { Fixtures } from '@contractual/fixtures/fixtures';
-import type { ApiOperations } from '@contractual/client/client';
+import type { ApiOperations } from '@contractual/contract/contract';
 
 export interface TestFunctionParams<TOperation extends keyof typeof ApiOperations> {
   operation<TFixture extends keyof (typeof Fixtures)[TOperation]>(
