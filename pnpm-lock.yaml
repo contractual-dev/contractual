@@ -197,9 +197,8 @@ importers:
       '@contractual/fixtures':
         specifier: workspace:*
         version: link:../../fixtures
-    devDependencies:
       typescript:
-        specifier: ~5.7.2
+        specifier: '>=5.x'
         version: 5.7.3
 
   packages/generators/openapi:
