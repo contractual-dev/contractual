@@ -1,16 +1,24 @@
 {
-  "name": "@contractual/cli",
+  "name": "@contractual/contract",
   "private": false,
   "version": "0.0.0",
   "license": "Apache-2.0",
+  "module": "dist/src/index.js",
   "type": "module",
-  "bin": {
-    "contractual": "./bin/cli.js"
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.js",
+      "require": "./dist/src/index.js"
+    },
+    "./contract": {
+      "import": "./contract/index.js",
+      "require": "./contract/index.js"
+    }
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/contractual-dev/contractual.git",
-    "directory": "packages/cli"
+    "directory": "packages/client"
   },
   "homepage": "https://contractual.dev",
   "bugs": {
@@ -38,20 +46,19 @@
   "scripts": {
     "prebuild": "pnpm rimraf dist",
     "build": "pnpm tsc -p tsconfig.build.json",
-    "build:watch": "pnpm tsc -p tsconfig.build.json --watch",
     "tester": "jest --coverage --verbose",
     "lint": "pnpm eslint '{src,test}/**/*.ts'"
   },
   "files": [
-    "bin",
+    "contract",
+    "generator",
     "dist",
     "README.md"
   ],
   "dependencies": {
-    "@contractual/generators.client": "workspace:*",
-    "@contractual/generators.spec": "workspace:*",
-    "commander": "^12.1.0",
-    "inquirer": "^12.3.2"
+    "@ts-rest/core": "^3.51.0",
+    "axios": "^1.7.9",
+    "zod": "^3.24.1"
   },
   "publishConfig": {
     "access": "public",

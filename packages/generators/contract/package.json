@@ -1,16 +1,21 @@
 {
-  "name": "@contractual/cli",
+  "name": "@contractual/generators.client",
   "private": false,
   "version": "0.0.0",
   "license": "Apache-2.0",
   "type": "module",
-  "bin": {
-    "contractual": "./bin/cli.js"
-  },
+  "module": "dist/index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/contractual-dev/contractual.git",
-    "directory": "packages/cli"
+    "directory": "packages/generators/client"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
   },
   "homepage": "https://contractual.dev",
   "bugs": {
@@ -38,20 +43,30 @@
   "scripts": {
     "prebuild": "pnpm rimraf dist",
     "build": "pnpm tsc -p tsconfig.build.json",
-    "build:watch": "pnpm tsc -p tsconfig.build.json --watch",
     "tester": "jest --coverage --verbose",
     "lint": "pnpm eslint '{src,test}/**/*.ts'"
   },
   "files": [
-    "bin",
+    "client.template.hbs",
     "dist",
     "README.md"
   ],
   "dependencies": {
-    "@contractual/generators.client": "workspace:*",
-    "@contractual/generators.spec": "workspace:*",
-    "commander": "^12.1.0",
-    "inquirer": "^12.3.2"
+    "@apidevtools/swagger-parser": "^10.1.0",
+    "@babel/core": "^7.26.0",
+    "@babel/generator": "^7.26.3",
+    "@babel/preset-typescript": "^7.26.0",
+    "@contractual/contract": "workspace:*",
+    "handlebars": "^4.7.8",
+    "openapi-types": "^12.1.3",
+    "openapi-zod-client": "^1.18.2",
+    "openapi3-ts": "^4.4.0"
+  },
+  "devDependencies": {
+    "typescript": "~5.7.2"
+  },
+  "peerDependencies": {
+    "typescript": ">=5.x"
   },
   "publishConfig": {
     "access": "public",
