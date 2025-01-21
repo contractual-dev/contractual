@@ -1,5 +1,5 @@
 export const Target = {
-  Contract: 'Contracts',
+  Contract: 'Contract',
   Fixtures: 'Fixtures',
 };
 

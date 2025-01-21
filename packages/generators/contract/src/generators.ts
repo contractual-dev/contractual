@@ -55,7 +55,11 @@ function createHandlebars() {
 }
 
 export const generateContract = async () => {
-  const doc = await SwaggerParser.parse(path.resolve(process.cwd(), 'contractual', 'specs', 'openapi-v1.1.0.yaml'));
+  const doc = await SwaggerParser.parse(
+    path.resolve(process.cwd(), 'contractual', 'specs', 'openapi-v1.0.0.yaml')
+  );
+
+  console.log(path.resolve(process.cwd(), 'contractual', 'specs', 'openapi-v1.1.0.yaml'));
 
   const writeToPath = path.resolve(
     path.dirname(new URL(import.meta.url).pathname),
@@ -63,6 +67,8 @@ export const generateContract = async () => {
     'contract/contract',
     'index.ts'
   );
+
+  console.log(writeToPath);
 
   await generateZodClientFromOpenAPI({
     distPath: writeToPath,

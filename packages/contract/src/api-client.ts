@@ -2,19 +2,19 @@ import type { InitClientReturn, ClientArgs } from '@ts-rest/core';
 import { initClient } from '@ts-rest/core';
 import type { AxiosError, AxiosResponse, Method } from 'axios';
 import { isAxiosError } from 'axios';
-import { apiRouter } from '../contract/index.js';
+import { ApiContract } from '../contract/index.js';
 import { createAxiosClient } from './axios-client.js';
 
 export type ApiClient = ReturnType<typeof getApiClient>;
 
-let apiClientInstance: InitClientReturn<typeof apiRouter, ClientArgs> | null = null;
+let apiClientInstance: InitClientReturn<typeof ApiContract, ClientArgs> | null = null;
 
 export function getApiClient(options: {
   baseUrl: string;
   baseHeaders: Record<string, string> | undefined;
 }) {
   if (!apiClientInstance) {
-    apiClientInstance = initClient(apiRouter, {
+    apiClientInstance = initClient(ApiContract, {
       baseUrl: options.baseUrl,
       baseHeaders: options.baseHeaders,
       api: async ({ path, method, headers, body }) => {

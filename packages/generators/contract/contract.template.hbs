@@ -11,6 +11,7 @@ import { initContract } from '@ts-rest/core';
 {{#if schemas}}
   {{#each schemas}}
     export const {{@key}} = {{{this}}};
+
   {{/each}}
 {{/if}}
 
@@ -50,6 +51,6 @@ export const ApiOperations = {
 {{#each endpoints}}
   '{{toPlainWords alias}}': '{{alias}}',
 {{/each}}
-} satisfies Record<string, keyof typeof apiRouter>;
+} satisfies Record<string, keyof typeof ApiContract>;
 
 export const contract = initContract().router(ApiContract);

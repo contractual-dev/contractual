@@ -5,6 +5,7 @@ import * as process from 'node:process';
 import openapiDiff from 'openapi-diff';
 import { parse, stringify } from 'yaml';
 import { inc } from 'semver';
+import inquirer from 'inquirer';
 
 async function initializePaths() {
   const rootPath = path.resolve(process.cwd(), 'contractual');
@@ -92,7 +93,7 @@ function updateVersionAndSnapshot(
   console.log(`Updated to new version: ${newVersion}`);
 }
 
-export async function generateSpecification() {
+export async function generateSpecification(inquirerDep: typeof inquirer) {
   const paths = await initializePaths();
 
   if (!checkFileExists(paths.rootPath, `'contractual' directory not found`)) {
@@ -123,12 +124,23 @@ export async function generateSpecification() {
     version: { latest },
   } = configContent;
 
-  if (latest === '0.0.0') {
-    const destinationPath = path.resolve(paths.snapshotsPath, 'openapi-v1.0.0.yaml');
+  if (latest === 'unversioned') {
+    const { initialVersion } = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'initialVersion',
+        message: 'Enter the initial version:',
+        default: '1.0.0',
+        validate: (input) =>
+          /^\d+\.\d+\.\d+$/.test(input) || 'Please enter a valid version (e.g., 1.0.0).',
+      },
+    ]);
+
+    const destinationPath = path.resolve(paths.snapshotsPath, `openapi-v${initialVersion}.yaml`);
     fs.copyFileSync(paths.tempSpecPath, destinationPath);
     console.log('Initial version created at:', destinationPath);
 
-    const newConfigContent = stringify({ version: { latest: '1.0.0' } });
+    const newConfigContent = stringify({ version: { latest: initialVersion } });
 
     fs.writeFileSync(paths.configFilePath, newConfigContent);
 

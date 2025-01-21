@@ -1,4 +1,4 @@
-import type { apiRouter } from '@contractual/contract/contract/index.js';
+import type { ApiContract } from '@contractual/contract/contract/index.js';
 import { type ApiClient, type ApiClientInput, getApiClient } from '@contractual/contract';
 import { ApiOperations } from '@contractual/contract/contract/index.js';
 import { Fixtures } from '@contractual/fixtures/fixtures/index.js';
@@ -24,7 +24,7 @@ export function test<TOperation extends keyof typeof ApiOperations>(
   // Create the operation function
   const operationFn = (
     clientMethod: (typeof ApiOperations)[TOperation],
-    client: InitClientReturn<typeof apiRouter, ClientArgs>
+    client: InitClientReturn<typeof ApiContract, ClientArgs>
   ) =>
     Object.assign(
       <TFixture extends keyof (typeof Fixtures)[TOperation]>(fixture: TFixture) => {
