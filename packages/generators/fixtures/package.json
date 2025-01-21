@@ -1,16 +1,21 @@
 {
-  "name": "@contractual/cli",
-  "private": false,
+  "name": "@contractual/generators.fixtures",
+  "private": true,
   "version": "0.0.0",
   "license": "Apache-2.0",
   "type": "module",
-  "bin": {
-    "contractual": "./bin/cli.js"
-  },
+  "module": "dist/index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/contractual-dev/contractual.git",
-    "directory": "packages/cli"
+    "directory": "packages/generators/fixtures"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
   },
   "homepage": "https://contractual.dev",
   "bugs": {
@@ -43,20 +48,23 @@
     "lint": "pnpm eslint '{src,test}/**/*.ts'"
   },
   "files": [
-    "bin",
     "dist",
     "README.md"
   ],
   "dependencies": {
-    "@contractual/generators.client": "workspace:*",
-    "@contractual/generators.fixtures": "workspace:*",
-    "commander": "^12.1.0"
+    "@babel/core": "^7.26.0",
+    "@babel/generator": "^7.26.3",
+    "@babel/preset-typescript": "^7.26.0",
+    "@contractual/fixtures": "workspace:*",
+    "typescript": ">=5.x"
   },
-  "devDependencies": {
-    "@contractual/fixtures": "workspace:*"
+  "peerDependencies": {
   },
   "publishConfig": {
     "access": "public",
     "provenance": true
+  },
+  "devDependencies": {
+    "typescript": "~5.7.2"
   }
 }

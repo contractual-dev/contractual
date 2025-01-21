@@ -56,7 +56,7 @@
     "@babel/core": "^7.26.0",
     "@babel/generator": "^7.26.3",
     "@babel/preset-typescript": "^7.26.0",
-    "@contractual/contract": "workspace:*",
+    "@contractual/client": "workspace:*",
     "handlebars": "^4.7.8",
     "openapi-types": "^12.1.3",
     "openapi-zod-client": "^1.18.2",
