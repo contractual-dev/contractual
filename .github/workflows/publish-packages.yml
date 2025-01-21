@@ -62,9 +62,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: Yarn
-        run: yarn --frozen-lockfile
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
+  
+      - name: PNPM
+        run: pnpm install --frozen-lockfile
 
       - name: Run Verdaccio Docker
         run: |
@@ -74,7 +78,7 @@ jobs:
           verdaccio/verdaccio
 
       - name: Build
-        run: yarn build
+        run: pnpm build
 
       - name: Setup Registry
         uses: actions/setup-node@v4
@@ -102,16 +106,11 @@ jobs:
 
       - name: Publish Packages
         run: |
-          yarn lerna publish from-package --yes \
-          --no-git-tag-version \
-          --no-push \
-          --no-changelog \
-          --no-commit-hooks \
-          --no-git-reset \
-          --exact \
-          --force-publish \
-          --dist-tag ci
-
+          pnpm publish -r \
+            --no-git-checks \
+            --access public \
+            --tag ci \
+            --force 
       - name: Setup and Test
         run: |
           IFS='/' read -r library framework <<< "${{ matrix.e2e-project }}"
@@ -148,14 +147,18 @@ jobs:
           registry-url: https://registry.npmjs.org/
           scope: '@suites'
           always-auth: true
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
 
-      - name: Yarn
-        run: yarn --frozen-lockfile
+      - name: pnpm
+        run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: npx lerna run build
+        run: pnpm build
 
       - name: Publish Packages
-        run: npx lerna publish ${{ github.event.inputs.strategy }} --yes --dist-tag ${{ github.event.inputs.dist_tag }}
+        run: pnpm publish -r ${{ github.event.inputs.strategy }} --access public --tag ${{ github.event.inputs.dist_tag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
