@@ -1,25 +1,11 @@
-import { generateContract } from '@contractual/generators.contract';
-import { generateFixtures, type GenerateFixturesOptions } from '@contractual/generators.fixtures';
 import { generateSpecification } from '@contractual/generators.spec';
-import { type GenerateContractsOptions, Target } from './types.js';
+import { generateContract as generateContractImport } from '@contractual/generators.client';
+import type inquirer from 'inquirer';
 
-export async function generate<TTarget extends Target>(
-  target: TTarget,
-  options: TTarget extends 'Contract'
-    ? GenerateContractsOptions
-    : TTarget extends 'Fixtures'
-      ? GenerateFixturesOptions
-      : never
-) {
-  if (target === Target.Contract) {
-    return generateContract();
-  }
-
-  if (target === Target.Fixtures) {
-    return generateFixtures(options as GenerateFixturesOptions);
-  }
+export function generateContract() {
+  return generateContractImport();
 }
 
-export function generateSpec() {
-  return generateSpecification();
+export function generateSpec(inq: typeof inquirer) {
+  return generateSpecification(inq);
 }

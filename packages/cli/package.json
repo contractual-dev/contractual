@@ -49,8 +49,9 @@
   ],
   "dependencies": {
     "@contractual/generators.client": "workspace:*",
-    "@contractual/generators.fixtures": "workspace:*",
-    "commander": "^12.1.0"
+    "@contractual/generators.spec": "workspace:*",
+    "commander": "^12.1.0",
+    "inquirer": "^12.3.2"
   },
   "publishConfig": {
     "access": "public",

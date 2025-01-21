@@ -5,7 +5,7 @@ import * as process from 'node:process';
 import openapiDiff from 'openapi-diff';
 import { parse, stringify } from 'yaml';
 import { inc } from 'semver';
-import inquirer from 'inquirer';
+import type inquirer from 'inquirer';
 
 async function initializePaths() {
   const rootPath = path.resolve(process.cwd(), 'contractual');
@@ -125,7 +125,7 @@ export async function generateSpecification(inquirerDep: typeof inquirer) {
   } = configContent;
 
   if (latest === 'unversioned') {
-    const { initialVersion } = await inquirer.prompt([
+    const { initialVersion } = await inquirerDep.prompt([
       {
         type: 'input',
         name: 'initialVersion',

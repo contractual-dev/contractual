@@ -93,36 +93,20 @@ importers:
         specifier: ~5.7.2
         version: 5.7.3
 
-  demo:
-    dependencies:
-      '@contractual/contract':
-        specifier: workspace:*
-        version: link:../packages/contract
-      '@contractual/fixtures':
-        specifier: workspace:*
-        version: link:../packages/fixtures
-      '@contractual/providers.playwright':
-        specifier: workspace:*
-        version: link:../packages/providers/playwright
-      '@playwright/test':
-        specifier: ^1.49.1
-        version: 1.49.1
-
   packages/cli:
     dependencies:
       '@contractual/generators.client':
         specifier: workspace:*
         version: link:../generators/contract
-      '@contractual/generators.fixtures':
+      '@contractual/generators.spec':
         specifier: workspace:*
-        version: link:../generators/fixtures
+        version: link:../generators/spec
       commander:
         specifier: ^12.1.0
         version: 12.1.0
-    devDependencies:
-      '@contractual/fixtures':
-        specifier: workspace:*
-        version: link:../fixtures
+      inquirer:
+        specifier: ^12.3.2
+        version: 12.3.2(@types/node@22.10.7)
 
   packages/contract:
     dependencies:
@@ -135,19 +119,6 @@ importers:
       zod:
         specifier: ^3.24.1
         version: 3.24.1
-
-  packages/fixtures:
-    dependencies:
-      '@contractual/contract':
-        specifier: workspace:*
-        version: link:../contract
-      '@contractual/types.fixtures':
-        specifier: workspace:*
-        version: link:../types/fixtures
-    devDependencies:
-      typescript:
-        specifier: ~5.7.2
-        version: 5.7.3
 
   packages/generators/contract:
     dependencies:
@@ -183,24 +154,6 @@ importers:
         specifier: ~5.7.2
         version: 5.7.3
 
-  packages/generators/fixtures:
-    dependencies:
-      '@babel/core':
-        specifier: ^7.26.0
-        version: 7.26.0
-      '@babel/generator':
-        specifier: ^7.26.3
-        version: 7.26.5
-      '@babel/preset-typescript':
-        specifier: ^7.26.0
-        version: 7.26.0(@babel/core@7.26.0)
-      '@contractual/fixtures':
-        specifier: workspace:*
-        version: link:../../fixtures
-      typescript:
-        specifier: '>=5.x'
-        version: 5.7.3
-
   packages/generators/spec:
     dependencies:
       '@typespec/compiler':
@@ -231,6 +184,9 @@ importers:
         specifier: ^2.7.0
         version: 2.7.0
     devDependencies:
+      '@types/semver':
+        specifier: ^7.5.8
+        version: 7.5.8
       inquirer:
         specifier: ^12.3.2
         version: 12.3.2(@types/node@22.10.7)
@@ -240,36 +196,6 @@ importers:
       typescript:
         specifier: ~5.7.2
         version: 5.7.3
-
-  packages/providers/playwright:
-    dependencies:
-      '@contractual/contract':
-        specifier: workspace:*
-        version: link:../../contract
-      '@contractual/fixtures':
-        specifier: workspace:*
-        version: link:../../fixtures
-      '@contractual/types.test':
-        specifier: workspace:*
-        version: link:../../types/test
-      '@playwright/test':
-        specifier: ^1.49.1
-        version: 1.49.1
-
-  packages/types/fixtures:
-    dependencies:
-      '@contractual/contract':
-        specifier: workspace:*
-        version: link:../../contract
-
-  packages/types/test:
-    dependencies:
-      '@contractual/contract':
-        specifier: workspace:*
-        version: link:../../contract
-      '@contractual/types.fixtures':
-        specifier: workspace:*
-        version: link:../fixtures
 
 packages:
 
@@ -976,11 +902,6 @@ packages:
   '@pkgr/core@0.1.1':
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
-
-  '@playwright/test@1.49.1':
-    resolution: {integrity: sha512-Ky+BVzPz8pL6PQxHqNRW1k3mIyv933LML7HktS8uik0bUXNCdPhoS/kLihiO1tMf/egaJb4IutXd7UywvXEW+g==}
-    engines: {node: '>=18'}
-    hasBin: true
 
   '@pnpm/config.env-replace@1.1.0':
     resolution: {integrity: sha512-htyl8TWnKL7K/ESFa1oW2UB5lVDxuF5DpM7tBi6Hu2LNL3mWkIzNLG6N4zoCUP1lCKNxWy/3iu8mS8MvToGd6w==}
@@ -2400,11 +2321,6 @@ packages:
 
   fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
-
-  fsevents@2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
-    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
-    os: [darwin]
 
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
@@ -3964,16 +3880,6 @@ packages:
   pkg-dir@4.2.0:
     resolution: {integrity: sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==}
     engines: {node: '>=8'}
-
-  playwright-core@1.49.1:
-    resolution: {integrity: sha512-BzmpVcs4kE2CH15rWfzpjzVGhWERJfmnXmniSyKeRZUs9Ws65m+RGIi7mjJK/euCegfn3i7jvqWeWyHe9y3Vgg==}
-    engines: {node: '>=18'}
-    hasBin: true
-
-  playwright@1.49.1:
-    resolution: {integrity: sha512-VYL8zLoNTBxVOrJBbDuRgDWa3i+mfQgDTrL8Ah9QXZ7ax4Dsj0MSq5bYgytRnDVVe+njoKnfsYkH3HzqVj5UZA==}
-    engines: {node: '>=18'}
-    hasBin: true
 
   pluralize@8.0.0:
     resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
@@ -6085,10 +5991,6 @@ snapshots:
 
   '@pkgr/core@0.1.1': {}
 
-  '@playwright/test@1.49.1':
-    dependencies:
-      playwright: 1.49.1
-
   '@pnpm/config.env-replace@1.1.0': {}
 
   '@pnpm/network.ca-file@1.0.2':
@@ -7701,9 +7603,6 @@ snapshots:
       minipass: 7.1.2
 
   fs.realpath@1.0.0: {}
-
-  fsevents@2.3.2:
-    optional: true
 
   fsevents@2.3.3:
     optional: true
@@ -9713,14 +9612,6 @@ snapshots:
   pkg-dir@4.2.0:
     dependencies:
       find-up: 4.1.0
-
-  playwright-core@1.49.1: {}
-
-  playwright@1.49.1:
-    dependencies:
-      playwright-core: 1.49.1
-    optionalDependencies:
-      fsevents: 2.3.2
 
   pluralize@8.0.0: {}
 
