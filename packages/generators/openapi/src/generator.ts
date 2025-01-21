@@ -32,7 +32,7 @@ export async function generateSpecification() {
       ignoreDeprecated: true,
     }
   )
-    .then((program) => {
+    .then(() => {
       // console.log(program.diagnostics);
       console.log('Specifi/**/cation generated');
     })

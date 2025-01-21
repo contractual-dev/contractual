@@ -22,9 +22,9 @@
     }
   ],
   "scripts": {
-    "build": "yarn lerna run build",
-    "tester": "yarn lerna exec yarn test",
-    "lint": "yarn lerna run lint --parallel",
+    "build": "pnpm -r run build",
+    "tester": "pnpm -r run test",
+    "lint": "pnpm -r run lint",
     "prepare": "husky"
   },
   "dependencies": {
@@ -76,5 +76,5 @@
     "classNameTemplate": "{classname}",
     "titleTemplate": "{title}"
   },
-  "packageManager": "yarn@1.22.1"
+  "packageManager": "pnpm@9.15.4"
 }

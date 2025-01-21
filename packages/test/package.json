@@ -34,19 +34,19 @@
     "node": ">=18.12.0"
   },
   "scripts": {
-    "prebuild": "yarn rimraf dist",
-    "build": "yarn tsc -p tsconfig.build.json",
+    "prebuild": "pnpm rimraf dist",
+    "build": "pnpm tsc -p tsconfig.build.json",
     "tester": "jest --coverage --verbose",
-    "lint": "yarn eslint '{src,test}/**/*.ts'"
+    "lint": "pnpm eslint '{src,test}/**/*.ts'"
   },
   "files": [
     "dist",
     "README.md"
   ],
   "dependencies": {
-    "@contractual/client": "^0.0.0",
-    "@contractual/fixtures": "^0.0.0",
-    "@contractual/types.test": "^0.0.0",
+    "@contractual/client": "workspace:*",
+    "@contractual/fixtures": "workspace:*",
+    "@contractual/types.test": "workspace:*",
     "@playwright/test": "^1.49.1"
   },
   "publishConfig": {
