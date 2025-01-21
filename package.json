@@ -60,6 +60,7 @@
   "workspaces": [
     "demo",
     "packages/generators/*",
+    "packages/providers/*",
     "packages/types/*",
     "packages/*"
   ],

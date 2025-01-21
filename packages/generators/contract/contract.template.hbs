@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { AppRouter } from '@ts-rest/core';
+import { initContract } from '@ts-rest/core';
 
 {{#if imports}}
   {{#each imports}}
@@ -10,10 +11,11 @@ import type { AppRouter } from '@ts-rest/core';
 {{#if schemas}}
   {{#each schemas}}
     export const {{@key}} = {{{this}}};
+
   {{/each}}
 {{/if}}
 
-export const appRouter = {
+export const ApiContract = {
 {{#each endpoints}}
   {{alias}}: {
     method: '{{toUpperCase method}}' as const,
@@ -49,4 +51,6 @@ export const ApiOperations = {
 {{#each endpoints}}
   '{{toPlainWords alias}}': '{{alias}}',
 {{/each}}
-} satisfies Record<string, keyof typeof appRouter>;
+} satisfies Record<string, keyof typeof ApiContract>;
+
+export const contract = initContract().router(ApiContract);

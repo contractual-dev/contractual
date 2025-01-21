@@ -1,4 +1,4 @@
-import type { ApiOperations } from '../client/index.js';
+import type { ApiOperations } from '../contract/index.js';
 import type { ApiClient } from './api-client';
 
 export type ApiOperationToClientMethod<TOperation extends keyof typeof ApiOperations> =

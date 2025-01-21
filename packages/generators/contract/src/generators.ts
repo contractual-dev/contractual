@@ -3,6 +3,7 @@ import handlebars from 'handlebars';
 import * as path from 'node:path';
 import { generateZodClientFromOpenAPI } from 'openapi-zod-client';
 import type { OpenAPIObject } from 'openapi3-ts/oas30';
+import * as process from 'node:process';
 
 const { create } = handlebars;
 
@@ -53,15 +54,21 @@ function createHandlebars() {
   return instance;
 }
 
-export const transformOpenApiFile = async (openapiFilePath: string) => {
-  const doc = await SwaggerParser.parse(path.resolve(openapiFilePath));
+export const generateContract = async () => {
+  const doc = await SwaggerParser.parse(
+    path.resolve(process.cwd(), 'contractual', 'specs', 'openapi-v1.0.0.yaml')
+  );
+
+  console.log(path.resolve(process.cwd(), 'contractual', 'specs', 'openapi-v1.1.0.yaml'));
 
   const writeToPath = path.resolve(
     path.dirname(new URL(import.meta.url).pathname),
     '../../..',
-    'client/client',
+    'contract/contract',
     'index.ts'
   );
+
+  console.log(writeToPath);
 
   await generateZodClientFromOpenAPI({
     distPath: writeToPath,
@@ -69,7 +76,7 @@ export const transformOpenApiFile = async (openapiFilePath: string) => {
     templatePath: path.resolve(
       path.dirname(new URL(import.meta.url).pathname),
       '..',
-      'client.template.hbs'
+      'contract.template.hbs'
     ),
     prettierConfig: {
       tabWidth: 2,

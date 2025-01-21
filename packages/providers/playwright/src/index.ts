@@ -1,7 +1,7 @@
-import type { appRouter } from '@contractual/client/client';
-import { type ApiClient, type ApiClientInput, getApiClient } from '@contractual/client';
-import { ApiOperations } from '@contractual/client/client';
-import { Fixtures } from '@contractual/fixtures/fixtures';
+import type { ApiContract } from '@contractual/contract/contract/index.js';
+import { type ApiClient, type ApiClientInput, getApiClient } from '@contractual/contract';
+import { ApiOperations } from '@contractual/contract/contract/index.js';
+import { Fixtures } from '@contractual/fixtures/fixtures/index.js';
 import type { TestFunctionParams } from '@contractual/types.test';
 import { test as playwrightTest } from '@playwright/test';
 import type { ClientArgs, InitClientReturn } from '@ts-rest/core';
@@ -24,7 +24,7 @@ export function test<TOperation extends keyof typeof ApiOperations>(
   // Create the operation function
   const operationFn = (
     clientMethod: (typeof ApiOperations)[TOperation],
-    client: InitClientReturn<typeof appRouter, ClientArgs>
+    client: InitClientReturn<typeof ApiContract, ClientArgs>
   ) =>
     Object.assign(
       <TFixture extends keyof (typeof Fixtures)[TOperation]>(fixture: TFixture) => {

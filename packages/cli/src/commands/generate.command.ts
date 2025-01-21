@@ -1,18 +1,18 @@
-import { transformOpenApiFile } from '@contractual/generators.client';
+import { generateContract } from '@contractual/generators.contract';
 import { generateFixtures, type GenerateFixturesOptions } from '@contractual/generators.fixtures';
-import { generateSpecification } from '@contractual/generators.openapi';
-import { type GenerateClientOptions, Target } from './types.js';
+import { generateSpecification } from '@contractual/generators.spec';
+import { type GenerateContractsOptions, Target } from './types.js';
 
 export async function generate<TTarget extends Target>(
   target: TTarget,
-  options: TTarget extends 'Client'
-    ? GenerateClientOptions
+  options: TTarget extends 'Contract'
+    ? GenerateContractsOptions
     : TTarget extends 'Fixtures'
       ? GenerateFixturesOptions
       : never
 ) {
-  if (target === Target.Client) {
-    return transformOpenApiFile((options as GenerateClientOptions).openapi);
+  if (target === Target.Contract) {
+    return generateContract();
   }
 
   if (target === Target.Fixtures) {

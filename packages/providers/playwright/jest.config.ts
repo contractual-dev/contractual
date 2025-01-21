@@ -1,5 +1,5 @@
 import type { Config } from 'jest';
-import baseConfig from '../../jest.base.config';
+import baseConfig from '../../../jest.base.config.js';
 
 const config: Config = {
   ...baseConfig(process.env.COVERAGE_DIR),
