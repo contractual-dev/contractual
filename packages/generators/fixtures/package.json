@@ -41,10 +41,11 @@
     "node": ">=18.12.0"
   },
   "scripts": {
-    "prebuild": "yarn rimraf dist",
-    "build": "yarn tsc -p tsconfig.build.json --watch",
+    "prebuild": "pnpm rimraf dist",
+    "build": "pnpm tsc -p tsconfig.build.json",
+    "build:watch": "pnpm tsc -p tsconfig.build.json --watch",
     "tester": "jest --coverage --verbose",
-    "lint": "yarn eslint '{src,test}/**/*.ts'"
+    "lint": "pnpm eslint '{src,test}/**/*.ts'"
   },
   "files": [
     "dist",
@@ -54,10 +55,10 @@
     "@babel/core": "^7.26.0",
     "@babel/generator": "^7.26.3",
     "@babel/preset-typescript": "^7.26.0",
-    "@contractual/fixtures": "^0.0.0"
+    "@contractual/fixtures": "workspace:*",
+    "typescript": ">=5.x"
   },
   "peerDependencies": {
-    "typescript": ">=5.x"
   },
   "publishConfig": {
     "access": "public",

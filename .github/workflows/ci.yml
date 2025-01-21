@@ -16,7 +16,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+    
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9.15.4
       - name: Use Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
@@ -25,13 +29,13 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: Yarn
-        run: yarn --frozen-lockfile
+      - name: PNPM
+        run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: yarn build
+        run: pnpm run build
 
   lint:
     name: Lint
@@ -48,16 +52,16 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: Yarn
-        run: yarn --frozen-lockfile
+      - name: PNPM
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: yarn lint
+        run: pnpm run lint
 
       - name: Validate Packages
-        run: yarn manypkg check
+        run: pnpm manypkg check
 
   test:
     name: Test
@@ -77,16 +81,16 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: Yarn
-        run: yarn --frozen-lockfile
+      - name: PNPM
+        run: pnpm install --frozen-lockfile
 
       - name: Create Coverage Directory
         run: mkdir -p ${{ github.workspace }}/coverage
 
       - name: Test
-        run: yarn lerna exec yarn test --scope @suites/${{ matrix.project }}
+        run: pnpm --filter @contractual/${{ matrix.project }} run test
         env:
           JEST_JUNIT_OUTPUT_NAME: ${{ matrix.project }}.xml
           JEST_JUNIT_OUTPUT_DIR: ${{ github.workspace }}/test-reports

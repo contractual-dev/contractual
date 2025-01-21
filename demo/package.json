@@ -8,9 +8,9 @@
     "test": "playwright test --config=playwright.config.ts"
   },
   "dependencies": {
-    "@contractual/contract": "^0.0.0",
-    "@contractual/fixtures": "^0.0.0",
-    "@contractual/providers.playwright": "^0.0.0",
+    "@contractual/client": "workspace:*",
+    "@contractual/fixtures": "workspace:*",
+    "@contractual/test": "workspace:*",
     "@playwright/test": "^1.49.1"
   },
   "engines": {
