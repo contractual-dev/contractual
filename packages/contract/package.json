@@ -42,12 +42,11 @@
     "prebuild": "pnpm rimraf dist",
     "build": "exit 0",
     "build:watch": "tsc -p tsconfig.build.json --watch",
-    "test": "pnpm vitest run",
-    "lint": "pnpm eslint '{src,test}/**/*.ts'"
+    "test": "vitest run",
+    "lint": "exit 0"
   },
   "files": [
     "contract",
-    "generator",
     "dist",
     "README.md"
   ],

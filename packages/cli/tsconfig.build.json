@@ -1,9 +1,6 @@
 {
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
-    "module": "esnext",
-    "moduleResolution": "node",
-    "target": "esnext",
     "rootDir": "src",
     "baseUrl": ".",
     "outDir": "dist",

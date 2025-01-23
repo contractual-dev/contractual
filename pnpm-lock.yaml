@@ -47,9 +47,6 @@ importers:
       follow-redirects:
         specifier: 1.15.6
         version: 1.15.6
-      husky:
-        specifier: ^8.0.3
-        version: 8.0.3
       ip:
         specifier: 2.0.1
         version: 2.0.1
@@ -89,6 +86,10 @@ importers:
       vitest:
         specifier: ^3.0.3
         version: 3.0.3(@types/node@22.10.7)(yaml@2.7.0)
+    devDependencies:
+      husky:
+        specifier: ^8.0.3
+        version: 8.0.3
 
   packages/cli:
     dependencies:
@@ -169,9 +170,15 @@ importers:
       '@types/semver':
         specifier: ^7.5.8
         version: 7.5.8
+      '@vitest/coverage-c8':
+        specifier: ^0.33.0
+        version: 0.33.0(vitest@3.0.3(@types/node@22.10.7)(yaml@2.7.0))
       typescript:
         specifier: ~5.7.2
         version: 5.7.3
+      vitest:
+        specifier: ^3.0.3
+        version: 3.0.3(@types/node@22.10.7)(yaml@2.7.0)
 
   packages/generators/spec:
     dependencies:

@@ -45,7 +45,7 @@
     "build": "tsc -p tsconfig.build.json",
     "test": "pnpm vitest run --watch",
     "build:watch": "tsc -p tsconfig.build.json --watch",
-    "lint": "pnpm eslint '{src,test}/**/*.ts'"
+    "lint": "eslint '{src,test}/**/*.ts'"
   },
   "files": [
     "dist",
@@ -64,6 +64,8 @@
   },
   "devDependencies": {
     "@types/semver": "^7.5.8",
-    "typescript": "~5.7.2"
+    "@vitest/coverage-c8": "^0.33.0",
+    "typescript": "~5.7.2",
+    "vitest": "^3.0.3"
   }
 }

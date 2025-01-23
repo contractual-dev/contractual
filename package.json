@@ -41,7 +41,6 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-prettier": "^5.0.1",
     "follow-redirects": "1.15.6",
-    "husky": "^8.0.3",
     "ip": "2.0.1",
     "lerna": "^7.3.1",
     "lint-staged": "^14.0.1",
@@ -75,5 +74,8 @@
     "classNameTemplate": "{classname}",
     "titleTemplate": "{title}"
   },
-  "packageManager": "pnpm@9.15.4"
+  "packageManager": "pnpm@9.15.4",
+  "devDependencies": {
+    "husky": "^8.0.3"
+  }
 }

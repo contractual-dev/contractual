@@ -45,7 +45,7 @@
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json --watch",
     "tester": "jest --coverage --verbose",
-    "lint": "pnpm eslint '{src,test}/**/*.ts'"
+    "lint": "eslint '{src,test}/**/*.ts'"
   },
   "files": [
     "client.template.hbs",
