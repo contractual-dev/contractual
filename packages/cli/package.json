@@ -37,8 +37,8 @@
   },
   "scripts": {
     "prebuild": "pnpm rimraf dist",
-    "build": "pnpm tsc -p tsconfig.build.json",
-    "build:watch": "pnpm tsc -p tsconfig.build.json --watch",
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json --watch",
     "tester": "jest --coverage --verbose",
     "lint": "pnpm eslint '{src,test}/**/*.ts'"
   },
@@ -48,7 +48,8 @@
     "README.md"
   ],
   "dependencies": {
-    "@contractual/generators.client": "workspace:*",
+    "@contractual/generators.contract": "workspace:*",
+    "@contractual/generators.diff": "workspace:*",
     "@contractual/generators.spec": "workspace:*",
     "commander": "^12.1.0",
     "inquirer": "^12.3.2"

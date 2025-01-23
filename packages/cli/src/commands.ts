@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { generateContract, generateSpec } from './commands/generate.command.js';
+import { regenerateContract, generateSpec } from './commands/generate.command.js';
 import inquirer from 'inquirer';
 
 const program = new Command();
@@ -11,7 +11,7 @@ generateCommand
   .command('contract')
   .description('Generate a contract based on the provided OpenAPI file')
   .action(() => {
-    return generateContract();
+    return regenerateContract();
   });
 
 generateCommand

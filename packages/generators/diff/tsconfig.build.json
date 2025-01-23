@@ -1,17 +1,16 @@
 {
-  "extends": "../../tsconfig.build.json",
+  "extends": "../../../tsconfig.build.json",
   "compilerOptions": {
-    "rootDir": "contract",
+    "rootDir": "src",
     "baseUrl": ".",
     "outDir": "dist",
     "skipLibCheck": true
   },
   "exclude": [
-    "index.ts",
-    "contract",
     "dist",
+    "index.ts",
     "node_modules",
-    "__test__/**/*",
+    "test",
     "**/*.spec.ts",
     "jest.config.ts"
   ]

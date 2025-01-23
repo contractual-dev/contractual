@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="2" failures="0" errors="0" time="0.0022650433">
+    <testsuite name="packages/generators/diff/src/generator.spec.ts" timestamp="2025-01-22T18:51:39.946Z" hostname="Ha-OmerM.local" tests="1" failures="0" errors="0" skipped="0" time="0.0011147938">
+        <testcase classname="packages/generators/diff/src/generator.spec.ts" name="differ &gt; should generate a diff" time="0.0005357094">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/generators/diff/src/generator.spec.ts" timestamp="2025-01-22T18:51:39.947Z" hostname="Ha-OmerM.local" tests="1" failures="0" errors="0" skipped="0" time="0.0011502495">
+        <testcase classname="packages/generators/diff/src/generator.spec.ts" name="differ &gt; should generate a diff" time="0.0005439167">
+        </testcase>
+    </testsuite>
+</testsuites>

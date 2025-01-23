@@ -8,8 +8,7 @@
     "sourceMap": false
   },
   "exclude": [
-    "jest.config.ts",
-    "jest.base.config.ts",
+    "vitest.config.ts",
     "spec-assets.ts",
     "node_modules",
     "dist",
@@ -17,7 +16,6 @@
     "**/*spec.ts",
     "index.ts",
     "index.js",
-    "index.d.ts",
-    "commitlint.config.js"
+    "index.d.ts"
   ]
 }
