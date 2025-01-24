@@ -1,16 +1,21 @@
 {
-  "name": "@contractual/cli",
+  "name": "@contractual/generators.diff",
   "private": false,
   "version": "0.0.0",
   "license": "Apache-2.0",
   "type": "module",
-  "bin": {
-    "contractual": "./bin/cli.js"
-  },
+  "module": "dist/index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/contractual-dev/contractual.git",
-    "directory": "packages/cli"
+    "directory": "packages/generators/diff"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
   },
   "homepage": "https://contractual.dev",
   "bugs": {
@@ -38,30 +43,29 @@
   "scripts": {
     "prebuild": "pnpm rimraf dist",
     "build": "tsc -p tsconfig.build.json",
+    "test": "pnpm vitest run --watch",
     "build:watch": "tsc -p tsconfig.build.json --watch",
-    "tester": "jest --coverage --verbose",
     "lint": "eslint '{src,test}/**/*.ts'"
   },
   "files": [
-    "bin",
     "dist",
     "README.md"
   ],
-  "dependencies": {
-    "@contractual/generators.contract": "workspace:*",
-    "@contractual/generators.diff": "workspace:*",
-    "@contractual/generators.spec": "workspace:*",
-    "chalk": "^5.4.1",
-    "commander": "^12.1.0",
-    "inquirer": "^12.3.2",
-    "ora": "^8.1.1"
-  },
   "publishConfig": {
     "access": "public",
     "provenance": true
   },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "openapi-diff": "^0.23.7",
+    "openapi-types": "^12.1.3",
+    "semver": "^7.6.3",
+    "table": "^6.9.0"
+  },
   "devDependencies": {
+    "@types/semver": "^7.5.8",
     "@vitest/coverage-c8": "^0.33.0",
+    "typescript": "~5.7.2",
     "vitest": "^3.0.3"
   }
 }

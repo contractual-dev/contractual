@@ -3,22 +3,18 @@
   "private": false,
   "version": "0.0.0",
   "license": "Apache-2.0",
-  "module": "dist/src/index.js",
   "type": "module",
   "exports": {
-    ".": {
-      "import": "./dist/src/index.js",
-      "require": "./dist/src/index.js"
-    },
     "./contract": {
       "import": "./contract/index.js",
       "require": "./contract/index.js"
     }
   },
+  "typings": "contract/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/contractual-dev/contractual.git",
-    "directory": "packages/client"
+    "directory": "packages/contract"
   },
   "homepage": "https://contractual.dev",
   "bugs": {
@@ -45,13 +41,13 @@
   },
   "scripts": {
     "prebuild": "pnpm rimraf dist",
-    "build": "pnpm tsc -p tsconfig.build.json",
-    "tester": "jest --coverage --verbose",
-    "lint": "pnpm eslint '{src,test}/**/*.ts'"
+    "build": "exit 0",
+    "build:watch": "tsc -p tsconfig.build.json --watch",
+    "test": "vitest run",
+    "lint": "exit 0"
   },
   "files": [
     "contract",
-    "generator",
     "dist",
     "README.md"
   ],

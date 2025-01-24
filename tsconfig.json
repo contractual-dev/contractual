@@ -18,7 +18,7 @@
     "resolveJsonModule": true,
     "types": [
       "node",
-      "jest"
+      "vitest"
     ],
     "allowSyntheticDefaultImports": true
   },
