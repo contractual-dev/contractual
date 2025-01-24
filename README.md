@@ -1,42 +1,58 @@
 # Contractual
-**Contractual is an open-source, developer-first ecosystem for managing API contracts, versioning, and testing.** By unifying the entire API lifecycle under one tool,
-it ensures type safety, consistency, and automation across all projects.
 
-## 🚀 Core Features
+**Contractual** provides a unified way to manage APIs as **contracts** across the development stack, streamlining workflows and ensuring consistency. By centralizing API definitions with a **contract-first approach** using **TypeSpec**, Contractual empowers teams to define, version, and test their APIs with ease.
 
-Managing APIs is hard. Definitions are scattered, breaking changes sneak into production, and shared types get duplicated across services and projects. Contractual solves these challenges with a unified workflow for defining, versioning, and testing APIs:
+## 🌟 Why Contractual?
 
-- **Unified API Workflows**: Define your API once and generate specs, server contracts, and clients.
-- **Client Libraries**: Share ready-to-use, type-safe API clients with your consumers.
-- **Server Contracts**: Enforce endpoint implementation with contracts for popular frameworks.
-- **E2E Testing**: Generate strictly-typed Playwright tests for end-to-end validation.
-- **Version Control**: Automatically detect and manage API changes with snapshots.
+Managing APIs is hard. Definitions are scattered, types get duplicated across services, and breaking changes can sneak into production. Contractual solves these pains by:
 
-## 📋 Getting Started
+- 📜 **Centralizing API Definitions**: Use TypeSpec as the single source of truth to eliminate inconsistencies.
+- 🛠️ **Streamlined Workflow**: Automatically generate type-safe clients, server stubs, and OpenAPI specs.
+- 🔍 **Version Control and Diffing**: Track API changes, detect breaking changes, and manage versions (major, minor, patch) with ease.
+- ✅ **Type Safety Across the Stack**: Ensure alignment between client and server with type-safe contracts and validation.
+- 🤝 **Frontend-Backend Collaboration**: Seamlessly integrate with tools like React Query, Vue, and Next.js to ensure smooth workflows for modern development.
 
-### Initialize a Project
-Set up a new project with boilerplate TypeSpec and configurations:
+## 🚀 Key Features
+
+- **Contract-First API Management**: Define APIs with TypeSpec, a powerful DSL developed by Microsoft, as the single source of truth.
+- **OpenAPI Integration**: Outputs OpenAPI (Swagger) specs that are versioned and tracked with clear diffs for every update.
+- **Type-Safe Client Generation**: Generate clients with **ts-rest** and **Zod** for both compile-time and runtime validation.
+- **Server Stubs**: Automatically generate server contracts for frameworks like **Express**, **Fastify**, and **NestJS**.
+- **Versioning Made Simple**: Automatically bump versions and detect breaking changes with built-in tools.
+- **End-to-End Type Safety**: Maintain consistency from definition to runtime, ensuring alignment between client, server, and API behavior.
+
+## 🛠️ Getting Started
+
+### Install Contractual
 
 ```bash
-npx @contractual/cli init
+npm install -g contractual
 ```
 
-This scaffolds the following structure:
+### Initialize Your Project
+
+```bash
+contractual init
 ```
-my-project/
-├── contractual
-├──── api.tsp     # The TypeSpec DSL for defining your API
-├──── snapshots   # Stores OpenAPI specs for each version
-├── client        # Your client / frontend
-├── server        # Your server implementation 
-└── e2e           # Your API e2e tests
+
+This scaffolds the following project structure:
+
 ```
-> You can decide where to place generated artifacts. Contractual works with any project structure, including monorepos, monoliths, and distributed repos.
+contractual/
+├── api.tsp        # TypeSpec API definition
+├── snapshots/     # OpenAPI spec snapshots
+├── client/        # Generated API clients
+├── server/        # Server contracts
+└── e2e/           # Type-safe API-driven tests
+```
+
+> Contractual works seamlessly with **monorepos**, **monoliths**, and distributed repositories.
 
 ### Define Your API
-Use TypeSpec to define your API. Example:
 
-```typescript
+Start by defining your API in the `api.tsp` file. For example:
+
+```tsp
 @route("/users")
 model User {
   id: string;
@@ -45,92 +61,47 @@ model User {
 ```
 
 ### Generate Contracts
-Generate OpenAPI specs, server stubs, clients, and e2e artifacts with one command:
+
+Run the `generate` command to produce the client, server, and OpenAPI specs:
 
 ```bash
-contractual generate --framework=express
+contractual generate
 ```
 
-This generates:
-- **OpenAPI specs** (e.g., `openapi-v1.0.0.yaml`).
-- **Server contracts** for Express, Fastify, or NestJS.
-- **Client libraries** with Zod schemas and React Query integration.
-- **E2E testing fixtures** for Playwright.
+### Track API Changes
 
-### Snapshot and Validate
-Save the current OpenAPI spec for version tracking:
+Use the `snapshot` command to save the current API state and track changes over time:
 
 ```bash
 contractual snapshot
 ```
 
-Validate API changes for backward compatibility:
+To compare versions and detect breaking changes:
 
 ```bash
-contractual validate
+contractual diff
 ```
 
-## 🖥️ CLI Commands
+## 📘 Roadmap
 
-| Command                | Description                                                                 | Example                              |
-|------------------------|-----------------------------------------------------------------------------|--------------------------------------|
-| `contractual init`     | Initialize a new project with TypeSpec and boilerplate setup.               | `contractual init`                   |
-| `contractual generate` | Generate OpenAPI specs, clients, and server stubs from TypeSpec contracts.  | `contractual generate --framework=express` |
-| `contractual snapshot` | Save the current OpenAPI spec version for tracking and validation.          | `contractual snapshot`               |
-| `contractual validate` | Validate backward compatibility of API changes.                            | `contractual validate`               |
+Want to contribute? Check out the alpha version [Roadmap](https://github.com/contractual-dev/contractual/issues/8) and join the journey! 🚀
 
-## 🎯 Use Cases
+## ❤️ Join the Community
 
-### Microservice Development
-- Define reusable contracts for APIs and ensure consistency across services.
-- Generate server stubs for **Express**, **Fastify**, or **NestJS**.
+Contractual is an open-source project, and we’re looking for contributors from day one. Whether you’re passionate about solving API challenges, improving developer workflows, or sharing ideas, we’d love to have you onboard.
 
-### Frontend-Backend Alignment
-- Generate type-safe API clients with **Zod** validation.
-- Simplify frontend integration with **React Query hooks**.
+📩 **Feedback or Questions?** Reach out via [GitHub Discussions](https://github.com/contractual-dev/contractual/discussions).
 
-### Versioning and Evolution
-- Automate version tracking with breaking change detection.
-- Enforce backward compatibility with diff-based validation.
+---
 
-### End-to-End Testing
-- Use Playwright-ready fixtures generated directly from contracts.
-- Ensure e2e tests reflect the latest API state.
+### Built With
+- **TypeSpec**: A DSL for defining APIs (developed by Microsoft).
+- **ts-rest**: For type-safe client and server contract generation.
+- **Zod**: Runtime validation and compile-time type safety.
 
-## 🌐 Built on Strong Foundations
+---
 
-### **TypeSpec**
-> **"A language for defining cloud service APIs and shapes."**
-> TypeSpec powers Contractual's API definition capabilities, serving as the single source of truth for your contracts. [Learn More](https://microsoft.github.io/typespec/)
-
-### **ts-rest**
-> **"A simple way to define a contract for your API, giving you end-to-end type safety without the hassle of code generation."**
-> Contractual leverages ts-rest for generating type-safe client and server contracts, integrating seamlessly into React Query, Express, Fastify, and NestJS. [Learn More](https://ts-rest.com)
-
-## 🛠 How It Works
-
-### 1. TypeSpec: The DSL for API Definitions
-At the core of Contractual is **TypeSpec**, a language designed for defining API shapes and services. With its extensibility and reusable patterns, TypeSpec serves as the single source of truth for your API.
-
-> **TypeSpec Highlights**:
-> - Describe APIs for REST, gRPC, and other protocols.
-> - Generate OpenAPI specs, client/server code, and more.
-> - Enforce best practices with built-in linting and guardrails.
-
-### 2. ts-rest: Type-Safe Contract Generation
-Contractual integrates **ts-rest** to bring type-safe contracts to your applications. ts-rest simplifies API interactions with:
-- **End-to-End Type Safety**: Consistent types across server and client.
-- **Zod Validation**: Runtime validation of API inputs and outputs.
-- **React Query Integration**: Auto-generated hooks for frontend development.
-
-## 📚 Documentation
-
-Explore the full documentation, including guides, examples, and advanced workflows:
-
-📖 [Read the Documentation](https://contractual.dev/)
-
-## ❤️ Contribute
-Help shape the future of Contractual! Check out [our roadmap](https://github.com/contractual/contractual) and contribute today.
+Let’s build the future of API lifecycle management, together. 🌍
 
 ## 🔒 License
 Licensed under [Apache 2.0](LICENSE).
