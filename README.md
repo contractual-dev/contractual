@@ -1,6 +1,10 @@
-# Contractual
+<h1 align="center">Contractual</h1>
 
 **Contractual** provides a unified way to manage APIs as **contracts** across the development stack, streamlining workflows and ensuring consistency. By centralizing API definitions with a **contract-first approach** using **TypeSpec**, Contractual empowers teams to define, version, and test their APIs with ease.
+
+<div align="center">
+  <img src="https://github.com/contractual-dev/contractual/blob/9405b5979aca9d5c8dee3732ee5c5331db15139a/video.gif" width="80%" />
+</div>
 
 ## 🌟 Why Contractual?
 
