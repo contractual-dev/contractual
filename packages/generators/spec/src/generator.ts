@@ -9,7 +9,7 @@ import ora from 'ora';
 import chalk from 'chalk';
 import { diffSpecs, printOpenApiDiff } from '@contractual/generators.diff';
 
-async function initializePaths() {
+export function initializePaths() {
   const rootPath = path.resolve(process.cwd(), 'contractual');
   const configFilePath = path.resolve(rootPath, 'api-lock.yaml');
   const snapshotsPath = path.resolve(rootPath, 'specs');
@@ -77,7 +77,7 @@ export function getLatestVersion(configPath: string) {
 }
 
 export async function generateSpecification(inquirerDep: typeof inquirer) {
-  const paths = await initializePaths();
+  const paths = initializePaths();
 
   if (!checkFileExists(paths.rootPath, `'contractual' directory not found`)) {
     return;

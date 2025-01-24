@@ -51,11 +51,17 @@
     "@contractual/generators.contract": "workspace:*",
     "@contractual/generators.diff": "workspace:*",
     "@contractual/generators.spec": "workspace:*",
+    "chalk": "^5.4.1",
     "commander": "^12.1.0",
-    "inquirer": "^12.3.2"
+    "inquirer": "^12.3.2",
+    "ora": "^8.1.1"
   },
   "publishConfig": {
     "access": "public",
     "provenance": true
+  },
+  "devDependencies": {
+    "@vitest/coverage-c8": "^0.33.0",
+    "vitest": "^3.0.3"
   }
 }

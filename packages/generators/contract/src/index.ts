@@ -1,1 +1,1 @@
-export * from './generator.js';
+export * from './command.js';
