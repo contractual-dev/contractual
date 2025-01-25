@@ -105,7 +105,7 @@ e2e/                         # Type-safe API-driven tests
 Here’s a quick video showing how this works:
 
 <div align="center">
-  <img src="video.gif" width="75%" />
+  <img src="spec-graduate.gif" />
 </div>
 
 ### Generate Contracts
