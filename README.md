@@ -2,15 +2,7 @@
 
 **Contractual is an open-source, developer-first ecosystem for managing API contracts, versioning, and testing. It is designed to streamline the development process across the entire stack by ensuring type safety and consistency in frontend, client libraries, server contracts, and end-to-end interactions. It is ideal for teams working with microservices, RESTful architectures, or API-driven development.**
 
-<<<<<<< Updated upstream
-<div align="center">
-  <img src="https://github.com/contractual-dev/contractual/blob/9405b5979aca9d5c8dee3732ee5c5331db15139a/video.gif" width="80%" />
-</div>
-
-## 🌟 Why Contractual?
-=======
 ## Why Contractual?
->>>>>>> Stashed changes
 
 **Building and maintaining APIs involves complexities across the development stack and lifecycle.**
 
