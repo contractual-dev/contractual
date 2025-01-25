@@ -2,7 +2,7 @@
   "name": "@contractual/generators.spec",
   "private": false,
   "version": "0.0.0",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "type": "module",
   "module": "dist/index.js",
   "main": "dist/index.js",
