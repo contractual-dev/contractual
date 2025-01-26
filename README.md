@@ -1,6 +1,9 @@
 <h1 align="center">Contractual</h1>
 
-**Contractual is an open-source, developer-first ecosystem for managing API contracts, versioning, and testing. It is designed to streamline the development process across the entire stack by ensuring type safety and consistency in frontend, client libraries, server contracts, and end-to-end interactions. It is ideal for teams working with microservices, RESTful architectures, or API-driven development.**
+**Contractual is an open-source, developer-first ecosystem for managing API contracts, versioning, and testing.**
+It is designed to streamline the development process across the entire stack by ensuring type safety and consistency in
+frontend, client libraries, server contracts, and end-to-end interactions. It is ideal for teams working with
+microservices, RESTful architectures, or API-driven development.
 
 ## Why Contractual?
 
@@ -117,14 +120,15 @@ contractual contract generate
 ```
 
 This command creates:
-- **Type-safe client libraries** using **ts-rest**, integrated with **Zod** for runtime validation.
+- **Type-safe client libraries** [using **ts-rest**](https://ts-rest.com), integrated with **Zod** for runtime 
+  validation.
 - **Server contracts** for frameworks like **Express**, **Fastify**, and **NestJS**.
 - **Updated OpenAPI specs**.
 
 Here’s a short video showing contract generation in action:
 
 <div align="center">
-  <img src="video.gif" />
+  <img src="contract-generate.gif" />
 </div>
 ```
 
