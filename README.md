@@ -1,28 +1,75 @@
 <h1 align="center">Contractual</h1>
 
-**Contractual is an open-source, developer-first ecosystem for managing API contracts, versioning, and testing.**
-It is designed to streamline the development process across the entire stack by ensuring type safety and consistency in
-frontend, client libraries, server contracts, and end-to-end interactions. It is ideal for teams working with
-microservices, RESTful architectures, or API-driven development.
+**Contractual is an open-source tool designed to unify the entire lifecycle of API definitions and data contracts across diverse systems, ensuring clarity, consistency, and control.** By adopting a **spec-first approach** with TypeSpec as the single source of truth, Contractual ensures that your API definitions—whether OpenAPI or JSON Schemas—are consistent, versioned, and type-safe across your stack.
 
-## Why Contractual?
+Contractual starts with **OpenAPI** and **JSON Schemas** as the foundation, aiming to simplify workflows for backend teams, frontend developers, and data engineers.
 
-**Building and maintaining APIs involves complexities across the development stack and lifecycle.**
+## 🚨 Why Contractual?
 
-Definitions often become scattered across teams, creating inconsistencies and duplication.
-Types frequently diverge between client and server, leading to runtime errors. Breaking changes sneak into production
-unnoticed, disrupting downstream consumers. Versioning APIs and tracking changes further add to these challenges.
+Managing APIs, schemas, and data contracts in modern systems is complex and often fragmented, leading to inefficiencies and misaligned workflows across teams. Beyond traditional REST APIs, teams face challenges in managing structured data for validation, communication, and cross-service integrations.
 
-Contractual addresses these issues with a comprehensive, contract-first approach:
+- **Scattered Definitions**: Schemas and contracts are often duplicated across backend, frontend, and data workflows, creating inconsistencies and maintenance headaches.
 
-- 📜 **Contract-First API Management:** [Define APIs with TypeSpec](https://typespec.io/), a DSL developed by Microsoft, as the single source of truth.
-- 🔄 **OpenAPI Integration:** Outputs OpenAPI (Swagger) specs that are versioned and tracked with clear diffs.
-- 🛠️ **Type-Safe Client Generation:** Generate lightweight clients using [ts-rest](https://ts-rest.com/). Contracts are validated at runtime with Zod, ensuring type safety without manual validation.
-- 🖥️ **Server Stubs:** Generate server contracts for frameworks like Express, Fastify, and NestJS.
-- 🔍 **Versioning and Change Detection:** Automatically bump versions and detect breaking changes with built-in CLI.
-- ✅ **End-to-End Type Safety:** Maintain consistency across the development lifecycle, ensuring every component aligns with the API contract.
+- **Breaking Changes**: Without proper tracking, changes to contracts or schemas can unintentionally break downstream systems or clients, causing regressions.
 
-## How It Works?
+- **Fragmented Tooling**: Teams rely on disconnected tools for generating clients, validating schemas, and managing versioning, which disrupts developer workflows.
+
+- **Collaboration Gaps**: Misaligned definitions between teams—whether backend, frontend, or data engineers—lead to mismatches, bugs, and wasted time.
+
+**Contractual solves these pains** by adopting a **spec-first approach** with **TypeSpec** as the single source of truth, streamlining how teams manage APIs and structured data workflows.
+
+## 🌟 Spec-First Approach and Use Cases
+
+A **spec-first approach** puts the definition of APIs and schemas at the center of the workflow, treating the
+specification as the **single source of truth**. This ensures alignment across frontend, backend, and data teams while
+streamlining development workflows.
+
+### How Spec-First Works
+
+1. **Define Once**:
+   - Use **TypeSpec**, a declarative DSL, to define your API or schema in a centralized file.
+   - This becomes the authoritative source for your API’s structure, endpoints, and data contracts.
+
+2. **Generate Everything**:
+   - From the spec, Contractual generates:
+     - **OpenAPI specifications** for REST documentation and tooling.
+     - **Type-safe clients** with **ts-rest** and **Zod** for runtime validation.
+     - **Server contracts** for Express, Fastify, and NestJS.
+     - **JSON Schemas** for validation or data workflows.
+
+3. **Version and Diff**:
+   - Track changes to your APIs or schemas.
+   - Use versioning and diffing tools to detect and prevent breaking changes.
+
+4. **Enforce Consistency**:
+   - Use the spec to drive all API-related workflows, ensuring backend, frontend, and data teams are in sync.
+
+### Use Cases
+
+1. **API-Driven Applications**:
+   - Create consistent and versioned REST APIs with type-safe clients and server contracts.
+   - Ensure changes to your APIs don’t break downstream systems or clients.
+
+2. **Data Validation Workflows**:
+   - Leverage **JSON Schemas** for validating complex data structures across services and teams.
+   - Seamlessly integrate validation into pipelines for ETL processes or data ingestion workflows.
+
+3. **Microservices and Distributed Systems**:
+   - Maintain uniform contracts across services, reducing integration bugs.
+   - Use diffing tools to communicate API changes across teams.
+
+4. **Frontend-Backend Synchronization**:
+   - Use generated type-safe clients to keep your frontend perfectly aligned with backend APIs.
+   - Integrate tools like React Query or Vue for a seamless developer experience.
+
+By centralizing and automating these workflows, Contractual ensures teams stay aligned, efficient, and confident in
+their API and data design processes.
+
+A **spec-first approach** puts the definition of APIs and schemas at the center of the workflow, treating the
+specification as the **source of truth**. This ensures alignment across frontend, backend, and data teams while
+streamlining development workflows.
+
+## 🚀 In Practice
 
 ### Install Contractual
 
@@ -78,7 +125,8 @@ model Pet {
 op addPet(@body body: Pet): Pet;
 ```
 
-> You can experiment and validate your API definitions [using the **TypeSpec playground**.](https://typespec.io/playground/)
+> You can experiment and validate your API definitions [using the **TypeSpec playground
+**.](https://typespec.io/playground/)
 
 ### Manage API Changes
 
@@ -90,7 +138,7 @@ Run the `spec graduate` command to save the current state of your OpenAPI spec:
 contractual spec graduate
 ```
 
-This will generate a new OpenAPI (3.1.0) YAML file with versioning, enabling to track API changes over time. The 
+This will generate a new OpenAPI (3.1.0) YAML file with versioning, enabling to track API changes over time. The
 updated structure will look like this:
 
 ```
@@ -120,7 +168,8 @@ contractual contract generate
 ```
 
 This command creates:
-- **Type-safe client libraries** [using **ts-rest**](https://ts-rest.com), integrated with **Zod** for runtime 
+
+- **Type-safe client libraries** [using **ts-rest**](https://ts-rest.com), integrated with **Zod** for runtime
   validation.
 - **Server contracts** for frameworks like **Express**, **Fastify**, and **NestJS**.
 - **Updated OpenAPI specs**.
@@ -134,15 +183,19 @@ Here’s a short video showing contract generation in action:
 
 ## 📘 Roadmap
 
-Want to contribute? Check out the alpha version [Roadmap](https://github.com/contractual-dev/contractual/issues/8) and join the journey! 🚀
+Want to contribute? Check out the alpha version [Roadmap](https://github.com/contractual-dev/contractual/issues/8) and
+join the journey! 🚀
 
 ## ❤️ Join the Community
 
-Contractual is an open-source project, and we’re looking for contributors from day one. Whether you’re passionate about solving API challenges or improving workflows, we’d love to have you onboard.
+Contractual is open-source, and we’re looking for contributors to help shape its future! Whether you're passionate about
+APIs, JSON Schemas, or spec-first workflows, we’d love your input.
 
-📩 **Feedback or Questions?** Reach out via [GitHub Discussions](https://github.com/contractual-dev/contractual/discussions).
+[GitHub Repository](https://github.com/contractual-dev/contractual)
 
-Let’s shape the future of API lifecycle management together.
+📩 **Feedback or Questions?** Reach out
+via [GitHub Discussions](https://github.com/contractual-dev/contractual/discussions).
 
 ## 🔒 License
+
 Licensed under [MIT](LICENSE).
