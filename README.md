@@ -1,20 +1,30 @@
 <h1 align="center">Contractual</h1>
 
-**Contractual is an open-source tool designed to unify the entire lifecycle of API definitions and data contracts across diverse systems, ensuring clarity, consistency, and control.** By adopting a **spec-first approach** with TypeSpec as the single source of truth, Contractual ensures that your API definitions—whether OpenAPI or JSON Schemas—are consistent, versioned, and type-safe across your stack.
+**Contractual is an open-source tool created to unify the entire lifecycle of API definitions, schemas, and data
+contracts across diverse systems, ensuring clarity, consistency, and control.** By adopting a **spec-first approach**
+with TypeSpec as the single source of truth, Contractual ensures that definitions and schemas are consistent, versioned,
+and type-safe across the stack.
 
-Contractual starts with **OpenAPI** and **JSON Schemas** as the foundation, aiming to simplify workflows for backend teams, frontend developers, and data engineers.
+Contractual starts with **OpenAPI** and **JSON Schemas** as the foundation, aiming to simplify workflows for backend
+teams, frontend developers, and data engineers.
 
 ## 🚨 Why Contractual?
 
-Managing APIs, schemas, and data contracts in modern systems is complex and often fragmented, leading to inefficiencies and misaligned workflows across teams. Beyond traditional REST APIs, teams face challenges in managing structured data for validation, communication, and cross-service integrations.
+Managing APIs, schemas, and data contracts in modern systems is complex and often fragmented, leading to inefficiencies
+and misaligned workflows across teams. Beyond traditional REST APIs, teams face challenges in managing structured data
+for validation, communication, and cross-service integrations.
 
-- **Scattered Definitions**: Schemas and contracts are often duplicated across backend, frontend, and data workflows, creating inconsistencies and maintenance headaches.
+- **Scattered Definitions**: Schemas and contracts are often duplicated across backend, frontend, and data workflows,
+  creating inconsistencies and maintenance headaches.
 
-- **Breaking Changes**: Without proper tracking, changes to contracts or schemas can unintentionally break downstream systems or clients, causing regressions.
+- **Breaking Changes**: Without proper tracking, changes to contracts or schemas can unintentionally break downstream
+  systems or clients, causing regressions.
 
-- **Fragmented Tooling**: Teams rely on disconnected tools for generating clients, validating schemas, and managing versioning, which disrupts developer workflows.
+- **Fragmented Tooling**: Teams rely on disconnected tools for generating clients, validating schemas, and managing
+  versioning, which disrupts developer workflows.
 
-- **Collaboration Gaps**: Misaligned definitions between teams—whether backend, frontend, or data engineers—lead to mismatches, bugs, and wasted time.
+- **Collaboration Gaps**: Misaligned definitions between teams—whether backend, frontend, or data engineers—lead to
+  mismatches, bugs, and wasted time.
 
 **Contractual solves these pains** by adopting a **spec-first approach** with **TypeSpec** as the single source of truth, streamlining how teams manage APIs and structured data workflows.
 
@@ -180,6 +190,27 @@ Here’s a short video showing contract generation in action:
   <img src="contract-generate.gif" />
 </div>
 ```
+
+## 📃 Goals
+
+* Provide a centralized tool for managing OpenAPI and JSON Schema lifecycles.
+
+* Simplify API workflows with type-safe client/server generation.
+
+* Offer robust versioning and diffing tools to prevent breaking changes.
+
+* Lay the foundation for multi-language support, starting with Python.
+
+* Enable language-agnostic workflows, allowing developers to generate code and contracts across multiple languages (
+  e.g., TypeScript to Python).
+
+* Introduce "contractual pack" to prepare contracts and generated clients/servers into distributable packages for
+  publication.
+
+## 🚫 Non-Goals
+
+* Contractual does not currently support gRPC, ProtoBufs, or GraphQL. While these protocols may be considered in the
+  future, the initial focus is on REST APIs and JSON Schemas.
 
 ## 📘 Roadmap
 
