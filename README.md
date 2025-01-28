@@ -54,31 +54,6 @@ streamlining development workflows.
 4. **Enforce Consistency**:
    - Use the spec to drive all API-related workflows, ensuring backend, frontend, and data teams are in sync.
 
-### Use Cases
-
-1. **API-Driven Applications**:
-   - Create consistent and versioned REST APIs with type-safe clients and server contracts.
-   - Ensure changes to your APIs don’t break downstream systems or clients.
-
-2. **Data Validation Workflows**:
-   - Leverage **JSON Schemas** for validating complex data structures across services and teams.
-   - Seamlessly integrate validation into pipelines for ETL processes or data ingestion workflows.
-
-3. **Microservices and Distributed Systems**:
-   - Maintain uniform contracts across services, reducing integration bugs.
-   - Use diffing tools to communicate API changes across teams.
-
-4. **Frontend-Backend Synchronization**:
-   - Use generated type-safe clients to keep your frontend perfectly aligned with backend APIs.
-   - Integrate tools like React Query or Vue for a seamless developer experience.
-
-By centralizing and automating these workflows, Contractual ensures teams stay aligned, efficient, and confident in
-their API and data design processes.
-
-A **spec-first approach** puts the definition of APIs and schemas at the center of the workflow, treating the
-specification as the **source of truth**. This ensures alignment across frontend, backend, and data teams while
-streamlining development workflows.
-
 ## 🚀 In Practice
 
 ### Install Contractual
@@ -190,6 +165,31 @@ Here’s a short video showing contract generation in action:
   <img src="contract-generate.gif" />
 </div>
 ```
+
+### Use Cases
+
+1. **API-Driven Applications**:
+   - Create consistent and versioned REST APIs with type-safe clients and server contracts.
+   - Ensure changes to your APIs don’t break downstream systems or clients.
+
+2. **Data Validation Workflows**:
+   - Leverage **JSON Schemas** for validating complex data structures across services and teams.
+   - Seamlessly integrate validation into pipelines for ETL processes or data ingestion workflows.
+
+3. **Microservices and Distributed Systems**:
+   - Maintain uniform contracts across services, reducing integration bugs.
+   - Use diffing tools to communicate API changes across teams.
+
+4. **Frontend-Backend Synchronization**:
+   - Use generated type-safe clients to keep your frontend perfectly aligned with backend APIs.
+   - Integrate tools like React Query or Vue for a seamless developer experience.
+
+By centralizing and automating these workflows, Contractual ensures teams stay aligned, efficient, and confident in
+their API and data design processes.
+
+A **spec-first approach** puts the definition of APIs and schemas at the center of the workflow, treating the
+specification as the **source of truth**. This ensures alignment across frontend, backend, and data teams while
+streamlining development workflows.
 
 ## 📃 Goals
 
