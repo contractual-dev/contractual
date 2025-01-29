@@ -1,7 +1,7 @@
 <h1 align="center">Contractual</h1>
 
 **Contractual is an open-source project intended to unify the entire lifecycle of API definitions, schemas, and data
-contracts across diverse systems to ensure clarity, consistency, and control. Contractual adopts a **spec-first
+contracts across diverse systems to ensure clarity, consistency, and control.** Contractual adopts a **spec-first
 approach**, with **TypeSpec** as the single source of truth to make sure that definitions and schemas stay consistent,
 versioned, and are type-safe across the entire stack.
 
