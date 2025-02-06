@@ -28,17 +28,23 @@ leading to brittle integrations, manual fixes, and unexpected failures.
 
 **Some of the biggest pain points teams face include:**
 
-- **Schema Drift & Misalignment:** APIs and data contracts become inconsistent across teams, leading to mismatches, 
-broken integrations, and regressions.
+- **Schema Drift & Misalignment:** APIs and data contracts become inconsistent across teams, leading to mismatches, broken integrations, and regressions.
 
-- **Code Sharing**: Teams struggle to share and reuse schemas across services, leading to duplicated efforts and
-  inconsistent data structures.
+- **Untracked Changes & Breaking Updates:** Without tracking modifications, updates can unexpectedly break consumers, causing downtime and costly debugging.
 
-- **Untracked & Breaking Changes:** Without tracking modifications, updates can unexpectedly break consumers, causing
-downtime and costly debugging.
+- **Scattered Schemas & Code Maintenance:** Outdated documentation and manually managed type definitions create unreliable integrations and make maintaining entity models error-prone.
 
-- **Scattered Schemas & Code Maintenance:** Outdated documentation and manually managed type definitions create 
-unreliable integrations and make maintaining entity models error-prone.
+
+## 🔑 The Contract-First Approach
+Most teams take a **code-first** approach to API development, where schemas are generated after implementation. This often results in **misalignment between services, outdated documentation, and accidental breaking changes.** Backend teams define APIs, frontend teams consume them, and data engineers rely on structured data formats—all of which can drift over time when schemas are an afterthought.
+
+A **contract-first** approach flips this process: schemas are designed before any implementation begins, ensuring that API structures, event definitions, and data formats remain stable and predictable. This approach allows teams to:
+
+- Define schemas upfront and enforce them as the single source of truth.
+
+- Track changes and prevent breaking updates before they impact consumers.
+
+- Generate type-safe clients and server contracts in multiple languages, reducing friction between teams.
 
 ## 🚀 In Practice
 
@@ -168,66 +174,6 @@ Here’s a short video showing contract generation in action:
 - **Frontend-Backend Synchronization**:
   - Use generated type-safe clients to keep your frontend perfectly aligned with backend APIs.
   - Integrate tools like React Query or Vue for a seamless developer experience.
-
-## 🔑 The Contract-First Approach
-
-Most teams take a code-first approach to API development, where schemas are generated after implementation. This leads
-to misalignment between services, outdated documentation, and accidental breaking changes. Backend teams define APIs,
-frontend teams consume them, and data engineers rely on structured data formats—all of which can drift over time when
-schemas are an afterthought.
-
-A contract-first approach flips this process: schemas are designed before any implementation begins, ensuring that API
-structures, event definitions, and data formats remain stable and predictable. This approach allows teams to:
-
-- Define schemas upfront and enforce them as the single source of truth.
-
-- Track changes and prevent breaking updates before they impact consumers.
-
-- Generate type-safe clients and server contracts in multiple languages, reducing friction between teams.
-
-- Distribute schemas efficiently across backend services, frontend applications, and data pipelines.
-
----
-
-1. **Define Once**:
-  - Use **TypeSpec**, a declarative DSL, to define your API or schema in a centralized file.
-  - This becomes the authoritative source for your API’s structure, endpoints, and data contracts.
-
-2. **Generate Everything**:
-  - From the spec, Contractual generates:
-    - **OpenAPI specifications** for REST documentation and tooling.
-    - **Type-safe clients** with **ts-rest** and **Zod** for runtime validation.
-    - **Server contracts** for Express, Fastify, and NestJS.
-    - **JSON Schemas** for validation or data workflows.
-
-3. **Version and Diff**:
-  - Track changes to your APIs or schemas.
-  - Use versioning and diffing tools to detect and prevent breaking changes.
-
-4. **Enforce Consistency**:
-  - Use the spec to drive all API-related workflows, ensuring backend, frontend, and data teams are in sync.
-
-
-## 📃 Goals
-
-* Provide a centralized tool for managing OpenAPI and JSON Schema lifecycles.
-
-* Simplify API workflows with type-safe client/server generation.
-
-* Offer robust versioning and diffing tools to prevent breaking changes.
-
-* Lay the foundation for multi-language support, starting with Python.
-
-* Enable language-agnostic workflows, allowing developers to generate code and contracts across multiple languages (
-  e.g., TypeScript to Python).
-
-* Introduce "contractual pack" to prepare contracts and generated clients/servers into distributable packages for
-  publication.
-
-## 🚫 Non-Goals
-
-* Contractual does not currently support gRPC, ProtoBufs, or GraphQL. While these protocols may be considered in the
-  future, the initial focus is on REST APIs and JSON Schemas.
 
 ## 📘 Roadmap
 
