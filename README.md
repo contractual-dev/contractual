@@ -40,26 +40,6 @@ downtime and costly debugging.
 - **Scattered Schemas & Code Maintenance:** Outdated documentation and manually managed type definitions create 
 unreliable integrations and make maintaining entity models error-prone.
 
-#### How Spec-First Works
-
-1. **Define Once**:
-  - Use **TypeSpec**, a declarative DSL, to define your API or schema in a centralized file.
-  - This becomes the authoritative source for your API’s structure, endpoints, and data contracts.
-
-2. **Generate Everything**:
-  - From the spec, Contractual generates:
-    - **OpenAPI specifications** for REST documentation and tooling.
-    - **Type-safe clients** with **ts-rest** and **Zod** for runtime validation.
-    - **Server contracts** for Express, Fastify, and NestJS.
-    - **JSON Schemas** for validation or data workflows.
-
-3. **Version and Diff**:
-  - Track changes to your APIs or schemas.
-  - Use versioning and diffing tools to detect and prevent breaking changes.
-
-4. **Enforce Consistency**:
-  - Use the spec to drive all API-related workflows, ensuring backend, frontend, and data teams are in sync.
-
 ## 🚀 In Practice
 
 ### Install Contractual
@@ -206,6 +186,27 @@ structures, event definitions, and data formats remain stable and predictable. T
 - Generate type-safe clients and server contracts in multiple languages, reducing friction between teams.
 
 - Distribute schemas efficiently across backend services, frontend applications, and data pipelines.
+
+---
+
+1. **Define Once**:
+  - Use **TypeSpec**, a declarative DSL, to define your API or schema in a centralized file.
+  - This becomes the authoritative source for your API’s structure, endpoints, and data contracts.
+
+2. **Generate Everything**:
+  - From the spec, Contractual generates:
+    - **OpenAPI specifications** for REST documentation and tooling.
+    - **Type-safe clients** with **ts-rest** and **Zod** for runtime validation.
+    - **Server contracts** for Express, Fastify, and NestJS.
+    - **JSON Schemas** for validation or data workflows.
+
+3. **Version and Diff**:
+  - Track changes to your APIs or schemas.
+  - Use versioning and diffing tools to detect and prevent breaking changes.
+
+4. **Enforce Consistency**:
+  - Use the spec to drive all API-related workflows, ensuring backend, frontend, and data teams are in sync.
+
 
 ## 📃 Goals
 
