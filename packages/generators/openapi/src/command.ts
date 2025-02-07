@@ -1,12 +1,17 @@
 import type ora from 'ora';
-import { ContractCommandHandler, ContractFileGenerator, FileSystemHandler, SpinnerFactory } from './generator.js';
+import {
+  ContractCommandHandler,
+  ContractFileGenerator,
+  FileSystemHandler,
+  SpinnerFactory,
+} from './generator.js';
 import * as fs from 'node:fs';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import { generateZodClientFromOpenAPI } from 'openapi-zod-client';
 import { createProgram } from 'typescript';
 import type chalk from 'chalk';
 
-export const createContractCommandHandler = (
+export const createCommandHandler = (
   spinner: typeof ora,
   chalker: typeof chalk,
   logger: Console,

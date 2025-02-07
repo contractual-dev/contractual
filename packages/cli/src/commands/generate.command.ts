@@ -1,5 +1,4 @@
 import inquirer from 'inquirer';
-import { createContractCommandHandler } from '@contractual/generators.contract';
 import ora from 'ora';
 import chalk from 'chalk';
 import path from 'node:path';
@@ -8,10 +7,11 @@ import {
   generateSpecification,
   getLatestVersion,
   initializePaths,
-} from '@contractual/generators.spec';
+  createCommandHandler,
+} from '@contractual/openapi';
 
 export function generateContract() {
-  return createContractCommandHandler(
+  return createCommandHandler(
     ora,
     chalk,
     console,

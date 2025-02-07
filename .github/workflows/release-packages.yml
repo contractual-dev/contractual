@@ -58,27 +58,22 @@ jobs:
       - name: Prerelease Version (Exact Version)
         if: ${{ github.event.inputs.release_type == 'prerelease' && github.event.inputs.exact_version }}
         run: |
-         pnpm version ${{ github.event.inputs.exact_version }} \
-          --workspaces-update \
-          --no-git-tag-version \
-          --no-commit-hooks
+          npx lerna version ${{ github.event.inputs.exact_version }} --yes --no-changelog
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prerelease Version
         if: ${{ github.event.inputs.release_type == 'prerelease' && !github.event.inputs.exact_version }}
         run: |
-         pnpm version prerelease \
+          npx lerna version prerelease --yes \
           --preid ${{ github.event.inputs.preid }} \
-          --workspaces-update \
-          --no-git-tag-version \
-          --no-commit-hooks
+          --no-changelog
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Graduate Version
         if: ${{ github.event.inputs.release_type == 'graduate' }}
-        run: pnpm version --workspaces-update from-git
+        run: npx lerna version --conventional-graduate --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

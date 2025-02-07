@@ -2,7 +2,6 @@ import type SwaggerParser from '@apidevtools/swagger-parser';
 import * as path from 'node:path';
 import type { generateZodClientFromOpenAPI } from 'openapi-zod-client';
 import type { OpenAPIObject } from 'openapi3-ts/oas30';
-import * as process from 'node:process';
 import type { createProgram } from 'typescript';
 import { ModuleKind, ModuleResolutionKind, ScriptTarget } from 'typescript';
 import { createHandlebars } from './handlebars-helpers.js';

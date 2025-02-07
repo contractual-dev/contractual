@@ -1,5 +1,5 @@
 {
-  "name": "@contractual/generators.spec",
+  "name": "@contractual/compilers.openapi",
   "private": false,
   "version": "0.0.0",
   "license": "MIT",
@@ -9,7 +9,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/contractual-dev/contractual.git",
-    "directory": "packages/generators/spec"
+    "directory": "packages/compilers/openapi"
   },
   "exports": {
     ".": {
@@ -25,6 +25,10 @@
     {
       "name": "Omer Morad",
       "email": "omer.moradd@gmail.com"
+    },
+    {
+      "name": "Doron Tsur",
+      "email": "qballer@gmail.com"
     }
   ],
   "funding": [
@@ -41,7 +45,7 @@
     "node": ">=18.12.0"
   },
   "scripts": {
-    "prebuild": "pnpm rimraf dist",
+    "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json --watch",
     "tester": "jest --coverage --verbose",
@@ -56,7 +60,7 @@
     "provenance": true
   },
   "dependencies": {
-    "@contractual/generators.diff": "workspace:*",
+    "@contractual/differs.openapi": "^0.0.0",
     "@typespec/compiler": "^0.63.0",
     "@typespec/http": "^0.63.0",
     "@typespec/openapi": "^0.63.0",
@@ -69,10 +73,12 @@
   "devDependencies": {
     "@types/semver": "^7.5.8",
     "chalk": "^5.4.1",
+    "eslint": "^8.57.1",
     "inquirer": "^12.3.2",
     "openapi-types": "^12.1.3",
     "ora": "^8.1.1",
-    "typescript": "~5.7.2"
+    "typescript": "~5.7.2",
+    "vitest": "^3.0.5"
   },
   "peerDependencies": {
     "typescript": ">=5.x"

@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { diffSpecs } from './generator';
+import { diffSpecs } from './generator.js';
 
 const dummyOpenApiSpecBreaking = `
 openapi: 3.0.0
