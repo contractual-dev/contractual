@@ -34,18 +34,6 @@ leading to brittle integrations, manual fixes, and unexpected failures.
 
 - **Scattered Schemas & Code Maintenance:** Outdated documentation and manually managed type definitions create unreliable integrations and make maintaining entity models error-prone.
 
-
-## 🔑 The Contract-First Approach
-Most teams take a **code-first** approach to API development, where schemas are generated after implementation. This often results in **misalignment between services, outdated documentation, and accidental breaking changes.** Backend teams define APIs, frontend teams consume them, and data engineers rely on structured data formats—all of which can drift over time when schemas are an afterthought.
-
-A **contract-first** approach flips this process: schemas are designed before any implementation begins, ensuring that API structures, event definitions, and data formats remain stable and predictable. This approach allows teams to:
-
-- Define schemas upfront and enforce them as the single source of truth.
-
-- Track changes and prevent breaking updates before they impact consumers.
-
-- Generate type-safe clients and server contracts in multiple languages, reducing friction between teams.
-
 ## 🚀 In Practice
 
 ### Install Contractual
@@ -157,23 +145,16 @@ Here’s a short video showing contract generation in action:
 </div>
 ```
 
-### Use Cases
+## 🔑 The Contract-First Approach
+Most teams take a **code-first** approach to API development, where schemas are generated after implementation. This often results in **misalignment between services, outdated documentation, and accidental breaking changes.** Backend teams define APIs, frontend teams consume them, and data engineers rely on structured data formats—all of which can drift over time when schemas are an afterthought.
 
-- **API-Driven Applications**:
-  - Create consistent and versioned REST APIs with type-safe clients and server contracts.
-  - Ensure changes to your APIs don’t break downstream systems or clients.
+A **contract-first** approach flips this process: schemas are designed before any implementation begins, ensuring that API structures, event definitions, and data formats remain stable and predictable. This approach allows teams to:
 
-- **Data Validation Workflows**:
-  - Leverage **JSON Schemas** for validating complex data structures across services and teams.
-  - Seamlessly integrate validation into pipelines for ETL processes or data ingestion workflows.
+- Define schemas upfront and enforce them as the single source of truth.
 
-- **Microservices and Distributed Systems**:
-  - Maintain uniform contracts across services, reducing integration bugs.
-  - Use diffing tools to communicate API changes across teams.
+- Track changes and prevent breaking updates before they impact consumers.
 
-- **Frontend-Backend Synchronization**:
-  - Use generated type-safe clients to keep your frontend perfectly aligned with backend APIs.
-  - Integrate tools like React Query or Vue for a seamless developer experience.
+- Generate type-safe clients and server contracts in multiple languages, reducing friction between teams.
 
 ## 📘 Roadmap
 
