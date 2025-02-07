@@ -19,21 +19,6 @@ Common use cases include: \
 > Initially built for the **Node.js and TypeScript ecosystem**, Contractual is planned to support additional
 > languages.
 
-## 🔍 Why Contractual?
-
-Maintaining the consistency of schemas across various services presents significant challenges. As systems evolve,
-type-definitions and schemas drift, unnoticed breaking changes occur, and different teams find it challenging to
-synchronize. APIs, event schemas, and structured data formats often become disconnected from their original intent,
-leading to brittle integrations, manual fixes, and unexpected failures.
-
-**Some of the biggest pain points teams face include:**
-
-- **Schema Drift & Misalignment:** APIs and data contracts become inconsistent across teams, leading to mismatches, broken integrations, and regressions.
-
-- **Untracked Changes & Breaking Updates:** Without tracking modifications, updates can unexpectedly break consumers, causing downtime and costly debugging.
-
-- **Scattered Schemas & Code Maintenance:** Outdated documentation and manually managed type definitions create unreliable integrations and make maintaining entity models error-prone.
-
 ## 🚀 In Practice
 
 ### Install Contractual
@@ -144,6 +129,21 @@ Here’s a short video showing contract generation in action:
   <img src="contract-generate.gif" />
 </div>
 ```
+
+## 🔍 Why Contractual?
+
+Maintaining the consistency of schemas across various services presents significant challenges. As systems evolve,
+type-definitions and schemas drift, unnoticed breaking changes occur, and different teams find it challenging to
+synchronize. APIs, event schemas, and structured data formats often become disconnected from their original intent,
+leading to brittle integrations, manual fixes, and unexpected failures.
+
+**Some of the biggest pain points teams face include:**
+
+- **Schema Drift & Misalignment:** APIs and data contracts become inconsistent across teams, leading to mismatches, broken integrations, and regressions.
+
+- **Untracked Changes & Breaking Updates:** Without tracking modifications, updates can unexpectedly break consumers, causing downtime and costly debugging.
+
+- **Scattered Schemas & Code Maintenance:** Outdated documentation and manually managed type definitions create unreliable integrations and make maintaining entity models error-prone.
 
 ## 🔑 The Contract-First Approach
 Most teams take a **code-first** approach to API development, where schemas are generated after implementation. This often results in **misalignment between services, outdated documentation, and accidental breaking changes.** Backend teams define APIs, frontend teams consume them, and data engineers rely on structured data formats—all of which can drift over time when schemas are an afterthought.
