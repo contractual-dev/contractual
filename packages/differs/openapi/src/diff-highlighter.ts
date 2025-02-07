@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { table } from 'table';
 import type OpenApiDiff from 'openapi-diff';
 import { type DiffOutcome } from 'openapi-diff';
-import type { TableUserConfig } from 'table/dist/src/types/api.js';
+import type { TableUserConfig } from 'table';
 
 async function printOpenApiDiff(diffOutcome: DiffOutcome) {
   try {

@@ -1,5 +1,0 @@
-packages:
-  - "packages/*"
-  - "packages/generators/*"
-  - "packages/providers/*"
-  - "packages/types/*"

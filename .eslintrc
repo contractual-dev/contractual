@@ -12,14 +12,11 @@
     },
     "import/resolver": {
       "node": {
-        "paths": [
-          "packages/"
-        ],
-        "extensions": [
-          ".ts"
-        ]
+        "paths": ["packages/"],
+        "extensions": [".ts"]
       },
       "typescript": {
+        "project": ["packages/**/*/tsconfig.json"],
         "alwaysTryTypes": true
       }
     }
@@ -63,7 +60,7 @@
         "devDependencies": true,
         "optionalDependencies": false,
         "peerDependencies": false,
-        "packageDir": "./"
+        "packageDir": ["./", "packages/*"]
       }
     ],
     "@typescript-eslint/consistent-type-imports": [

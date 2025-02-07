@@ -1,0 +1,35 @@
+{
+  "version": "independent",
+  "command": {
+    "publish": {
+      "registry": "https://registry.npmjs.org/",
+      "allowBranch": [
+        "master",
+        "next"
+      ],
+      "message": "chore(*): release packages [skip ci]",
+      "conventionalCommits": true
+    },
+    "version": {
+      "allowBranch": [
+        "master",
+        "next"
+      ],
+      "message": "chore(*): version packages [skip ci]",
+      "conventionalCommits": true
+    }
+  },
+  "workspaces": [
+    "packages/*",
+    "packages/generators/*",
+    "packages/compilers/*",
+    "packages/differs/*"
+  ],
+  "npmClient": "npm",
+  "packages": [
+    "packages/*",
+    "packages/generators/*",
+    "packages/compilers/*",
+    "packages/differs/*"
+  ]
+}

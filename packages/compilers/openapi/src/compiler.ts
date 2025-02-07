@@ -1,4 +1,4 @@
-import { compile, logDiagnostics, NodeHost } from '@typespec/compiler';
+import { compile as typespecCompiler, logDiagnostics, NodeHost } from '@typespec/compiler';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as process from 'node:process';
@@ -7,7 +7,7 @@ import { inc } from 'semver';
 import type inquirer from 'inquirer';
 import ora from 'ora';
 import chalk from 'chalk';
-import { diffSpecs, printOpenApiDiff } from '@contractual/generators.diff';
+import { diffSpecs, printOpenApiDiff } from '@contractual/differs.openapi';
 
 export function initializePaths() {
   const rootPath = path.resolve(process.cwd(), 'contractual');
@@ -29,8 +29,8 @@ function checkFileExists(filePath: string, errorMessage: string): boolean {
   return true;
 }
 
-async function compileSpecification(specPath: string, outputPath: string) {
-  const program = await compile(NodeHost, specPath, {
+async function compile(specPath: string, outputPath: string) {
+  const program = await typespecCompiler(NodeHost, specPath, {
     emit: ['@typespec/openapi3'],
     additionalImports: ['@typespec/openapi', '@typespec/openapi3', '@typespec/http'],
     outputDir: outputPath,
@@ -97,7 +97,7 @@ export async function generateSpecification(inquirerDep: typeof inquirer) {
 
   const spinner = ora('Compiling TypeSpec API specification..').start();
 
-  const program = await compileSpecification(paths.specPath, paths.currentPath);
+  const program = await compile(paths.specPath, paths.currentPath);
 
   if (!program) {
     spinner.fail('Compilation failed due to compilation errors');
@@ -118,7 +118,7 @@ export async function generateSpecification(inquirerDep: typeof inquirer) {
         name: 'initialVersion',
         message: 'Please provide the initial version (e.g., 1.0.0):',
         default: '1.0.0',
-        validate: (input) =>
+        validate: (input: string) =>
           /^\d+\.\d+\.\d+$/.test(input) ||
           'Invalid version format. Please use semantic versioning format (e.g., 1.0.0).',
       },

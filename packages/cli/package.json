@@ -20,6 +20,10 @@
     {
       "name": "Omer Morad",
       "email": "omer.moradd@gmail.com"
+    },
+    {
+      "name": "Doron Tsur",
+      "email": "qballer@gmail.com"
     }
   ],
   "funding": [
@@ -36,7 +40,7 @@
     "node": ">=18.12.0"
   },
   "scripts": {
-    "prebuild": "pnpm rimraf dist",
+    "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc -p tsconfig.build.json --watch",
     "tester": "jest --coverage --verbose",
@@ -48,9 +52,7 @@
     "README.md"
   ],
   "dependencies": {
-    "@contractual/generators.contract": "workspace:*",
-    "@contractual/generators.diff": "workspace:*",
-    "@contractual/generators.spec": "workspace:*",
+    "@contractual/openapi": "^0.0.0",
     "chalk": "^5.4.1",
     "commander": "^12.1.0",
     "inquirer": "^12.3.2",
@@ -61,7 +63,7 @@
     "provenance": true
   },
   "devDependencies": {
-    "@vitest/coverage-c8": "^0.33.0",
-    "vitest": "^3.0.3"
+    "eslint": "^8.57.1",
+    "vitest": "^3.0.5"
   }
 }

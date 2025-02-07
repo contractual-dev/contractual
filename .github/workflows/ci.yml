@@ -17,25 +17,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      
       - name: Use Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.4
-      - uses: actions/cache@v2
+
+      - uses: actions/cache@v4
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
-      - name: PNPM
-        run: pnpm install --frozen-lockfile
+      - name: Install
+        run: npm ci
 
       - name: Build
-        run: pnpm run build
+        run: npm run build
 
   lint:
     name: Lint
@@ -43,35 +39,32 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.4
-        
-      - uses: actions/cache@v2
+          node-version: '18.x'
+
+      - uses: actions/cache@v4
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
-      - name: PNPM
-        run: pnpm install --frozen-lockfile
+      - name: Install
+        run: npm ci
 
       - name: Lint
-        run: pnpm run lint
+        run: npm run lint
 
       - name: Validate Packages
-        run: pnpm manypkg check
+        run: npx @manypkg/cli check
 
   test:
     name: Test
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: ['doubles.jest', 'doubles.sinon', 'core.unit', 'doubles.vitest', 'di.nestjs', 'di.inversify', 'unit']
+        project: ['cli', 'differs.openapi', 'compilers.openapi', 'generators.openapi', 'openapi']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -79,25 +72,21 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.4
+          node-version: '18.x'
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
-      - name: PNPM
-        run: pnpm install --frozen-lockfile
+      - name: Yarn
+        run: yarn --frozen-lockfile
 
       - name: Create Coverage Directory
         run: mkdir -p ${{ github.workspace }}/coverage
 
       - name: Test
-        run: pnpm --filter @contractual/${{ matrix.project }} run test
+        run: npm run test --workspace=@contractual/${{ matrix.project }}
         env:
           JEST_JUNIT_OUTPUT_NAME: ${{ matrix.project }}.xml
           JEST_JUNIT_OUTPUT_DIR: ${{ github.workspace }}/test-reports
