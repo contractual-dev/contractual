@@ -1,13 +1,8 @@
 <h1 align="center">Contractual</h1>
 
-**Contractual is a tool for managing API and data schemas as structured contracts. It ensures that schemas
+Contractual is a tool for managing API and data schemas as structured contracts. It ensures that schemas
 are defined, versioned, and enforced across teams, whether for REST APIs, event-driven systems, or structured data
-exchanges.** Built on **TypeSpec**, it provides a contract-first approach that helps teams track changes, prevent schema
-drifts, and generate type-safe clients and server contracts.
-
-By treating schemas as first-class entities, Contractual eliminates uncertainty at integration points, enabling backend,
-frontend, and data engineering teams to maintain predictable and enforceable APIs and structured data across the entire
-stack.
+exchanges.
 
 Common use cases include: \
 🔹 Keeping API Contracts in Sync Between Backend and Frontend \
@@ -15,6 +10,10 @@ Common use cases include: \
 🔹 Preventing Breaking Changes and Detecting Schema Drift \
 🔹 Ensuring Consistency Between Backend and Data Teams \
 🔹 Generating Language-Specific Types from a Shared Contract
+
+By treating schemas as first-class entities, Contractual eliminates uncertainty at integration points, enabling backend,
+frontend, and data engineering teams to maintain predictable and enforceable APIs and structured data across the entire
+stack.
 
 > Initially built for the **Node.js and TypeScript ecosystem**, Contractual is planned to support additional
 > languages.
