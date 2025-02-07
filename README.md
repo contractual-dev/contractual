@@ -1,59 +1,22 @@
 <h1 align="center">Contractual</h1>
 
-**Contractual is an open-source project intended to unify the entire lifecycle of API definitions, schemas, and data
-contracts across diverse systems to ensure clarity, consistency, and control.** Contractual adopts a **spec-first
-approach**, with **TypeSpec** as the single source of truth to make sure that definitions and schemas stay consistent,
-versioned, and are type-safe across the entire stack.
+Contractual is a tool for managing API and data schemas as structured contracts. It ensures that schemas
+are defined, versioned, and enforced across teams, whether for REST APIs, event-driven systems, or structured data
+exchanges.
 
-Contractual starts with **OpenAPI** and **JSON Schemas** as its core, intended to improve processes for backend teams,
-frontend developers, and data engineers.
+Common use cases include: \
+🔹 Keeping API Contracts in Sync Between Backend and Frontend \
+🔹 Generating Type-Safe Clients and Server Contracts \
+🔹 Preventing Breaking Changes and Detecting Schema Drift \
+🔹 Ensuring Consistency Between Backend and Data Teams \
+🔹 Generating Language-Specific Types from a Shared Contract
 
-## 🚨 Why Contractual?
+By treating schemas as first-class entities, Contractual eliminates uncertainty at integration points, enabling backend,
+frontend, and data engineering teams to maintain predictable and enforceable APIs and structured data across the entire
+stack.
 
-Handling APIs, schemas, and data contracts in modern systems can be complex and frequently fragmented, resulting in
-inefficiencies and misaligned workflows across teams. In addition to traditional REST APIs, teams encounter difficulties
-in managing structured data for uses such as validation, communication, and integrations across services.
-
-- **Scattered Definitions:** Duplicating schemas and contracts across backend, frontend, and data workflows often
-  results in potential regressions.
-
-- **Breaking Changes:** Without proper tracking, changes to contracts or schemas can unintentionally break downstream
-  systems or clients, causing regressions.
-
-- **Fragmented Tooling:** Teams depend on a variety of disconnected tools for client generation, schema validation, and
-  version management, leading to interruptions in developer workflows.
-
-- **Collaboration Gaps:** Misaligned definitions between teams—whether backend, frontend, or data engineers—lead to
-  mismatches, bugs, and wasted time.
-
-Contractual solves these problems by putting the specs first and using TypeSpec as the only source of truth. This
-makes teams better at managing APIs and structured data processes.
-
-## 🌟 Spec-First Approach and Use Cases
-
-A **spec-first approach** puts the definition of APIs and schemas at the center of the workflow, treating the
-specification as the **single source of truth**. This ensures alignment across frontend, backend, and data teams while
-streamlining development workflows.
-
-### How Spec-First Works
-
-1. **Define Once**:
-   - Use **TypeSpec**, a declarative DSL, to define your API or schema in a centralized file.
-   - This becomes the authoritative source for your API’s structure, endpoints, and data contracts.
-
-2. **Generate Everything**:
-   - From the spec, Contractual generates:
-     - **OpenAPI specifications** for REST documentation and tooling.
-     - **Type-safe clients** with **ts-rest** and **Zod** for runtime validation.
-     - **Server contracts** for Express, Fastify, and NestJS.
-     - **JSON Schemas** for validation or data workflows.
-
-3. **Version and Diff**:
-   - Track changes to your APIs or schemas.
-   - Use versioning and diffing tools to detect and prevent breaking changes.
-
-4. **Enforce Consistency**:
-   - Use the spec to drive all API-related workflows, ensuring backend, frontend, and data teams are in sync.
+> Initially built for the **Node.js and TypeScript ecosystem**, Contractual is planned to support additional
+> languages.
 
 ## 🚀 In Practice
 
@@ -166,44 +129,31 @@ Here’s a short video showing contract generation in action:
 </div>
 ```
 
-### Use Cases
+## 🔍 Why Contractual?
 
-1. **API-Driven Applications**:
-   - Create consistent and versioned REST APIs with type-safe clients and server contracts.
-   - Ensure changes to your APIs don’t break downstream systems or clients.
+Maintaining the consistency of schemas across various services presents significant challenges. As systems evolve,
+type-definitions and schemas drift, unnoticed breaking changes occur, and different teams find it challenging to
+synchronize. APIs, event schemas, and structured data formats often become disconnected from their original intent,
+leading to brittle integrations, manual fixes, and unexpected failures.
 
-2. **Data Validation Workflows**:
-   - Leverage **JSON Schemas** for validating complex data structures across services and teams.
-   - Seamlessly integrate validation into pipelines for ETL processes or data ingestion workflows.
+**Some of the biggest pain points teams face include:**
 
-3. **Microservices and Distributed Systems**:
-   - Maintain uniform contracts across services, reducing integration bugs.
-   - Use diffing tools to communicate API changes across teams.
+- **Schema Drift & Misalignment:** APIs and data contracts become inconsistent across teams, leading to mismatches, broken integrations, and regressions.
 
-4. **Frontend-Backend Synchronization**:
-   - Use generated type-safe clients to keep your frontend perfectly aligned with backend APIs.
-   - Integrate tools like React Query or Vue for a seamless developer experience.
+- **Untracked Changes & Breaking Updates:** Without tracking modifications, updates can unexpectedly break consumers, causing downtime and costly debugging.
 
-## 📃 Goals
+- **Scattered Schemas & Code Maintenance:** Outdated documentation and manually managed type definitions create unreliable integrations and make maintaining entity models error-prone.
 
-* Provide a centralized tool for managing OpenAPI and JSON Schema lifecycles.
+## 🔑 The Contract-First Approach
+Most teams take a **code-first** approach to API development, where schemas are generated after implementation. This often results in **misalignment between services, outdated documentation, and accidental breaking changes.** Backend teams define APIs, frontend teams consume them, and data engineers rely on structured data formats—all of which can drift over time when schemas are an afterthought.
 
-* Simplify API workflows with type-safe client/server generation.
+A **contract-first** approach flips this process: schemas are designed before any implementation begins, ensuring that API structures, event definitions, and data formats remain stable and predictable. This approach allows teams to:
 
-* Offer robust versioning and diffing tools to prevent breaking changes.
+- Define schemas upfront and enforce them as the single source of truth.
 
-* Lay the foundation for multi-language support, starting with Python.
+- Track changes and prevent breaking updates before they impact consumers.
 
-* Enable language-agnostic workflows, allowing developers to generate code and contracts across multiple languages (
-  e.g., TypeScript to Python).
-
-* Introduce "contractual pack" to prepare contracts and generated clients/servers into distributable packages for
-  publication.
-
-## 🚫 Non-Goals
-
-* Contractual does not currently support gRPC, ProtoBufs, or GraphQL. While these protocols may be considered in the
-  future, the initial focus is on REST APIs and JSON Schemas.
+- Generate type-safe clients and server contracts in multiple languages, reducing friction between teams.
 
 ## 📘 Roadmap
 
