@@ -30,7 +30,7 @@
     "url": "https://github.com/contractual-dev/contractual/issues"
   },
   "engines": {
-    "node": ">=18.12.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "prebuild": "pnpm rimraf dist",

@@ -16,6 +16,6 @@
     "test": "vitest run"
   },
   "engines": {
-    "node": ">=18.12.0"
+    "node": ">=20.0.0"
   }
 }

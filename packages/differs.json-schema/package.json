@@ -33,7 +33,7 @@
     "validation"
   ],
   "engines": {
-    "node": ">=18.12.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "prebuild": "rimraf dist",
