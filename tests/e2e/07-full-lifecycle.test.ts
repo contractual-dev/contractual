@@ -10,7 +10,6 @@ import {
   readJSON,
   fileExists,
   listFiles,
-  gitCommitAll,
   ensureCliBuilt,
 } from './helpers.js';
 
@@ -23,7 +22,6 @@ describe('contractual full lifecycle', () => {
     const { dir, cleanup } = createTempRepo();
     try {
       // ===== PHASE 1: Setup with a spec using setupRepoWithConfig =====
-      // Use setupRepoWithConfig to ensure proper initialization
       setupRepoWithConfig(dir, [
         {
           name: 'order',
@@ -33,10 +31,7 @@ describe('contractual full lifecycle', () => {
       ]);
       copyFixture('json-schema/order-base.json', path.join(dir, 'schemas/order.json'));
 
-      gitCommitAll(dir, 'Initial setup with order schema');
-
       // ===== PHASE 2: Create initial changeset manually, run version (1.0.0) =====
-      // For first release from 0.0.0 to 1.0.0, use major bump
       const initialChangeset = `---
 "order": major
 ---
@@ -71,8 +66,6 @@ describe('contractual full lifecycle', () => {
       expect(fileExists(dir, 'CHANGELOG.md')).toBe(true);
       const changelog1 = readFile(dir, 'CHANGELOG.md');
       expect(changelog1).toMatch(/1\.0\.0/);
-
-      gitCommitAll(dir, 'Release v1.0.0');
 
       // ===== PHASE 3: Make breaking change to spec =====
       copyFixture('json-schema/order-field-removed.json', path.join(dir, 'schemas/order.json'));
@@ -116,8 +109,6 @@ describe('contractual full lifecycle', () => {
       expect(changelog2).toMatch(/2\.0\.0/);
       expect(changelog2).toMatch(/1\.0\.0/); // Previous version still there
 
-      gitCommitAll(dir, 'Release v2.0.0');
-
       // ===== PHASE 7: Verify breaking shows no changes after version =====
       const breakingResult = run('breaking', dir);
       expect(breakingResult.exitCode).toBe(0);
@@ -146,10 +137,7 @@ describe('contractual full lifecycle', () => {
         path.join(dir, '.contractual/snapshots/order-schema.json')
       );
 
-      gitCommitAll(dir, 'Initial setup');
-
       // ===== Release 1.0.0 =====
-      // Use major bump to go from 0.0.0 to 1.0.0
       const release1Changeset = `---
 "order-schema": major
 ---
@@ -169,10 +157,7 @@ describe('contractual full lifecycle', () => {
       >;
       expect(versions1['order-schema'].version).toBe('1.0.0');
 
-      gitCommitAll(dir, 'Release 1.0.0');
-
       // ===== Release 1.1.0 (minor bump - add optional field) =====
-      // Make a non-breaking change
       copyFixture(
         'json-schema/order-optional-field-added.json',
         path.join(dir, 'schemas/order.json')
@@ -190,8 +175,6 @@ describe('contractual full lifecycle', () => {
         { version: string }
       >;
       expect(versions2['order-schema'].version).toBe('1.1.0');
-
-      gitCommitAll(dir, 'Release 1.1.0');
 
       // ===== Release 1.1.1 (patch bump - description change) =====
       copyFixture(
@@ -256,10 +239,7 @@ describe('contractual full lifecycle', () => {
       copyFixture('json-schema/order-base.json', path.join(dir, 'schemas/order.json'));
       copyFixture('json-schema/order-base.json', path.join(dir, 'schemas/user.json'));
 
-      gitCommitAll(dir, 'Initial setup');
-
       // ===== Release both contracts at 1.0.0 =====
-      // Use major bump to go from 0.0.0 to 1.0.0
       const initialChangeset = `---
 "order-schema": major
 "user-schema": major
@@ -279,11 +259,8 @@ Initial release of both schemas
       expect(versions1['order-schema'].version).toBe('1.0.0');
       expect(versions1['user-schema'].version).toBe('1.0.0');
 
-      gitCommitAll(dir, 'Release 1.0.0 for both');
-
       // ===== Bump only order-schema to 2.0.0 =====
       copyFixture('json-schema/order-field-removed.json', path.join(dir, 'schemas/order.json'));
-      // user-schema stays the same
 
       const orderChangeset = `---
 "order-schema": major
@@ -311,7 +288,6 @@ Initial release of both schemas
       expect(status.stdout).toMatch(/order-schema/);
       expect(status.stdout).toMatch(/2\.0\.0/);
       expect(status.stdout).toMatch(/user-schema/);
-      // user-schema should still be at 1.0.0
     } finally {
       cleanup();
     }

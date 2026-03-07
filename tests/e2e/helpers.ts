@@ -38,6 +38,50 @@ export function createTempRepo(): { dir: string; cleanup: () => void } {
 }
 
 /**
+ * Create a temp directory WITH git initialized (for tests that need git commits)
+ */
+export function createTempGitRepo(): { dir: string; cleanup: () => void } {
+  const dir = mkdtempSync(path.join(tmpdir(), 'contractual-e2e-'));
+
+  // Initialize git repo with explicit error handling
+  try {
+    execSync('git init --initial-branch=main', { cwd: dir, encoding: 'utf-8' });
+    execSync('git config user.email "test@test.com"', { cwd: dir, encoding: 'utf-8' });
+    execSync('git config user.name "Test User"', { cwd: dir, encoding: 'utf-8' });
+  } catch (err) {
+    // Clean up on failure
+    try {
+      rmSync(dir, { recursive: true, force: true });
+    } catch {
+      // Ignore cleanup errors
+    }
+    const error = err as Error & { stderr?: string };
+    throw new Error(`Failed to initialize git repo: ${error.message}\n${error.stderr ?? ''}`);
+  }
+
+  // Verify .git directory exists
+  if (!existsSync(path.join(dir, '.git'))) {
+    try {
+      rmSync(dir, { recursive: true, force: true });
+    } catch {
+      // Ignore cleanup errors
+    }
+    throw new Error(`Git init succeeded but .git directory not found in ${dir}`);
+  }
+
+  return {
+    dir,
+    cleanup: () => {
+      try {
+        rmSync(dir, { recursive: true, force: true });
+      } catch {
+        // Ignore cleanup errors
+      }
+    },
+  };
+}
+
+/**
  * Run a contractual CLI command in the given directory
  */
 export function run(
@@ -153,8 +197,20 @@ export function readYAML(repoDir: string, relativePath: string): unknown {
  * Git commit all changes in the temp repo
  */
 export function gitCommitAll(repoDir: string, message: string): void {
-  execSync('git add -A', { cwd: repoDir, stdio: 'pipe' });
-  execSync(`git commit -m "${message}" --allow-empty`, { cwd: repoDir, stdio: 'pipe' });
+  // Verify .git directory exists
+  if (!existsSync(path.join(repoDir, '.git'))) {
+    throw new Error(`gitCommitAll: Not a git repository: ${repoDir}`);
+  }
+
+  try {
+    execSync('git add -A', { cwd: repoDir, encoding: 'utf-8' });
+    execSync(`git commit -m "${message}" --allow-empty`, { cwd: repoDir, encoding: 'utf-8' });
+  } catch (err) {
+    const error = err as Error & { stderr?: string; stdout?: string };
+    throw new Error(
+      `gitCommitAll failed in ${repoDir}: ${error.message}\nstderr: ${error.stderr ?? ''}\nstdout: ${error.stdout ?? ''}`
+    );
+  }
 }
 
 /**

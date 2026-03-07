@@ -151,10 +151,7 @@ function parseResult(result: DiffOutcome): DiffResult {
   return { contract: '', changes, summary, suggestedBump };
 }
 
-function mapChange(
-  diff: OpenApiDiffResult<DiffResultType>,
-  severity: ChangeSeverity
-): Change {
+function mapChange(diff: OpenApiDiffResult<DiffResultType>, severity: ChangeSeverity): Change {
   const srcDetails = diff.sourceSpecEntityDetails?.[0];
   const destDetails = diff.destinationSpecEntityDetails?.[0];
   const path = destDetails?.location || srcDetails?.location || '/';
