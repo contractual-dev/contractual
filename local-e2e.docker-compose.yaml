@@ -1,0 +1,19 @@
+name: contractual-local-e2e
+
+services:
+  verdaccio:
+    image: verdaccio/verdaccio
+    ports:
+      - '4873:4873'
+    volumes:
+      - ./e2e/config.yaml:/verdaccio/conf/config.yaml
+      - verdaccio-storage:/verdaccio/storage
+    networks:
+      - e2e-network
+
+networks:
+  e2e-network:
+    driver: bridge
+
+volumes:
+  verdaccio-storage:

@@ -1,0 +1,58 @@
+{
+  "name": "@contractual/differs.json-schema",
+  "version": "0.1.0",
+  "description": "Detect breaking changes between JSON Schema versions with semantic classification",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/contractual-dev/contractual.git",
+    "directory": "packages/differs.json-schema"
+  },
+  "homepage": "https://github.com/contractual-dev/contractual/tree/main/packages/differs.json-schema",
+  "bugs": {
+    "url": "https://github.com/contractual-dev/contractual/issues"
+  },
+  "keywords": [
+    "json-schema",
+    "diff",
+    "breaking-changes",
+    "semver",
+    "schema",
+    "api",
+    "compatibility",
+    "migration",
+    "validation"
+  ],
+  "engines": {
+    "node": ">=18.12.0"
+  },
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint \"src/**/*.ts\""
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "devDependencies": {
+    "rimraf": "^5.0.5",
+    "vitest": "^3.0.3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

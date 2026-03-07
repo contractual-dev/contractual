@@ -4,8 +4,16 @@
   "version": "0.0.0",
   "license": "MIT",
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "bin": {
     "contractual": "./bin/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
   "repository": {
     "type": "git",
@@ -45,23 +53,27 @@
   "files": [
     "bin",
     "dist",
+    "src/config/schema.json",
     "README.md"
   ],
   "dependencies": {
-    "@contractual/generators.contract": "workspace:*",
-    "@contractual/generators.diff": "workspace:*",
-    "@contractual/generators.spec": "workspace:*",
+    "@contractual/changesets": "workspace:*",
+    "@contractual/governance": "workspace:*",
+    "@contractual/types": "workspace:*",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "chalk": "^5.4.1",
     "commander": "^12.1.0",
-    "inquirer": "^12.3.2",
-    "ora": "^8.1.1"
+    "fast-glob": "^3.3.3",
+    "ora": "^8.1.1",
+    "yaml": "^2.7.0"
   },
   "publishConfig": {
     "access": "public",
     "provenance": true
   },
   "devDependencies": {
-    "@vitest/coverage-c8": "^0.33.0",
+    "@vitest/coverage-v8": "^3.0.0",
     "vitest": "^3.0.3"
   }
 }

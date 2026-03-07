@@ -72,6 +72,13 @@
         "prefer": "type-imports",
         "disallowTypeAnnotations": false
       }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
     ]
   },
   "env": {
