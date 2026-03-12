@@ -1,173 +1,107 @@
-<h1 align="center">Contractual</h1>
+# Contractual
 
-Contractual is a tool for managing API and data schemas as structured contracts. It ensures that schemas
-are defined, versioned, and enforced across teams, whether for REST APIs, event-driven systems, or structured data
-exchanges.
+The `contractual` CLI and GitHub Action manage schema contract lifecycle for OpenAPI, JSON Schema, and AsyncAPI.
 
-Common use cases include: \
-🔹 Keeping API Contracts in Sync Between Backend and Frontend \
-🔹 Generating Type-Safe Clients and Server Contracts \
-🔹 Preventing Breaking Changes and Detecting Schema Drift \
-🔹 Ensuring Consistency Between Backend and Data Teams \
-🔹 Generating Language-Specific Types from a Shared Contract
+It provides:
+- Linting of specs
+- Structural breaking change detection against snapshots
+- Changeset generation and versioning
+- Changelog generation
+- GitHub Action integration for PR checks and release automation
 
-By treating schemas as first-class entities, Contractual eliminates uncertainty at integration points, enabling backend,
-frontend, and data engineering teams to maintain predictable and enforceable APIs and structured data across the entire
-stack.
+## Installation
 
-> Initially built for the **Node.js and TypeScript ecosystem**, Contractual is planned to support additional
-> languages.
+### npm
 
-## 🚀 In Practice
-
-### Install Contractual
-
-To get started, install the Contractual CLI globally:
-
-```bash
-npm i -g @contractual/cli
+```sh
+npm install -g contractual
 ```
 
-### Initialize Your Project
+### Other package managers
 
-Run the `init` command to scaffold a new project:
-
-```bash
-contractual init
+```sh
+pnpm add -g contractual
+yarn global add contractual
+bun add -g contractual
 ```
 
-This command creates the following project structure:
+## Usage
 
-```
-frontend/          # Your frontend application
-server/            # Your server application
-contractual/       # Contractual files
-├── api.tsp        # TypeSpec API definition
-├── specs/         # OpenAPI auto-generated specs
+The CLI provides command summaries and flags:
+
+```sh
+contractual --help
 ```
 
-> Contractual works seamlessly with **monorepos**, **monoliths**, and distributed repositories.
+For usage details, see the documentation, especially:
 
-### Define Your API
+- [`contractual breaking`][breaking-docs]
+- [`contractual lint`][lint-docs]
+- [`contractual changeset`][changeset-docs]
+- [`contractual version`][version-docs]
+- [GitHub Action setup][action-docs]
 
-Write your API definition in the `api.tsp` file. For example:
+## CLI breaking change policy
 
-```tsp
-import "@typespec/http";
-import "@typespec/openapi";
-import "@typespec/openapi3";
+Breaking changes are documented in release notes for the npm package.
 
-using TypeSpec.Http;
+## Goals for schema contracts
 
-@service({
-  title: "Petstore API",
-})
-namespace PetstoreAPI;
+Schema contracts are a compatibility boundary between producers and consumers. Contractual standardizes linting, breaking change detection, versioning, and changelog generation across OpenAPI, JSON Schema, and AsyncAPI.
 
-model Pet {
-  id: string;
-  name: string;
-}
+Contractual wraps existing tooling where possible and adds missing lifecycle steps, including built-in JSON Schema diffing where production-grade tooling is limited.
 
-@route("/pet")
-@post
-op addPet(@body body: Pet): Pet;
-```
+## The Contractual workflow
 
-> You can experiment and validate your API definitions [using the TypeSpec playground](https://typespec.io/playground/)
+Contractual uses a repository state directory at `.contractual/` to store versions, snapshots, and pending changesets. The GitHub Action can post diff tables on pull requests and open a Version Contracts PR for release automation.
 
-### Manage API Changes
+The GitHub Action is optional. The CLI can run locally or in CI.
 
-#### Save the Current State of Your API
+## More advanced CLI features
 
-Run the `spec graduate` command to save the current state of your OpenAPI spec:
+- Custom linters and differs via `contractual.yaml`
+- Custom outputs for code generation
+- JSON output formats for CI systems
+- Base snapshot selection with `--base`
+- Monorepo support with multiple configs
+- Optional AI explanations with `ANTHROPIC_API_KEY`
 
-```bash
-contractual spec graduate
-```
+## Next steps
 
-This will generate a new OpenAPI (3.1.0) YAML file with versioning, enabling to track API changes over time. The
-updated structure will look like this:
+After installation, follow the CLI quickstart:
 
-```
-contractual/
-├── api.tsp                  # TypeSpec API definition
-├── specs/                   # OpenAPI auto-generated specs
-│   ├── openapi-v1.0.0.yaml
-client/                      # Generated API clients
-server/                      # Server contracts
-e2e/                         # Type-safe API-driven tests
-```
+- [Quickstart][quickstart-docs]
+- [Configuration reference][config-docs]
+- [Breaking change detection][breaking-overview]
 
-> You can track API evolution and changes easily with clear, versioned OpenAPI specs.
+## Builds
 
-Here’s a quick video showing how this works:
+The CLI is distributed via npm and requires Node.js 18 or later.
 
-<div align="center">
-  <img src="spec-graduate.gif" />
-</div>
+| Platform | Support |
+|----------|---------|
+| macOS | Node.js 18+ |
+| Linux | Node.js 18+ |
+| Windows | Node.js 18+ |
 
-### Generate Contracts
+## Community
 
-Run the `contract generate` command to generate type-safe clients, server contracts, and updated OpenAPI specs:
+Issues and feature requests:
+- [GitHub issues][issues]
 
-```bash
-contractual contract generate
-```
+Documentation:
+- [contractual.dev][docs]
 
-This command creates:
+License:
+- [MIT](LICENSE)
 
-- **Type-safe client libraries** [using **ts-rest**](https://ts-rest.com), integrated with **Zod** for runtime
-  validation.
-- **Server contracts** for frameworks like **Express**, **Fastify**, and **NestJS**.
-- **Updated OpenAPI specs**.
-
-Here’s a short video showing contract generation in action:
-
-<div align="center">
-  <img src="contract-generate.gif" />
-</div>
-```
-
-## 🔍 Why Contractual?
-
-Maintaining the consistency of schemas across various services presents significant challenges. As systems evolve,
-type-definitions and schemas drift, unnoticed breaking changes occur, and different teams find it challenging to
-synchronize. APIs, event schemas, and structured data formats often become disconnected from their original intent,
-leading to brittle integrations, manual fixes, and unexpected failures.
-
-**Some of the biggest pain points teams face include:**
-
-- **Schema Drift & Misalignment:** APIs and data contracts become inconsistent across teams, leading to mismatches, broken integrations, and regressions.
-
-- **Untracked Changes & Breaking Updates:** Without tracking modifications, updates can unexpectedly break consumers, causing downtime and costly debugging.
-
-- **Scattered Schemas & Code Maintenance:** Outdated documentation and manually managed type definitions create unreliable integrations and make maintaining entity models error-prone.
-
-## 🔑 The Contract-First Approach
-Most teams take a **code-first** approach to API development, where schemas are generated after implementation. This often results in **misalignment between services, outdated documentation, and accidental breaking changes.** Backend teams define APIs, frontend teams consume them, and data engineers rely on structured data formats—all of which can drift over time when schemas are an afterthought.
-
-A **contract-first** approach flips this process: schemas are designed before any implementation begins, ensuring that API structures, event definitions, and data formats remain stable and predictable. This approach allows teams to:
-
-- Define schemas upfront and enforce them as the single source of truth.
-
-- Track changes and prevent breaking updates before they impact consumers.
-
-- Generate type-safe clients and server contracts in multiple languages, reducing friction between teams.
-
-## 📘 Roadmap
-
-Want to contribute? Check out the alpha version [Roadmap](https://github.com/contractual-dev/contractual/issues/8) and
-join the journey! 🚀
-
-## ❤️ Join the Community
-
-Contractual is open-source, and we’re looking for contributors to help shape its future, if you’re interested in
-collaborating, please reach out.
-
-📩 **Feedback or Questions?** Reach out
-via [GitHub Discussions](https://github.com/contractual-dev/contractual/discussions).
-
-## 🔒 License
-
-Licensed under [MIT](LICENSE).
+[docs]: https://contractual.dev
+[issues]: https://github.com/contractual-dev/contractual/issues
+[quickstart-docs]: https://contractual.dev/getting-started/quickstart
+[config-docs]: https://contractual.dev/reference/configuration
+[breaking-docs]: https://contractual.dev/breaking/usage
+[breaking-overview]: https://contractual.dev/breaking/overview
+[lint-docs]: https://contractual.dev/linting/usage
+[changeset-docs]: https://contractual.dev/versioning/usage
+[version-docs]: https://contractual.dev/versioning/usage
+[action-docs]: https://contractual.dev/github-action/setup

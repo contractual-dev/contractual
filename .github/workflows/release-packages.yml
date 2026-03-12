@@ -40,8 +40,18 @@ permissions:
   id-token: write
 
 jobs:
+  e2e:
+    name: E2E Release Simulation
+    uses: ./.github/workflows/e2e-release.yml
+    with:
+      target_branch: ${{ github.event.inputs.target_branch }}
+    permissions:
+      contents: write
+      id-token: write
+
   tag-version:
     name: Tag Version
+    needs: [e2e]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -49,6 +59,22 @@ jobs:
         with:
           ref: ${{ github.event.inputs.target_branch }}
           fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
 
       - name: Config Git User
         run: |
@@ -58,27 +84,24 @@ jobs:
       - name: Prerelease Version (Exact Version)
         if: ${{ github.event.inputs.release_type == 'prerelease' && github.event.inputs.exact_version }}
         run: |
-         pnpm version ${{ github.event.inputs.exact_version }} \
-          --workspaces-update \
-          --no-git-tag-version \
-          --no-commit-hooks
+          npx lerna version ${{ github.event.inputs.exact_version }} --yes --no-changelog
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prerelease Version
         if: ${{ github.event.inputs.release_type == 'prerelease' && !github.event.inputs.exact_version }}
         run: |
-         pnpm version prerelease \
+          npx lerna version --yes \
+          --conventional-commits \
+          --conventional-prerelease \
           --preid ${{ github.event.inputs.preid }} \
-          --workspaces-update \
-          --no-git-tag-version \
-          --no-commit-hooks
+          --no-changelog
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Graduate Version
         if: ${{ github.event.inputs.release_type == 'graduate' }}
-        run: pnpm version --workspaces-update from-git
+        run: npx lerna version --conventional-graduate --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -88,3 +111,19 @@ jobs:
           git push origin --tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate Release Summary
+        run: |
+          echo "## Release Prepared" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** \`${{ github.event.inputs.target_branch }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Release Type:** \`${{ github.event.inputs.release_type }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Preid:** \`${{ github.event.inputs.preid }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Tagged Packages" >> $GITHUB_STEP_SUMMARY
+          git tag --sort=-creatordate | head -10 | while read tag; do
+            echo "- \`$tag\`" >> $GITHUB_STEP_SUMMARY
+          done
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "Run the **Publish Packages** workflow to publish to npm" >> $GITHUB_STEP_SUMMARY

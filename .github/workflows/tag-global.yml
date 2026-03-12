@@ -24,10 +24,18 @@ jobs:
 
       - name: Config Git
         run: |
-          git config --global user.email "omer.moradd@gmail.com"
-          git config --global user.name "Omer Morad"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}"
 
       - name: Tag and Push
         run: |
           git tag -a ${{ inputs.tag_name }} -m "Tag Version ${{ inputs.tag_name }}"
           git push origin ${{ inputs.tag_name }}
+
+      - name: Generate Summary
+        run: |
+          echo "## Tag Created" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Tag:** \`${{ inputs.tag_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`$(git rev-parse HEAD)\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** \`$(git rev-parse --abbrev-ref HEAD)\`" >> $GITHUB_STEP_SUMMARY
