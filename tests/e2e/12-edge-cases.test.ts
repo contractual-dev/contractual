@@ -254,12 +254,12 @@ describe('error handling and edge cases', () => {
         ]);
         copyFixture('openapi/petstore-base.yaml', path.join(dir, 'specs/petstore.yaml'));
 
-        // No snapshot exists for this contract - breaking skips it
+        // No snapshot exists for this contract - first version
         const result = run('breaking', dir);
         // Should handle gracefully - exits with 0
         expect(result.exitCode).toBe(0);
-        // When no snapshot exists, no contracts are checked
-        expect(result.stdout).toMatch(/no contracts were checked|no snapshot|first/i);
+        // When no snapshot exists, shows "No changes detected"
+        expect(result.stdout).toMatch(/no changes detected/i);
       } finally {
         cleanup();
       }

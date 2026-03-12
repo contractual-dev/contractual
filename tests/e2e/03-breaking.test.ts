@@ -28,8 +28,8 @@ describe('contractual breaking', () => {
 
       const result = run('breaking', dir);
       expect(result.exitCode).toBe(0);
-      // Spinner shows "first version" via .info(), but text output shows this when results are empty
-      expect(result.stdout).toMatch(/no contracts were checked/i);
+      // First version with no snapshot shows "No changes detected"
+      expect(result.stdout).toMatch(/no changes detected/i);
     } finally {
       cleanup();
     }
@@ -265,8 +265,8 @@ describe('contractual breaking', () => {
 
       const result = run('breaking', dir);
       expect(result.exitCode).toBe(0);
-      // Spinner shows "Breaking detection disabled" via .info(), but text output shows this when results are empty
-      expect(result.stdout).toMatch(/no contracts were checked/i);
+      // Disabled contracts show "No changes detected"
+      expect(result.stdout).toMatch(/no changes detected/i);
     } finally {
       cleanup();
     }

@@ -255,8 +255,8 @@ exit 0
 
         const result = run('breaking', dir);
         expect(result.exitCode).toBe(0);
-        // When all contracts are skipped, text mode says "No contracts were checked."
-        expect(result.stdout).toMatch(/No contracts were checked/i);
+        // When breaking detection is disabled, shows "No changes detected"
+        expect(result.stdout).toMatch(/no changes detected/i);
       } finally {
         cleanup();
       }

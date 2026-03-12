@@ -1,8 +1,16 @@
+/**
+ * Breaking Command
+ *
+ * Detect breaking changes against snapshots.
+ * This is a CI gate — exits 1 if breaking changes are found.
+ *
+ * Uses the shared diffContracts() function internally.
+ */
+
 import chalk from 'chalk';
 import ora from 'ora';
 import { loadConfig } from '../config/index.js';
-import { findContractualDir, getSnapshotPath } from '../utils/files.js';
-import { getDiffer } from '../governance/index.js';
+import { diffContracts } from '../core/diff.js';
 import { formatSeverity } from '../utils/output.js';
 import type { DiffResult } from '@contractual/types';
 
@@ -35,109 +43,53 @@ export async function breakingCommand(options: BreakingOptions): Promise<void> {
     return;
   }
 
-  const contractualDir = findContractualDir(config.configDir);
-  if (!contractualDir) {
-    console.error(chalk.red('No .contractual directory found. Run `contractual init` first.'));
-    process.exitCode = 1;
-    return;
-  }
+  const checkSpinner = ora('Checking for breaking changes...').start();
 
-  // Filter contracts if --contract option is provided
-  const contracts = options.contract
-    ? config.contracts.filter((c) => c.name === options.contract)
-    : config.contracts;
+  try {
+    const { results } = await diffContracts(config, {
+      contracts: options.contract ? [options.contract] : undefined,
+      includeEmpty: true,
+    });
 
-  if (options.contract && contracts.length === 0) {
-    console.error(chalk.red(`Contract "${options.contract}" not found in configuration.`));
-    process.exitCode = 1;
-    return;
-  }
+    const hasBreaking = results.some((r) => r.summary.breaking > 0);
 
-  const results: DiffResult[] = [];
-  let hasBreaking = false;
-
-  for (const contract of contracts) {
-    const contractSpinner = ora(`Checking ${contract.name}...`).start();
-
-    // Get snapshot path
-    const snapshotPath = getSnapshotPath(contract.name, contractualDir);
-
-    if (!snapshotPath) {
-      contractSpinner.info(`No snapshot for ${contract.name} - first version`);
-      continue;
+    if (hasBreaking) {
+      checkSpinner.fail('Breaking changes detected');
+    } else {
+      checkSpinner.succeed('No breaking changes');
     }
 
-    // Check if breaking detection is disabled for this contract
-    if (contract.breaking === false) {
-      contractSpinner.info(`Breaking detection disabled for ${contract.name}`);
-      continue;
+    // Output results
+    console.log();
+    if (options.format === 'json') {
+      const output: BreakingCommandResult = { hasBreaking, results };
+      console.log(JSON.stringify(output, null, 2));
+    } else {
+      printTextResults(results);
     }
 
-    // Get the differ from the registry
-    const differ = getDiffer(contract.type, contract.breaking);
+    // Determine exit code based on --fail-on option
+    const failOn = options.failOn ?? 'breaking';
+    let shouldFail = false;
 
-    if (differ === null) {
-      // Disabled via config
-      contractSpinner.info(`Breaking detection disabled for ${contract.name}`);
-      continue;
+    if (failOn === 'any') {
+      // Fail on any detected changes
+      shouldFail = results.some((r) => r.changes.length > 0);
+    } else if (failOn === 'non-breaking') {
+      // Fail on non-breaking or breaking changes
+      shouldFail = results.some((r) => r.summary.breaking > 0 || r.summary.nonBreaking > 0);
+    } else {
+      // Default: fail only on breaking changes
+      shouldFail = hasBreaking;
     }
 
-    if (!differ) {
-      contractSpinner.warn(`No differ registered for type "${contract.type}"`);
-      continue;
+    if (shouldFail) {
+      process.exitCode = 1;
     }
-
-    try {
-      // Run the differ: snapshot (old) vs current spec (new)
-      const diffResult = await differ(snapshotPath, contract.absolutePath);
-
-      // Override contract name to match config
-      const result: DiffResult = {
-        ...diffResult,
-        contract: contract.name,
-      };
-
-      results.push(result);
-
-      if (result.summary.breaking > 0) {
-        hasBreaking = true;
-        contractSpinner.fail(
-          `${contract.name}: ${result.summary.breaking} breaking change(s) detected`
-        );
-      } else {
-        contractSpinner.succeed(`${contract.name}: No breaking changes`);
-      }
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown error';
-      contractSpinner.fail(`${contract.name}: Failed to check - ${message}`);
-    }
-  }
-
-  // Output results
-  console.log();
-  if (options.format === 'json') {
-    const output: BreakingCommandResult = { hasBreaking, results };
-    console.log(JSON.stringify(output, null, 2));
-  } else {
-    printTextResults(results);
-  }
-
-  // Determine exit code based on --fail-on option
-  const failOn = options.failOn ?? 'breaking';
-  let shouldFail = false;
-
-  if (failOn === 'any') {
-    // Fail on any detected changes
-    shouldFail = results.some((r) => r.changes.length > 0);
-  } else if (failOn === 'non-breaking') {
-    // Fail on non-breaking or breaking changes
-    shouldFail = results.some((r) => r.summary.breaking > 0 || r.summary.nonBreaking > 0);
-  } else {
-    // Default: fail only on breaking changes
-    shouldFail = hasBreaking;
-  }
-
-  if (shouldFail) {
+  } catch (error) {
+    checkSpinner.fail('Failed to check for breaking changes');
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    console.error(chalk.red('Error:'), message);
     process.exitCode = 1;
   }
 }

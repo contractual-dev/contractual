@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 import { initCommand } from './commands/init.command.js';
 import { lintCommand } from './commands/lint.command.js';
+import { diffCommand } from './commands/diff.command.js';
 import { breakingCommand } from './commands/breaking.command.js';
 import { changesetCommand } from './commands/changeset.command.js';
 import { versionCommand } from './commands/version.command.js';
@@ -22,6 +23,15 @@ program
   .option('--format <format>', 'Output format: text, json', 'text')
   .option('--fail-on-warn', 'Exit 1 on warnings')
   .action(lintCommand);
+
+program
+  .command('diff')
+  .description('Show all changes between current specs and last versioned snapshots')
+  .option('-c, --contract <name>', 'Diff specific contract')
+  .option('--format <format>', 'Output format: text, json', 'text')
+  .option('--severity <level>', 'Filter: all, breaking, non-breaking, patch', 'all')
+  .option('--verbose', 'Show JSON Pointer paths for each change')
+  .action(diffCommand);
 
 program
   .command('breaking')

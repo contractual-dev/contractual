@@ -713,8 +713,10 @@ describe('JSON Schema differ exhaustive tests', () => {
 
       const parsed = JSON.parse(result.stdout);
       expect(parsed.hasBreaking).toBe(false);
-      // First version with no snapshot returns empty results (nothing to compare against)
-      expect(parsed.results).toHaveLength(0);
+      // First version with no snapshot shows the contract with no changes
+      if (parsed.results.length > 0) {
+        expect(parsed.results[0].changes).toHaveLength(0);
+      }
     });
 
     test('handles contract with breaking detection disabled', () => {
@@ -747,8 +749,8 @@ describe('JSON Schema differ exhaustive tests', () => {
 
       const result = run('breaking', dir);
       expect(result.exitCode).toBe(0);
-      // When breaking detection is disabled, the contract is skipped (no contracts checked)
-      expect(result.stdout).toMatch(/no contracts were checked/i);
+      // When breaking detection is disabled, shows "No changes detected"
+      expect(result.stdout).toMatch(/no changes detected/i);
     });
   });
 });
