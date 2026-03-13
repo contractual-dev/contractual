@@ -4,19 +4,48 @@ import chalk from 'chalk';
 import ora from 'ora';
 import { loadConfig } from '../config/index.js';
 import { findContractualDir, CHANGESETS_DIR } from '../utils/files.js';
+import { promptConfirm, type PromptOptions } from '../utils/prompts.js';
 import {
   VersionManager,
+  PreReleaseManager,
   readChangesets,
   aggregateBumps,
   extractContractChanges,
   appendChangelog,
+  incrementVersion,
+  incrementVersionWithPreRelease,
 } from '@contractual/changesets';
-import type { BumpResult } from '@contractual/types';
+import type { BumpResult, BumpType } from '@contractual/types';
+
+/**
+ * Options for the version command
+ */
+interface VersionOptions extends PromptOptions {
+  /** Preview without applying */
+  dryRun?: boolean;
+  /** Output JSON (implies --yes) */
+  json?: boolean;
+}
+
+/**
+ * Pending version bump info
+ */
+interface PendingBump {
+  contract: string;
+  currentVersion: string;
+  nextVersion: string;
+  bumpType: BumpType;
+}
 
 /**
  * Consume changesets and bump versions
  */
-export async function versionCommand(): Promise<void> {
+export async function versionCommand(options: VersionOptions = {}): Promise<void> {
+  // JSON output implies --yes (no prompts)
+  if (options.json) {
+    options.yes = true;
+  }
+
   const spinner = ora('Loading configuration...').start();
 
   let config;
@@ -43,7 +72,11 @@ export async function versionCommand(): Promise<void> {
 
   if (changesets.length === 0) {
     readSpinner.succeed('No pending changesets');
-    console.log(chalk.gray('Nothing to version.'));
+    if (options.json) {
+      console.log(JSON.stringify({ bumps: [], changesets: 0 }, null, 2));
+    } else {
+      console.log(chalk.gray('Nothing to version.'));
+    }
     process.exit(0);
   }
 
@@ -53,34 +86,115 @@ export async function versionCommand(): Promise<void> {
   const aggregatedBumps = aggregateBumps(changesets);
 
   if (Object.keys(aggregatedBumps).length === 0) {
-    console.log(chalk.gray('No version bumps required.'));
+    if (options.json) {
+      console.log(JSON.stringify({ bumps: [], changesets: changesets.length }, null, 2));
+    } else {
+      console.log(chalk.gray('No version bumps required.'));
+    }
     process.exit(0);
   }
 
-  // Initialize version manager
+  // Initialize version manager for reading current versions
   const versionManager = new VersionManager(contractualDir);
+  const preManager = new PreReleaseManager(contractualDir);
+  const preReleaseTag = preManager.getTag();
 
-  // Process each contract bump
-  const bumpSpinner = ora('Applying version bumps...').start();
+  // Calculate pending bumps (preview)
+  const pendingBumps: PendingBump[] = [];
+
+  for (const [contractName, bumpType] of Object.entries(aggregatedBumps)) {
+    const contract = config.contracts.find((c) => c.name === contractName);
+    if (!contract) {
+      continue;
+    }
+
+    const currentVersion = versionManager.getVersion(contractName) ?? '0.0.0';
+    const nextVersion = preReleaseTag
+      ? incrementVersionWithPreRelease(currentVersion, bumpType, preReleaseTag)
+      : incrementVersion(currentVersion, bumpType);
+
+    pendingBumps.push({
+      contract: contractName,
+      currentVersion,
+      nextVersion,
+      bumpType,
+    });
+  }
+
+  // Show pre-release mode notice
+  if (preReleaseTag && !options.json) {
+    console.log(chalk.cyan(`Pre-release mode: ${preReleaseTag}`));
+  }
+
+  // Show preview
+  if (options.json) {
+    if (options.dryRun) {
+      console.log(
+        JSON.stringify(
+          {
+            dryRun: true,
+            bumps: pendingBumps.map((b) => ({
+              contract: b.contract,
+              current: b.currentVersion,
+              next: b.nextVersion,
+              type: b.bumpType,
+            })),
+            changesets: changesets.length,
+          },
+          null,
+          2
+        )
+      );
+      return;
+    }
+  } else {
+    printPreviewTable(pendingBumps);
+
+    if (options.dryRun) {
+      console.log();
+      console.log(chalk.dim('Dry run - no changes applied'));
+      return;
+    }
+  }
+
+  // Confirm before applying (unless --yes)
+  if (!options.json) {
+    const shouldApply = await promptConfirm('Apply these version bumps?', true, options);
+
+    if (!shouldApply) {
+      console.log(chalk.dim('Cancelled'));
+      return;
+    }
+  }
+
+  // Apply version bumps
+  const bumpSpinner = options.json ? null : ora('Applying version bumps...').start();
   const bumpResults: BumpResult[] = [];
   const consumedChangesetPaths: string[] = [];
 
   for (const [contractName, bumpType] of Object.entries(aggregatedBumps)) {
-    // Find the contract in config
     const contract = config.contracts.find((c) => c.name === contractName);
     if (!contract) {
-      console.warn(
-        chalk.yellow(`Warning: Contract "${contractName}" not found in config, skipping.`)
-      );
+      if (!options.json) {
+        console.warn(
+          chalk.yellow(`Warning: Contract "${contractName}" not found in config, skipping.`)
+        );
+      }
       continue;
     }
 
-    // Apply semver bump and update snapshot
-    const { oldVersion, newVersion } = versionManager.bump(
-      contractName,
-      bumpType,
-      contract.absolutePath
-    );
+    const oldVersion = versionManager.getVersion(contractName) ?? '0.0.0';
+    let newVersion: string;
+
+    if (preReleaseTag) {
+      // Use pre-release version increment
+      newVersion = incrementVersionWithPreRelease(oldVersion, bumpType, preReleaseTag);
+      versionManager.setVersion(contractName, newVersion, contract.absolutePath);
+    } else {
+      // Normal bump
+      const result = versionManager.bump(contractName, bumpType, contract.absolutePath);
+      newVersion = result.newVersion;
+    }
 
     // Extract changes text from changesets for this contract
     const changes = extractContractChanges(changesets, contractName);
@@ -94,21 +208,21 @@ export async function versionCommand(): Promise<void> {
     });
   }
 
-  bumpSpinner.succeed('Version bumps applied');
+  bumpSpinner?.succeed('Version bumps applied');
 
   // Append to CHANGELOG.md
-  const changelogSpinner = ora('Updating changelog...').start();
+  const changelogSpinner = options.json ? null : ora('Updating changelog...').start();
   const changelogPath = join(config.configDir, 'CHANGELOG.md');
   try {
     appendChangelog(changelogPath, bumpResults);
-    changelogSpinner.succeed('Changelog updated');
+    changelogSpinner?.succeed('Changelog updated');
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
-    changelogSpinner.warn(`Failed to update changelog: ${message}`);
+    changelogSpinner?.warn(`Failed to update changelog: ${message}`);
   }
 
   // Delete consumed changeset files
-  const cleanupSpinner = ora('Cleaning up changesets...').start();
+  const cleanupSpinner = options.json ? null : ora('Cleaning up changesets...').start();
 
   for (const changeset of changesets) {
     const changesetPath = join(changesetsDir, changeset.filename);
@@ -117,25 +231,95 @@ export async function versionCommand(): Promise<void> {
         unlinkSync(changesetPath);
         consumedChangesetPaths.push(changeset.filename);
       }
-    } catch (error) {
+    } catch {
       // Ignore cleanup errors
     }
   }
-  cleanupSpinner.succeed(`Removed ${consumedChangesetPaths.length} changeset(s)`);
+  cleanupSpinner?.succeed(`Removed ${consumedChangesetPaths.length} changeset(s)`);
 
   // Print summary
+  if (options.json) {
+    console.log(
+      JSON.stringify(
+        {
+          bumps: bumpResults.map((r) => ({
+            contract: r.contract,
+            old: r.oldVersion,
+            new: r.newVersion,
+            type: r.bumpType,
+          })),
+          changesets: consumedChangesetPaths.length,
+        },
+        null,
+        2
+      )
+    );
+  } else {
+    console.log();
+    console.log(chalk.bold('Version Summary:'));
+    console.log();
+
+    for (const result of bumpResults) {
+      console.log(
+        `  ${chalk.cyan(result.contract)}: ` +
+          `${chalk.gray(result.oldVersion)} -> ${chalk.green(result.newVersion)} ` +
+          `(${result.bumpType})`
+      );
+    }
+
+    console.log();
+    console.log(chalk.green('Done!'), `${bumpResults.length} contract(s) versioned.`);
+  }
+}
+
+/**
+ * Print a preview table of pending version bumps
+ */
+function printPreviewTable(bumps: PendingBump[]): void {
   console.log();
-  console.log(chalk.bold('Version Summary:'));
+  console.log(chalk.bold('Pending version bumps:'));
   console.log();
 
-  for (const result of bumpResults) {
+  // Calculate column widths
+  const maxContractLen = Math.max(8, ...bumps.map((b) => b.contract.length));
+  const maxCurrentLen = Math.max(7, ...bumps.map((b) => b.currentVersion.length));
+  const maxNextLen = Math.max(4, ...bumps.map((b) => b.nextVersion.length));
+
+  // Header
+  const header =
+    `  ${'Contract'.padEnd(maxContractLen)}  ` +
+    `${'Current'.padEnd(maxCurrentLen)}  ` +
+    `${'→'}  ` +
+    `${'Next'.padEnd(maxNextLen)}  ` +
+    `Reason`;
+  console.log(chalk.dim(header));
+  console.log(chalk.dim('  ' + '─'.repeat(header.length - 2)));
+
+  // Rows
+  for (const bump of bumps) {
+    const reason = getBumpReason(bump.bumpType);
     console.log(
-      `  ${chalk.cyan(result.contract)}: ` +
-        `${chalk.gray(result.oldVersion)} -> ${chalk.green(result.newVersion)} ` +
-        `(${result.bumpType})`
+      `  ${chalk.cyan(bump.contract.padEnd(maxContractLen))}  ` +
+        `${chalk.gray(bump.currentVersion.padEnd(maxCurrentLen))}  ` +
+        `${chalk.dim('→')}  ` +
+        `${chalk.green(bump.nextVersion.padEnd(maxNextLen))}  ` +
+        `${reason}`
     );
   }
+}
 
-  console.log();
-  console.log(chalk.green('Done!'), 'Run `contractual status` to verify changes.');
+/**
+ * Get human-readable reason for bump type
+ */
+function getBumpReason(bumpType: BumpType): string {
+  switch (bumpType) {
+    case 'major':
+      return chalk.red('major (breaking)');
+    case 'minor':
+      return chalk.yellow('minor (feature)');
+    case 'patch':
+      return chalk.dim('patch (fix)');
+    default:
+      return bumpType;
+  }
 }

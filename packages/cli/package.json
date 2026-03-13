@@ -60,6 +60,7 @@
     "@contractual/changesets": "workspace:*",
     "@contractual/governance": "workspace:*",
     "@contractual/types": "workspace:*",
+    "@inquirer/prompts": "^8.1.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "chalk": "^5.4.1",
