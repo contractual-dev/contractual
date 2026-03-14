@@ -11,12 +11,12 @@ function run(command: string): string {
 
 describe('CLI Installation and Basic Commands', () => {
   test('contractual binary is available after npm install', () => {
-    const result = run('npx contractual --version');
+    const result = run('npx @contractual/cli --version');
     expect(result).toMatch(/\d+\.\d+\.\d+/);
   });
 
   test('contractual --help shows available commands', () => {
-    const result = run('npx contractual --help');
+    const result = run('npx @contractual/cli --help');
     expect(result).toContain('init');
     expect(result).toContain('lint');
     expect(result).toContain('diff');
@@ -29,49 +29,49 @@ describe('CLI Installation and Basic Commands', () => {
   });
 
   test('contractual init --help shows init options', () => {
-    const result = run('npx contractual init --help');
+    const result = run('npx @contractual/cli init --help');
     expect(result.toLowerCase()).toContain('initialize');
   });
 
   test('contractual lint --help shows lint options', () => {
-    const result = run('npx contractual lint --help');
+    const result = run('npx @contractual/cli lint --help');
     expect(result).toContain('--format');
   });
 
   test('contractual breaking --help shows breaking options', () => {
-    const result = run('npx contractual breaking --help');
+    const result = run('npx @contractual/cli breaking --help');
     expect(result).toContain('--format');
   });
 
   test('contractual diff --help shows diff options', () => {
-    const result = run('npx contractual diff --help');
+    const result = run('npx @contractual/cli diff --help');
     expect(result).toContain('--format');
     expect(result).toContain('--severity');
     expect(result).toContain('--verbose');
   });
 
   test('contractual contract --help shows subcommands', () => {
-    const result = run('npx contractual contract --help');
+    const result = run('npx @contractual/cli contract --help');
     expect(result).toContain('add');
     expect(result).toContain('list');
   });
 
   test('contractual contract add --help shows add options', () => {
-    const result = run('npx contractual contract add --help');
+    const result = run('npx @contractual/cli contract add --help');
     expect(result).toContain('--name');
     expect(result).toContain('--type');
     expect(result).toContain('--path');
   });
 
   test('contractual pre --help shows subcommands', () => {
-    const result = run('npx contractual pre --help');
+    const result = run('npx @contractual/cli pre --help');
     expect(result).toContain('enter');
     expect(result).toContain('exit');
     expect(result).toContain('status');
   });
 
   test('contractual version --help shows version options', () => {
-    const result = run('npx contractual version --help');
+    const result = run('npx @contractual/cli version --help');
     expect(result).toContain('--dry-run');
     expect(result).toContain('--json');
     expect(result).toContain('--yes');

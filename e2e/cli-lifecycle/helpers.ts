@@ -42,7 +42,7 @@ export function run(
   cwd: string,
   options?: { expectFail?: boolean }
 ): { stdout: string; stderr: string; exitCode: number } {
-  const fullCmd = `npx contractual ${command}`;
+  const fullCmd = `npx @contractual/cli ${command}`;
 
   try {
     const stdout = execSync(fullCmd, {
