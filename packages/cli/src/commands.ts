@@ -1,10 +1,12 @@
 import { Command } from 'commander';
 import { initCommand } from './commands/init.command.js';
+import { contractAddCommand, contractListCommand } from './commands/contract.command.js';
 import { lintCommand } from './commands/lint.command.js';
 import { diffCommand } from './commands/diff.command.js';
 import { breakingCommand } from './commands/breaking.command.js';
 import { changesetCommand } from './commands/changeset.command.js';
 import { versionCommand } from './commands/version.command.js';
+import { preEnterCommand, preExitCommand, preStatusCommand } from './commands/pre.command.js';
 import { statusCommand } from './commands/status.command.js';
 
 const program = new Command();
@@ -14,7 +16,30 @@ program.name('contractual').description('Schema contract lifecycle orchestrator'
 program
   .command('init')
   .description('Initialize Contractual in this repository')
+  .option('-V, --initial-version <version>', 'Initial version for contracts')
+  .option('--versioning <mode>', 'Versioning mode: independent, fixed')
+  .option('-y, --yes', 'Skip prompts and use defaults')
+  .option('--force', 'Reinitialize existing project')
   .action(initCommand);
+
+const contractCmd = program.command('contract').description('Manage contracts');
+
+contractCmd
+  .command('add')
+  .description('Add a new contract to the configuration')
+  .option('-n, --name <name>', 'Contract name')
+  .option('-t, --type <type>', 'Contract type: openapi, asyncapi, json-schema, odcs')
+  .option('-p, --path <path>', 'Path to spec file')
+  .option('--initial-version <version>', 'Initial version (default: 0.0.0)')
+  .option('--skip-validation', 'Skip spec validation')
+  .option('-y, --yes', 'Skip prompts and use defaults')
+  .action(contractAddCommand);
+
+contractCmd
+  .command('list [name]')
+  .description('List contracts (optionally filter by name)')
+  .option('--json', 'Output as JSON')
+  .action(contractListCommand);
 
 program
   .command('lint')
@@ -49,7 +74,21 @@ program
 program
   .command('version')
   .description('Consume changesets and bump versions')
+  .option('-y, --yes', 'Skip confirmation prompt')
+  .option('--dry-run', 'Preview without applying')
+  .option('--json', 'Output JSON (implies --yes)')
   .action(versionCommand);
+
+const preCmd = program.command('pre').description('Manage pre-release versions');
+
+preCmd
+  .command('enter <tag>')
+  .description('Enter pre-release mode (e.g., alpha, beta, rc)')
+  .action(preEnterCommand);
+
+preCmd.command('exit').description('Exit pre-release mode').action(preExitCommand);
+
+preCmd.command('status').description('Show pre-release status').action(preStatusCommand);
 
 program
   .command('status')

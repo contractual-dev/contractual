@@ -50,12 +50,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run Verdaccio Docker
-        run: |
-          docker run -d --name verdaccio \
-          -p 4873:4873 \
-          -v ${{ github.workspace }}/e2e/config.yaml:/verdaccio/conf/config.yaml \
-          verdaccio/verdaccio
+      - name: Start Verdaccio
+        run: docker compose -f local-e2e.docker-compose.yaml up -d verdaccio
 
       - name: Wait for Verdaccio
         run: |
@@ -80,23 +76,12 @@ jobs:
           always-auth: false
 
       - name: Install jq
-        run: sudo apt-get install jq
-
-      - name: Remove provenance from package.json files
-        run: |
-          find packages -name 'package.json' | while read filename; do
-            jq 'del(.publishConfig.provenance)' "$filename" > temp.json && mv temp.json "$filename"
-          done
+        run: sudo apt-get install -y jq
 
       - name: Config Git
         run: |
           git config --global user.email "e2e@contractual.dev"
           git config --global user.name "Contractual e2e"
-
-      - name: Commit Provenance Change
-        run: |
-          git add .
-          git commit -am "remove provenance"
 
       - name: Version Packages
         run: |
@@ -135,6 +120,8 @@ jobs:
           --no-git-reset \
           --exact \
           --dist-tag e2e
+        env:
+          NPM_CONFIG_PROVENANCE: false
 
       - name: Clean Source (simulate fresh install)
         run: |

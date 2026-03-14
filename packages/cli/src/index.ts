@@ -17,15 +17,18 @@ export {
 // Re-export from @contractual/changesets
 export {
   VersionManager,
+  PreReleaseManager,
   createChangeset,
   readChangesets,
   aggregateBumps,
   generateChangesetName,
   extractContractChanges,
   appendChangelog,
+  incrementVersionWithPreRelease,
   VERSIONS_FILE,
   SNAPSHOTS_DIR,
   CHANGESETS_DIR,
+  PRE_RELEASE_FILE,
 } from '@contractual/changesets';
 export type { BumpOperationResult } from '@contractual/changesets';
 

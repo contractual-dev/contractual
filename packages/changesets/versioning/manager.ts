@@ -1,7 +1,7 @@
-import { existsSync, readFileSync, writeFileSync, copyFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync, copyFileSync, unlinkSync } from 'node:fs';
 import { join, extname } from 'node:path';
 import * as semver from 'semver';
-import type { VersionsFile, SimpleVersionEntry, BumpType } from '@contractual/types';
+import type { VersionsFile, SimpleVersionEntry, BumpType, PreReleaseState } from '@contractual/types';
 
 /**
  * Default version for new contracts
@@ -73,6 +73,11 @@ export const SNAPSHOTS_DIR = 'snapshots' as const;
  * Directory name for changesets
  */
 export const CHANGESETS_DIR = 'changesets' as const;
+
+/**
+ * Filename for pre-release state
+ */
+export const PRE_RELEASE_FILE = 'pre.json' as const;
 
 /**
  * Manages contract versions and snapshots
@@ -198,10 +203,169 @@ export class VersionManager {
   }
 
   /**
+   * Set version for a contract (used for initial version setup)
+   * @param contractName - The contract name
+   * @param version - The version to set
+   * @param specPath - Path to the spec file to snapshot
+   */
+  setVersion(contractName: string, version: string, specPath: string): void {
+    if (!semver.valid(version)) {
+      throw new VersionError(`Invalid semver version: ${version}`, version);
+    }
+
+    // Update versions entry
+    this.versions[contractName] = {
+      version,
+      released: new Date().toISOString(),
+    };
+
+    // Copy spec to snapshots directory
+    const ext = extname(specPath) || '.yaml';
+    const snapshotPath = join(this.snapshotsDir, `${contractName}${ext}`);
+    copyFileSync(specPath, snapshotPath);
+
+    // Save versions.json
+    this.save();
+  }
+
+  /**
    * Save versions.json to disk
    */
   private save(): void {
     const content = JSON.stringify(this.versions, null, 2);
     writeFileSync(this.versionsPath, content, 'utf-8');
   }
+
+  /**
+   * Get all contract versions
+   * @returns Map of contract names to versions
+   */
+  getAllVersions(): Record<string, string> {
+    const result: Record<string, string> = {};
+    for (const [name, entry] of Object.entries(this.versions)) {
+      result[name] = entry.version;
+    }
+    return result;
+  }
+}
+
+/**
+ * Manages pre-release state
+ */
+export class PreReleaseManager {
+  private readonly prePath: string;
+
+  constructor(contractualDir: string) {
+    this.prePath = join(contractualDir, PRE_RELEASE_FILE);
+  }
+
+  /**
+   * Check if pre-release mode is active
+   */
+  isActive(): boolean {
+    return existsSync(this.prePath);
+  }
+
+  /**
+   * Get current pre-release state
+   * @returns The pre-release state, or null if not in pre-release mode
+   */
+  getState(): PreReleaseState | null {
+    if (!this.isActive()) {
+      return null;
+    }
+
+    try {
+      const content = readFileSync(this.prePath, 'utf-8');
+      return JSON.parse(content) as PreReleaseState;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Enter pre-release mode
+   * @param tag - The pre-release tag (e.g., "alpha", "beta", "rc")
+   * @param versionManager - VersionManager to get current versions
+   */
+  enter(tag: string, versionManager: VersionManager): void {
+    if (this.isActive()) {
+      throw new VersionError(`Already in pre-release mode. Run 'pre exit' first.`);
+    }
+
+    // Validate tag
+    if (!/^[a-zA-Z][a-zA-Z0-9-]*$/.test(tag)) {
+      throw new VersionError(
+        `Invalid pre-release tag: ${tag}. Must start with letter, contain only letters, numbers, and hyphens.`
+      );
+    }
+
+    const state: PreReleaseState = {
+      tag,
+      enteredAt: new Date().toISOString(),
+      initialVersions: versionManager.getAllVersions(),
+    };
+
+    writeFileSync(this.prePath, JSON.stringify(state, null, 2), 'utf-8');
+  }
+
+  /**
+   * Exit pre-release mode
+   */
+  exit(): void {
+    if (!this.isActive()) {
+      throw new VersionError('Not in pre-release mode.');
+    }
+
+    unlinkSync(this.prePath);
+  }
+
+  /**
+   * Get the pre-release tag
+   * @returns The tag, or null if not in pre-release mode
+   */
+  getTag(): string | null {
+    const state = this.getState();
+    return state?.tag ?? null;
+  }
+}
+
+/**
+ * Increment a version with pre-release support
+ * @param version - The current version string
+ * @param bumpType - The type of version bump
+ * @param preReleaseTag - Optional pre-release tag (e.g., "beta")
+ * @returns The new version string
+ */
+export function incrementVersionWithPreRelease(
+  version: string,
+  bumpType: BumpType,
+  preReleaseTag?: string
+): string {
+  if (!semver.valid(version)) {
+    throw new VersionError(`Invalid semver version: ${version}`, version, bumpType);
+  }
+
+  const parsed = semver.parse(version);
+  if (!parsed) {
+    throw new VersionError(`Failed to parse version: ${version}`, version, bumpType);
+  }
+
+  // If no pre-release tag, use normal increment
+  if (!preReleaseTag) {
+    return incrementVersion(version, bumpType);
+  }
+
+  // If already a pre-release with the same tag, just bump the pre-release number
+  if (parsed.prerelease.length > 0 && parsed.prerelease[0] === preReleaseTag) {
+    const newVersion = semver.inc(version, 'prerelease', preReleaseTag);
+    if (!newVersion) {
+      throw new VersionError(`Failed to increment pre-release version`, version, bumpType);
+    }
+    return newVersion;
+  }
+
+  // Otherwise, apply the bump type and start a new pre-release
+  const baseVersion = incrementVersion(version, bumpType);
+  return `${baseVersion}-${preReleaseTag}.0`;
 }

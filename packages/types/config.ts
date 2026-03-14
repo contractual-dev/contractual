@@ -89,6 +89,22 @@ export interface AIConfig {
 }
 
 /**
+ * Versioning mode for contracts.
+ *
+ * - `independent` - Each contract has its own version (like Lerna independent mode)
+ * - `fixed` - All contracts share the same version
+ */
+export type VersioningMode = 'independent' | 'fixed';
+
+/**
+ * Versioning configuration.
+ */
+export interface VersioningConfig {
+  /** Versioning mode (default: 'independent') */
+  mode: VersioningMode;
+}
+
+/**
  * Root configuration for contractual.yaml.
  *
  * @example
@@ -107,6 +123,8 @@ export interface AIConfig {
 export interface ContractualConfig {
   /** List of contract definitions */
   contracts: ContractDefinition[];
+  /** Versioning configuration */
+  versioning?: VersioningConfig;
   /** Changeset behavior configuration */
   changeset?: ChangesetConfig;
   /** AI/LLM integration configuration */

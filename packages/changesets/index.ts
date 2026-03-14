@@ -15,12 +15,15 @@ export { aggregateBumps, extractContractChanges } from './changesets/consume.js'
 // Versioning
 export {
   VersionManager,
+  PreReleaseManager,
   VERSIONS_FILE,
   SNAPSHOTS_DIR,
   CHANGESETS_DIR,
+  PRE_RELEASE_FILE,
   DEFAULT_VERSION,
   SPEC_EXTENSIONS,
   incrementVersion,
+  incrementVersionWithPreRelease,
   VersionError,
   type BumpOperationResult,
 } from './versioning/manager.js';

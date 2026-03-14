@@ -49,6 +49,19 @@
         "additionalProperties": false
       }
     },
+    "versioning": {
+      "type": "object",
+      "description": "Versioning configuration",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["independent", "fixed"],
+          "description": "Versioning mode: independent (each contract separate) or fixed (all share same version)",
+          "default": "independent"
+        }
+      },
+      "additionalProperties": false
+    },
     "changeset": {
       "type": "object",
       "description": "Changeset behavior configuration",

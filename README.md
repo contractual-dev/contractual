@@ -1,107 +1,109 @@
-# Contractual
+<p align="center">
+  <img width="100" src="logo.png" alt="Contractual" />
+</p>
 
-The `contractual` CLI and GitHub Action manage schema contract lifecycle for OpenAPI, JSON Schema, and AsyncAPI.
+<h1 align="center">Contractual</h1>
 
-It provides:
-- Linting of specs
-- Structural breaking change detection against snapshots
-- Changeset generation and versioning
-- Changelog generation
-- GitHub Action integration for PR checks and release automation
+<p align="center">
+Schema contract lifecycle for OpenAPI, JSON Schema, and AsyncAPI
+<br />
+Linting • Breaking change detection • Versioning • Release automation
+</p>
+
+<div align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="license" /></a>
+  <a href="https://github.com/contractual-dev/contractual/blob/main/CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome" /></a>
+  <a href="https://npmjs.org/package/@contractual/cli"><img src="https://img.shields.io/npm/dm/@contractual/cli.svg?label=%40contractual%2Fcli" alt="npm downloads" /></a>
+</div>
+
+<h3 align="center">
+  <a href="https://contractual.dev">Docs</a>
+  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+  <a href="https://contractual.dev/getting-started/quickstart">Quickstart</a>
+  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+  <a href="https://contractual.dev/breaking/overview">Breaking Detection</a>
+  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+  <a href="https://contractual.dev/github-action/setup">GitHub Action</a>
+</h3>
+
+<p align="center">
+<strong>Supported Formats:</strong> <a href="https://www.openapis.org/">OpenAPI</a>, <a href="https://json-schema.org/">JSON Schema</a>, <a href="https://www.asyncapi.com/">AsyncAPI</a>
+</p>
+
+## Features
+
+- **Structural Breaking Change Detection** - Compares specs against versioned snapshots using structural diffing, not string comparison. Catches removed fields, type changes, and endpoint deletions.
+
+- **Automated Versioning** - Changesets declare bump levels (major/minor/patch). `contractual version` consumes them, bumps versions, updates snapshots, and generates changelogs.
+
+- **CI Integration** - GitHub Action posts diff tables on PRs, auto-generates changesets, and opens Version PRs for release automation.
+
+- **Format Agnostic** - Works with OpenAPI, JSON Schema, and AsyncAPI. Custom linters and differs can be configured per contract.
+
+## Quick Example
+
+### Detect changes
+
+```bash
+$ contractual diff
+
+orders-api: 3 changes (2 breaking, 1 non-breaking) — suggested bump: major
+
+  BREAKING     Removed endpoint GET /orders/{id}/details
+  BREAKING     Changed type of field 'amount': string → number
+  non-breaking Added optional field 'tracking_url'
+```
+
+### Generate a changeset
+
+```bash
+$ contractual changeset
+
+? Bump type for orders-api: major
+? Summary: Remove deprecated endpoint, change amount type
+
+Wrote .contractual/changesets/fuzzy-lion-dances.md
+```
+
+### Bump versions
+
+```bash
+$ contractual version
+
+orders-api  1.4.2 → 2.0.0 (major)
+
+Updated .contractual/versions.json
+Updated CHANGELOG.md
+```
 
 ## Installation
 
-### npm
-
-```sh
-npm install -g contractual
+```bash
+npm install -g @contractual/cli
 ```
 
-### Other package managers
+Or with other package managers:
 
-```sh
-pnpm add -g contractual
-yarn global add contractual
-bun add -g contractual
+```bash
+pnpm add -g @contractual/cli
+yarn global add @contractual/cli
 ```
 
-## Usage
+## Getting Started
 
-The CLI provides command summaries and flags:
+1. **Initialize** - `contractual init` scans for specs and creates `contractual.yaml`
+2. **Lint** - `contractual lint` validates specs
+3. **Detect changes** - `contractual diff` shows all changes classified
+4. **CI gate** - `contractual breaking` fails if breaking changes exist
+5. **Version** - `contractual changeset` + `contractual version` for releases
 
-```sh
-contractual --help
-```
-
-For usage details, see the documentation, especially:
-
-- [`contractual breaking`][breaking-docs]
-- [`contractual lint`][lint-docs]
-- [`contractual changeset`][changeset-docs]
-- [`contractual version`][version-docs]
-- [GitHub Action setup][action-docs]
-
-## CLI breaking change policy
-
-Breaking changes are documented in release notes for the npm package.
-
-## Goals for schema contracts
-
-Schema contracts are a compatibility boundary between producers and consumers. Contractual standardizes linting, breaking change detection, versioning, and changelog generation across OpenAPI, JSON Schema, and AsyncAPI.
-
-Contractual wraps existing tooling where possible and adds missing lifecycle steps, including built-in JSON Schema diffing where production-grade tooling is limited.
-
-## The Contractual workflow
-
-Contractual uses a repository state directory at `.contractual/` to store versions, snapshots, and pending changesets. The GitHub Action can post diff tables on pull requests and open a Version Contracts PR for release automation.
-
-The GitHub Action is optional. The CLI can run locally or in CI.
-
-## More advanced CLI features
-
-- Custom linters and differs via `contractual.yaml`
-- Custom outputs for code generation
-- JSON output formats for CI systems
-- Base snapshot selection with `--base`
-- Monorepo support with multiple configs
-- Optional AI explanations with `ANTHROPIC_API_KEY`
-
-## Next steps
-
-After installation, follow the CLI quickstart:
-
-- [Quickstart][quickstart-docs]
-- [Configuration reference][config-docs]
-- [Breaking change detection][breaking-overview]
-
-## Builds
-
-The CLI is distributed via npm and requires Node.js 18 or later.
-
-| Platform | Support |
-|----------|---------|
-| macOS | Node.js 18+ |
-| Linux | Node.js 18+ |
-| Windows | Node.js 18+ |
+[→ Full Quickstart Guide](https://contractual.dev/getting-started/quickstart)
 
 ## Community
 
-Issues and feature requests:
-- [GitHub issues][issues]
+- [Documentation](https://contractual.dev)
+- [GitHub Issues](https://github.com/contractual-dev/contractual/issues)
 
-Documentation:
-- [contractual.dev][docs]
+## License
 
-License:
-- [MIT](LICENSE)
-
-[docs]: https://contractual.dev
-[issues]: https://github.com/contractual-dev/contractual/issues
-[quickstart-docs]: https://contractual.dev/getting-started/quickstart
-[config-docs]: https://contractual.dev/reference/configuration
-[breaking-docs]: https://contractual.dev/breaking/usage
-[breaking-overview]: https://contractual.dev/breaking/overview
-[lint-docs]: https://contractual.dev/linting/usage
-[changeset-docs]: https://contractual.dev/versioning/usage
-[version-docs]: https://contractual.dev/versioning/usage
-[action-docs]: https://contractual.dev/github-action/setup
+[MIT](LICENSE)

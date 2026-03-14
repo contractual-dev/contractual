@@ -34,8 +34,11 @@ describe('contractual init', () => {
       expect(fileExists(dir, '.contractual/changesets')).toBe(true);
       expect(fileExists(dir, '.contractual/snapshots')).toBe(true);
 
-      // Assert: versions.json is empty object
-      expect(readJSON(dir, '.contractual/versions.json')).toEqual({});
+      // Assert: versions.json is populated with initial version
+      const versions = readJSON(dir, '.contractual/versions.json') as Record<string, { version: string }>;
+      const contractName = Object.keys(versions)[0];
+      expect(contractName).toBeDefined();
+      expect(versions[contractName].version).toBe('0.0.0');
 
       // Assert: stdout confirms detection
       expect(result.stdout).toMatch(/found|detected|initialized/i);
@@ -77,17 +80,17 @@ describe('contractual init', () => {
     }
   });
 
-  test('aborts if already initialized', () => {
+  test('handles already initialized gracefully', () => {
     const { dir, cleanup } = createTempRepo();
     try {
       copyFixture('openapi/petstore-base.yaml', path.join(dir, 'specs/api.openapi.yaml'));
 
       run('init', dir);
 
-      // Second init should fail
-      const result = run('init', dir, { expectFail: true });
-      expect(result.exitCode).not.toBe(0);
-      expect(result.stdout + result.stderr).toMatch(/already initialized|exists/i);
+      // Second init should succeed with informational message (use --force to reinitialize)
+      const result = run('init', dir);
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout + result.stderr).toMatch(/already initialized|all contracts have snapshots/i);
     } finally {
       cleanup();
     }

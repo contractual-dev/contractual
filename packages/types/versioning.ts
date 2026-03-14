@@ -181,3 +181,26 @@ export function isBumpType(value: unknown): value is BumpType {
     ['major', 'minor', 'patch'].includes(value)
   );
 }
+
+/**
+ * Pre-release state stored in .contractual/pre.json
+ *
+ * @example
+ * ```json
+ * {
+ *   "tag": "beta",
+ *   "enteredAt": "2026-03-10T10:00:00Z",
+ *   "initialVersions": {
+ *     "orders-api": "1.2.0"
+ *   }
+ * }
+ * ```
+ */
+export interface PreReleaseState {
+  /** Pre-release tag (e.g., "alpha", "beta", "rc") */
+  tag: string;
+  /** ISO 8601 timestamp when pre-release mode was entered */
+  enteredAt: string;
+  /** Versions of contracts when pre-release mode was entered */
+  initialVersions: Record<string, string>;
+}
