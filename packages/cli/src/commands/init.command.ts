@@ -5,7 +5,12 @@ import chalk from 'chalk';
 import ora from 'ora';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import { VersionManager } from '@contractual/changesets';
-import { ensureContractualDir, detectSpecType, CONTRACTUAL_DIR, getSnapshotPath } from '../utils/files.js';
+import {
+  ensureContractualDir,
+  detectSpecType,
+  CONTRACTUAL_DIR,
+  getSnapshotPath,
+} from '../utils/files.js';
 import {
   promptSelect,
   promptVersion,
@@ -334,9 +339,13 @@ async function handleExistingProject(
   }
 
   // Show uninitialized contracts
-  console.log(chalk.yellow(`Found ${uninitializedContracts.length} contract(s) without version history:`));
+  console.log(
+    chalk.yellow(`Found ${uninitializedContracts.length} contract(s) without version history:`)
+  );
   for (const contract of uninitializedContracts) {
-    console.log(`  ${chalk.dim('-')} ${chalk.cyan(contract.name)} ${chalk.dim(`(${contract.type})`)}`);
+    console.log(
+      `  ${chalk.dim('-')} ${chalk.cyan(contract.name)} ${chalk.dim(`(${contract.type})`)}`
+    );
   }
   console.log();
 
@@ -357,11 +366,15 @@ async function handleExistingProject(
   for (const contract of uninitializedContracts) {
     const absolutePath = join(cwd, contract.path);
     if (!existsSync(absolutePath)) {
-      console.log(chalk.yellow(`  Skipped ${contract.name}: spec file not found at ${contract.path}`));
+      console.log(
+        chalk.yellow(`  Skipped ${contract.name}: spec file not found at ${contract.path}`)
+      );
       continue;
     }
     versionManager.setVersion(contract.name, DEFAULT_VERSION, absolutePath);
-    console.log(chalk.green('✓') + ` Initialized ${chalk.cyan(contract.name)} at v${DEFAULT_VERSION}`);
+    console.log(
+      chalk.green('✓') + ` Initialized ${chalk.cyan(contract.name)} at v${DEFAULT_VERSION}`
+    );
   }
 }
 

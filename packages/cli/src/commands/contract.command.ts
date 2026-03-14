@@ -133,7 +133,9 @@ export async function contractAddCommand(options: ContractAddOptions = {}): Prom
   // Print summary
   const snapshotExt = extname(specPath) || '.yaml';
   console.log();
-  console.log(chalk.green('✓') + ` Added ${chalk.cyan(contractName)} (${contractType}) at v${version}`);
+  console.log(
+    chalk.green('✓') + ` Added ${chalk.cyan(contractName)} (${contractType}) at v${version}`
+  );
   console.log();
   console.log(chalk.bold('Updated:'));
   console.log(`  ${chalk.yellow('~')} contractual.yaml`);
@@ -177,7 +179,8 @@ async function getContractName(
   // Validate name format (alphanumeric, hyphens, underscores)
   if (!/^[a-zA-Z][a-zA-Z0-9_-]*$/.test(name)) {
     console.log(
-      chalk.red('Invalid name:') + ' Must start with letter, contain only letters, numbers, hyphens, underscores'
+      chalk.red('Invalid name:') +
+        ' Must start with letter, contain only letters, numbers, hyphens, underscores'
     );
     process.exitCode = 1;
     return null;

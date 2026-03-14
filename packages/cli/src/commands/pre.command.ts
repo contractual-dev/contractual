@@ -36,7 +36,9 @@ export async function preEnterCommand(tag: string): Promise<void> {
     console.log(`  ${chalk.green('+')} .contractual/pre.json`);
     console.log();
     console.log(chalk.dim(`Next versions will use ${tag} identifier (e.g., 2.0.0-${tag}.0)`));
-    console.log(chalk.dim('Run `contractual version` to apply changesets with pre-release versions.'));
+    console.log(
+      chalk.dim('Run `contractual version` to apply changesets with pre-release versions.')
+    );
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     console.error(chalk.red('Failed to enter pre-release mode:'), message);
@@ -89,9 +91,7 @@ export async function preExitCommand(): Promise<void> {
         }
       }
       console.log();
-      console.log(
-        chalk.dim('Run `contractual version` after exiting to finalize versions.')
-      );
+      console.log(chalk.dim('Run `contractual version` after exiting to finalize versions.'));
     }
 
     preManager.exit();
