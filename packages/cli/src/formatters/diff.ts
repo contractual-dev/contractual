@@ -96,9 +96,24 @@ function formatSeverityLabel(severity: ChangeSeverity): string {
 
 /**
  * Format diff results as JSON
+ *
+ * Output format:
+ * {
+ *   "contracts": {
+ *     "order": { "changes": [...], "summary": {...}, "suggestedBump": "minor" },
+ *     "petstore": { "changes": [...], "summary": {...}, "suggestedBump": "none" }
+ *   }
+ * }
  */
 export function formatDiffJson(results: DiffResult[]): string {
-  return JSON.stringify({ results }, null, 2);
+  const contracts: Record<string, Omit<DiffResult, 'contract'>> = {};
+
+  for (const result of results) {
+    const { contract, ...rest } = result;
+    contracts[contract] = rest;
+  }
+
+  return JSON.stringify({ contracts }, null, 2);
 }
 
 /**
