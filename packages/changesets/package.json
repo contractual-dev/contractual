@@ -1,7 +1,7 @@
 {
   "name": "@contractual/changesets",
   "private": false,
-  "version": "0.0.0",
+  "version": "0.1.0-dev.0",
   "description": "Changeset creation, parsing, and versioning utilities for Contractual",
   "license": "MIT",
   "type": "module",
@@ -35,7 +35,9 @@
     "prebuild": "pnpm rimraf dist",
     "build": "tsc -p tsconfig.build.json"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@contractual/types": "workspace:*",
     "semver": "^7.7.1",
