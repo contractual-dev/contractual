@@ -208,15 +208,15 @@ describe('contractual diff', () => {
         expect(result.exitCode).toBe(0);
 
         const output = JSON.parse(result.stdout);
-        expect(output).toHaveProperty('results');
-        expect(Array.isArray(output.results)).toBe(true);
+        expect(output).toHaveProperty('contracts');
+        expect(typeof output.contracts).toBe('object');
 
-        if (output.results.length > 0) {
-          const firstResult = output.results[0];
-          expect(firstResult).toHaveProperty('contract');
-          expect(firstResult).toHaveProperty('changes');
-          expect(firstResult).toHaveProperty('summary');
-          expect(firstResult).toHaveProperty('suggestedBump');
+        const contractNames = Object.keys(output.contracts);
+        if (contractNames.length > 0) {
+          const firstContract = output.contracts[contractNames[0]];
+          expect(firstContract).toHaveProperty('changes');
+          expect(firstContract).toHaveProperty('summary');
+          expect(firstContract).toHaveProperty('suggestedBump');
         }
       } finally {
         cleanup();
@@ -255,9 +255,10 @@ describe('contractual diff', () => {
         expect(result.exitCode).toBe(0);
 
         const output = JSON.parse(result.stdout);
-        // All changes in results should be breaking
-        for (const result of output.results) {
-          for (const change of result.changes) {
+        // All changes in contracts should be breaking
+        for (const contractName in output.contracts) {
+          const contract = output.contracts[contractName];
+          for (const change of contract.changes) {
             expect(change.severity).toBe('breaking');
           }
         }
@@ -301,8 +302,9 @@ describe('contractual diff', () => {
 
         const output = JSON.parse(result.stdout);
         // All changes should be non-breaking
-        for (const result of output.results) {
-          for (const change of result.changes) {
+        for (const contractName in output.contracts) {
+          const contract = output.contracts[contractName];
+          for (const change of contract.changes) {
             expect(change.severity).toBe('non-breaking');
           }
         }
