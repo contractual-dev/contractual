@@ -155,10 +155,10 @@ importers:
       '@contractual/types':
         specifier: workspace:*
         version: link:../types
-    devDependencies:
       '@redocly/openapi-core':
         specifier: ^1.0.0
         version: 1.34.6
+    devDependencies:
       rimraf:
         specifier: ^5.0.5
         version: 5.0.10

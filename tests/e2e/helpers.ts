@@ -87,7 +87,7 @@ export function createTempGitRepo(): { dir: string; cleanup: () => void } {
 export function run(
   command: string,
   cwd: string,
-  options?: { expectFail?: boolean; env?: Record<string, string> }
+  options?: { expectFail?: boolean; env?: Record<string, string>; timeout?: number }
 ): { stdout: string; stderr: string; exitCode: number } {
   const fullCmd = `node "${CLI_BIN}" ${command}`;
 
@@ -96,6 +96,7 @@ export function run(
       cwd,
       encoding: 'utf-8',
       stdio: ['pipe', 'pipe', 'pipe'],
+      timeout: options?.timeout,
       env: { ...process.env, ...options?.env, NO_COLOR: '1', FORCE_COLOR: '0' },
     });
     return { stdout, stderr: '', exitCode: 0 };

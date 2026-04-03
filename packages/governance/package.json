@@ -49,14 +49,6 @@
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1"
   },
-  "peerDependencies": {
-    "@redocly/openapi-core": "^1.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@redocly/openapi-core": {
-      "optional": true
-    }
-  },
   "devDependencies": {
     "@redocly/openapi-core": "^1.0.0"
   },
