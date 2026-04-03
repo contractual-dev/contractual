@@ -5,8 +5,7 @@
  * and emits RawChange for every structural difference.
  */
 
-import type { ChangeType, RawChange } from './types.js';
-import type { CONTENT_KEYS } from './types.js';
+import type { ChangeType, RawChange, CONTENT_KEYS } from './types.js';
 import {
   ANNOTATION_KEYS,
   arraysEqual,

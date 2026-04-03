@@ -5,18 +5,16 @@
  * (https://strands.octue.com/api/compare-schemas)
  */
 
-import type { ChangeSeverity, RawChange } from './types.js';
-import {
-  type CompareResult,
-  type CompareOptions,
-  type StrandsTrace,
-  type StrandsCompatibility,
-  type StrandsVersion,
-  type SemanticVersion,
+import type { ChangeSeverity, RawChange } from '@contractual/types';
+import type {
+  CompareResult,
+  CompareOptions,
+  StrandsTrace,
+  StrandsCompatibility,
+  StrandsVersion,
+  SemanticVersion,
 } from './types.js';
-import { resolveRefs } from './ref-resolver.js';
-import { walk } from './walker.js';
-import { classify, classifyPropertyAdded } from './classifiers.js';
+import { resolveRefs, walk, classify, classifyPropertyAdded } from '@contractual/differs.core';
 
 /**
  * Compare two JSON Schema objects and return Strands-compatible result

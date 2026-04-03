@@ -8,7 +8,7 @@
 import { registerLinter, registerDiffer } from './registry.js';
 import { lintOpenAPI } from './linters/openapi-redocly.js';
 import { lintJsonSchema } from './linters/json-schema-ajv.js';
-import { diffOpenAPI } from './differs/openapi-diff.js';
+import { diffOpenApi } from '@contractual/differs.openapi';
 import { diffJsonSchema } from '@contractual/differs.json-schema';
 
 // Re-export registry functions
@@ -44,12 +44,8 @@ export type {
 export { lintOpenAPI } from './linters/openapi-redocly.js';
 export { lintJsonSchema } from './linters/json-schema-ajv.js';
 
-// Re-export differs
-export {
-  diffOpenAPI,
-  diffOpenAPIObjects,
-  hasOpenAPIBreakingChanges,
-} from './differs/openapi-diff.js';
+// Re-export OpenAPI differ
+export { diffOpenApi, diffOpenApiObjects, resolveOpenApiSpec } from '@contractual/differs.openapi';
 
 // Re-export everything from JSON Schema differ package
 export {
@@ -96,7 +92,7 @@ export function registerAllEngines(): void {
   registerLinter('json-schema', lintJsonSchema);
 
   // Register differs
-  registerDiffer('openapi', diffOpenAPI);
+  registerDiffer('openapi', diffOpenApi);
   registerDiffer('json-schema', diffJsonSchema);
 
   // Phase 2:

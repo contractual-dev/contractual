@@ -44,10 +44,10 @@
   ],
   "dependencies": {
     "@contractual/differs.json-schema": "workspace:*",
+    "@contractual/differs.openapi": "workspace:*",
     "@contractual/types": "workspace:*",
     "ajv": "^8.17.1",
-    "ajv-formats": "^3.0.1",
-    "openapi-diff": "^0.23.7"
+    "ajv-formats": "^3.0.1"
   },
   "peerDependencies": {
     "@redocly/openapi-core": "^1.0.0"

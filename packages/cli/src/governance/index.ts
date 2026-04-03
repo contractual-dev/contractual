@@ -21,7 +21,7 @@ export {
 } from '@contractual/governance';
 
 // Re-export individual engines for direct use
-export { lintOpenAPI, lintJsonSchema, diffOpenAPI, diffJsonSchema } from '@contractual/governance';
+export { lintOpenAPI, lintJsonSchema, diffOpenApi, diffJsonSchema } from '@contractual/governance';
 
 // Re-export runner utilities for custom commands
 export {

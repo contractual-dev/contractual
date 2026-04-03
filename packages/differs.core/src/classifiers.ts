@@ -6,7 +6,7 @@
  * additive changes require minor bumps, and metadata changes are patches.
  */
 
-import type { RawChange, ChangeType, ChangeSeverity } from './types.js';
+import type { RawChange, ChangeType, ChangeSeverity } from '@contractual/types';
 
 /**
  * Change types that are always breaking (require major version bump)
@@ -40,6 +40,15 @@ const BREAKING_CHANGES: ReadonlySet<ChangeType> = new Set<ChangeType>([
   'oneof-option-added',
   'allof-member-added',
   'not-schema-changed',
+  // OpenAPI structural breaking changes
+  'path-removed',
+  'operation-removed',
+  'parameter-added',
+  'parameter-removed',
+  'parameter-required-changed',
+  'request-body-added',
+  'response-removed',
+  'security-changed',
 ]);
 
 /**
@@ -68,6 +77,12 @@ const NON_BREAKING_CHANGES: ReadonlySet<ChangeType> = new Set<ChangeType>([
   'anyof-option-removed',
   'oneof-option-removed',
   'allof-member-removed',
+  // OpenAPI structural non-breaking changes
+  'path-added',
+  'operation-added',
+  'request-body-removed',
+  'response-added',
+  'server-changed',
 ]);
 
 /**
@@ -127,6 +142,9 @@ const UNKNOWN_CHANGES: ReadonlySet<ChangeType> = new Set<ChangeType>([
   'if-then-else-changed',
   // Legacy/generic composition
   'composition-changed',
+  // OpenAPI context-dependent (schema-level changes handled by walker)
+  'parameter-schema-changed',
+  'response-schema-changed',
   // Catch-all
   'unknown-change',
 ]);

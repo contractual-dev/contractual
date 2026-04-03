@@ -2,7 +2,7 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve, extname } from 'node:path';
 import chalk from 'chalk';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
-import { VersionManager } from '@contractual/changesets';
+import { VersionManager, updateSpecVersion } from '@contractual/changesets';
 import { loadConfig } from '../config/index.js';
 import {
   ensureContractualDir,
@@ -128,6 +128,7 @@ export async function contractAddCommand(options: ContractAddOptions = {}): Prom
 
   const versionManager = new VersionManager(contractualDir);
   const absolutePath = resolve(cwd, specPath);
+  updateSpecVersion(absolutePath, version, contractType);
   versionManager.setVersion(contractName, version, absolutePath);
 
   // Print summary

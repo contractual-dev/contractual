@@ -7,6 +7,6 @@
  * All differs are pure Node.js - no binary dependencies.
  */
 
-export { diffOpenAPI, diffOpenAPIObjects, hasOpenAPIBreakingChanges } from './openapi-diff.js';
+export { diffOpenApi, diffOpenApiObjects, resolveOpenApiSpec } from '@contractual/differs.openapi';
 
 export { diffJsonSchema } from './json-schema/index.js';

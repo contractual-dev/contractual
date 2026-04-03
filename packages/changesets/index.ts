@@ -28,3 +28,4 @@ export {
   type BumpOperationResult,
 } from './versioning/manager.js';
 export { formatDate, appendChangelog } from './versioning/changelog.js';
+export { updateSpecVersion } from './versioning/spec-updater.js';

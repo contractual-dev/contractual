@@ -128,10 +128,7 @@ export interface LintOptions {
  * @param options - Optional linter configuration
  * @returns Promise resolving to lint results
  */
-export type LintFn = (
-  specPath: string,
-  options?: LintOptions
-) => Promise<LintResult>;
+export type LintFn = (specPath: string, options?: LintOptions) => Promise<LintResult>;
 
 /**
  * Options for differ functions.
@@ -227,6 +224,22 @@ export type ChangeType =
   | 'if-then-else-changed'
   // Legacy composition (for backward compat)
   | 'composition-changed'
+  // OpenAPI structural changes
+  | 'path-added'
+  | 'path-removed'
+  | 'operation-added'
+  | 'operation-removed'
+  | 'parameter-added'
+  | 'parameter-removed'
+  | 'parameter-required-changed'
+  | 'parameter-schema-changed'
+  | 'request-body-added'
+  | 'request-body-removed'
+  | 'response-added'
+  | 'response-removed'
+  | 'response-schema-changed'
+  | 'security-changed'
+  | 'server-changed'
   // Catch-all for unrecognized changes
   | 'unknown-change';
 
@@ -317,6 +330,22 @@ export const CHANGE_TYPE_SEVERITY: Record<ChangeType, ChangeSeverity> = {
   'max-contains-changed': 'unknown',
   'if-then-else-changed': 'unknown',
   'composition-changed': 'unknown',
+  // OpenAPI structural changes
+  'path-removed': 'breaking',
+  'operation-removed': 'breaking',
+  'parameter-added': 'breaking',
+  'parameter-removed': 'breaking',
+  'parameter-required-changed': 'breaking',
+  'request-body-added': 'breaking',
+  'response-removed': 'breaking',
+  'security-changed': 'breaking',
+  'path-added': 'non-breaking',
+  'operation-added': 'non-breaking',
+  'request-body-removed': 'non-breaking',
+  'response-added': 'non-breaking',
+  'server-changed': 'non-breaking',
+  'parameter-schema-changed': 'unknown',
+  'response-schema-changed': 'unknown',
   'unknown-change': 'unknown',
 };
 
@@ -328,8 +357,7 @@ export const CHANGE_TYPE_SEVERITY: Record<ChangeType, ChangeSeverity> = {
  */
 export function isChangeSeverity(value: unknown): value is ChangeSeverity {
   return (
-    typeof value === 'string' &&
-    ['breaking', 'non-breaking', 'patch', 'unknown'].includes(value)
+    typeof value === 'string' && ['breaking', 'non-breaking', 'patch', 'unknown'].includes(value)
   );
 }
 

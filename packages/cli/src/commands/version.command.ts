@@ -14,6 +14,7 @@ import {
   appendChangelog,
   incrementVersion,
   incrementVersionWithPreRelease,
+  updateSpecVersion,
 } from '@contractual/changesets';
 import type { BumpResult, BumpType } from '@contractual/types';
 
@@ -25,6 +26,8 @@ interface VersionOptions extends PromptOptions {
   dryRun?: boolean;
   /** Output JSON (implies --yes) */
   json?: boolean;
+  /** Skip updating version field inside spec files */
+  syncVersion?: boolean;
 }
 
 /**
@@ -186,14 +189,22 @@ export async function versionCommand(options: VersionOptions = {}): Promise<void
     const oldVersion = versionManager.getVersion(contractName) ?? '0.0.0';
     let newVersion: string;
 
+    const shouldSyncVersion = options.syncVersion !== false && contract.syncVersion !== false;
+
     if (preReleaseTag) {
       // Use pre-release version increment
       newVersion = incrementVersionWithPreRelease(oldVersion, bumpType, preReleaseTag);
+      if (shouldSyncVersion) {
+        updateSpecVersion(contract.absolutePath, newVersion, contract.type);
+      }
       versionManager.setVersion(contractName, newVersion, contract.absolutePath);
     } else {
-      // Normal bump
-      const result = versionManager.bump(contractName, bumpType, contract.absolutePath);
-      newVersion = result.newVersion;
+      // Normal bump — compute version first, update spec, then bump (which copies to snapshots)
+      newVersion = incrementVersion(oldVersion, bumpType);
+      if (shouldSyncVersion) {
+        updateSpecVersion(contract.absolutePath, newVersion, contract.type);
+      }
+      versionManager.bump(contractName, bumpType, contract.absolutePath);
     }
 
     // Extract changes text from changesets for this contract

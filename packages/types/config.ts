@@ -42,6 +42,8 @@ export interface ContractDefinition {
   lint?: string | false;
   /** Override differ: tool name, custom command with {old} {new} placeholders, or false to disable */
   breaking?: string | false;
+  /** Sync version field inside the spec file on version bump (default: true). Set to false to skip. */
+  syncVersion?: boolean;
   /** Output generation commands (Phase 2) */
   generate?: string[];
 }
@@ -158,8 +160,5 @@ export interface ResolvedConfig extends Omit<ContractualConfig, 'contracts'> {
  * @returns True if the value is a valid ContractType
  */
 export function isContractType(value: unknown): value is ContractType {
-  return (
-    typeof value === 'string' &&
-    CONTRACT_TYPES.includes(value as ContractType)
-  );
+  return typeof value === 'string' && CONTRACT_TYPES.includes(value as ContractType);
 }

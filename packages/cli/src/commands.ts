@@ -77,6 +77,7 @@ program
   .option('-y, --yes', 'Skip confirmation prompt')
   .option('--dry-run', 'Preview without applying')
   .option('--json', 'Output JSON (implies --yes)')
+  .option('--no-sync-version', 'Skip updating version field inside spec files')
   .action(versionCommand);
 
 const preCmd = program.command('pre').description('Manage pre-release versions');

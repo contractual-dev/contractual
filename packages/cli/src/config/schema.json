@@ -40,6 +40,11 @@
               { "type": "boolean", "const": false, "description": "Disable breaking change detection" }
             ]
           },
+          "syncVersion": {
+            "type": "boolean",
+            "description": "Sync version field inside the spec file on version bump (default: true). Set to false to skip.",
+            "default": true
+          },
           "generate": {
             "type": "array",
             "description": "Output generation commands",

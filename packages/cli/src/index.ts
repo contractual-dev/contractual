@@ -24,11 +24,13 @@ export {
   generateChangesetName,
   extractContractChanges,
   appendChangelog,
+  incrementVersion,
   incrementVersionWithPreRelease,
   VERSIONS_FILE,
   SNAPSHOTS_DIR,
   CHANGESETS_DIR,
   PRE_RELEASE_FILE,
+  updateSpecVersion,
 } from '@contractual/changesets';
 export type { BumpOperationResult } from '@contractual/changesets';
 

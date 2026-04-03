@@ -250,6 +250,7 @@ export function setupRepoWithConfig(
     path: string;
     lint?: string | false;
     breaking?: string | false;
+    syncVersion?: boolean;
   }>
 ): void {
   const config = {
@@ -259,6 +260,7 @@ export function setupRepoWithConfig(
       path: c.path,
       ...(c.lint !== undefined ? { lint: c.lint } : {}),
       ...(c.breaking !== undefined ? { breaking: c.breaking } : {}),
+      ...(c.syncVersion !== undefined ? { syncVersion: c.syncVersion } : {}),
     })),
   };
 
