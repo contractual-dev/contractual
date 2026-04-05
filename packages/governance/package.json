@@ -1,7 +1,7 @@
 {
   "name": "@contractual/governance",
   "private": false,
-  "version": "0.1.0-dev.3",
+  "version": "0.1.0-dev.4",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
