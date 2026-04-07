@@ -43,7 +43,7 @@ const BREAKING_CHANGES: ReadonlySet<ChangeType> = new Set<ChangeType>([
   // OpenAPI structural breaking changes
   'path-removed',
   'operation-removed',
-  'parameter-added',
+  'parameter-required-added',
   'parameter-removed',
   'parameter-required-changed',
   'request-body-added',
@@ -78,6 +78,7 @@ const NON_BREAKING_CHANGES: ReadonlySet<ChangeType> = new Set<ChangeType>([
   'oneof-option-removed',
   'allof-member-removed',
   // OpenAPI structural non-breaking changes
+  'parameter-added',
   'path-added',
   'operation-added',
   'request-body-removed',

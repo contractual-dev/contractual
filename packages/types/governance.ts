@@ -230,6 +230,7 @@ export type ChangeType =
   | 'operation-added'
   | 'operation-removed'
   | 'parameter-added'
+  | 'parameter-required-added'
   | 'parameter-removed'
   | 'parameter-required-changed'
   | 'parameter-schema-changed'
@@ -333,7 +334,8 @@ export const CHANGE_TYPE_SEVERITY: Record<ChangeType, ChangeSeverity> = {
   // OpenAPI structural changes
   'path-removed': 'breaking',
   'operation-removed': 'breaking',
-  'parameter-added': 'breaking',
+  'parameter-added': 'non-breaking',
+  'parameter-required-added': 'breaking',
   'parameter-removed': 'breaking',
   'parameter-required-changed': 'breaking',
   'request-body-added': 'breaking',

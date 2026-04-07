@@ -23,6 +23,28 @@ export function diffStructural(
 ): RawChange[] {
   const changes: RawChange[] = [];
 
+  // Diff top-level info metadata
+  const oldInfo = (oldSpec.info ?? {}) as Record<string, unknown>;
+  const newInfo = (newSpec.info ?? {}) as Record<string, unknown>;
+
+  if (oldInfo.description !== newInfo.description) {
+    changes.push({
+      path: '/info/description',
+      type: 'description-changed' as ChangeType,
+      oldValue: oldInfo.description,
+      newValue: newInfo.description,
+    });
+  }
+
+  if (oldInfo.title !== newInfo.title) {
+    changes.push({
+      path: '/info/title',
+      type: 'title-changed' as ChangeType,
+      oldValue: oldInfo.title,
+      newValue: newInfo.title,
+    });
+  }
+
   const oldPaths = (oldSpec.paths ?? {}) as PathsMap;
   const newPaths = (newSpec.paths ?? {}) as PathsMap;
 
@@ -85,12 +107,56 @@ function diffOperations(
         newValue: `${method.toUpperCase()} ${apiPath}`,
       });
     } else if (oldOp && newOp) {
-      // Both exist — diff parameters, request body, responses at schema level
+      // Both exist — diff metadata, parameters, request body, responses
       const basePath = `/paths/${escapedPath}/${method}`;
+      changes.push(...diffOperationMetadata(oldOp, newOp, basePath));
       changes.push(...diffParameters(oldOp, newOp, basePath));
       changes.push(...diffRequestBody(oldOp, newOp, basePath));
       changes.push(...diffResponses(oldOp, newOp, basePath));
     }
+  }
+
+  return changes;
+}
+
+/**
+ * Diff operation-level metadata (description, summary, tags, deprecated)
+ */
+function diffOperationMetadata(
+  oldOp: OperationMap,
+  newOp: OperationMap,
+  basePath: string
+): RawChange[] {
+  const changes: RawChange[] = [];
+
+  // Description changed (patch)
+  if (oldOp.description !== newOp.description) {
+    changes.push({
+      path: `${basePath}/description`,
+      type: 'description-changed' as ChangeType,
+      oldValue: oldOp.description,
+      newValue: newOp.description,
+    });
+  }
+
+  // Summary changed (patch — treated as title)
+  if (oldOp.summary !== newOp.summary) {
+    changes.push({
+      path: `${basePath}/summary`,
+      type: 'title-changed' as ChangeType,
+      oldValue: oldOp.summary,
+      newValue: newOp.summary,
+    });
+  }
+
+  // Deprecated changed (patch)
+  if (oldOp.deprecated !== newOp.deprecated) {
+    changes.push({
+      path: `${basePath}/deprecated`,
+      type: 'deprecated-changed' as ChangeType,
+      oldValue: oldOp.deprecated,
+      newValue: newOp.deprecated,
+    });
   }
 
   return changes;
@@ -142,9 +208,13 @@ function diffParameters(oldOp: OperationMap, newOp: OperationMap, basePath: stri
 
   for (const [key, newParam] of newByKey) {
     if (!oldByKey.has(key)) {
+      // Required parameter added = breaking, optional = non-breaking
+      // Store required flag in newValue so classifiers can check
       changes.push({
         path: `${basePath}/parameters/${newParam.name}`,
-        type: 'parameter-added' as ChangeType,
+        type: newParam.required
+          ? ('parameter-required-added' as ChangeType)
+          : ('parameter-added' as ChangeType),
         newValue: key,
       });
     }
