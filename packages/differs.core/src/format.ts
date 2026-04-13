@@ -11,7 +11,7 @@ import type { RawChange } from '@contractual/types';
  * @returns Human-readable message describing the change
  */
 export function formatChangeMessage(change: RawChange): string {
-  const pathDisplay = change.path || '/';
+  const pathDisplay = decodeJsonPointer(change.path || '/');
 
   switch (change.type) {
     case 'property-added':
@@ -98,10 +98,79 @@ export function formatChangeMessage(change: RawChange): string {
     case 'examples-changed':
       return `Examples changed at ${pathDisplay}`;
 
+    case 'deprecated-changed':
+      return change.newValue
+        ? `Deprecated at ${pathDisplay}`
+        : `No longer deprecated at ${pathDisplay}`;
+
+    case 'read-only-changed':
+      return `readOnly changed at ${pathDisplay}`;
+
+    case 'write-only-changed':
+      return `writeOnly changed at ${pathDisplay}`;
+
+    // OpenAPI structural changes
+    case 'path-added':
+      return `New path added: ${change.newValue ?? pathDisplay}`;
+
+    case 'path-removed':
+      return `Path removed: ${change.oldValue ?? pathDisplay}`;
+
+    case 'operation-added':
+      return `New operation added: ${change.newValue ?? pathDisplay}`;
+
+    case 'operation-removed':
+      return `Operation removed: ${change.oldValue ?? pathDisplay}`;
+
+    case 'parameter-added':
+      return `Optional parameter added at ${pathDisplay}`;
+
+    case 'parameter-required-added':
+      return `Required parameter added at ${pathDisplay}`;
+
+    case 'parameter-removed':
+      return `Parameter removed at ${pathDisplay}`;
+
+    case 'parameter-required-changed':
+      return `Parameter required changed from ${formatValue(change.oldValue)} to ${formatValue(change.newValue)} at ${pathDisplay}`;
+
+    case 'parameter-schema-changed':
+      return `Parameter schema changed at ${pathDisplay}`;
+
+    case 'request-body-added':
+      return `Request body added at ${pathDisplay}`;
+
+    case 'request-body-removed':
+      return `Request body removed at ${pathDisplay}`;
+
+    case 'response-added':
+      return `Response ${formatValue(change.newValue)} added at ${pathDisplay}`;
+
+    case 'response-removed':
+      return `Response ${formatValue(change.oldValue)} removed at ${pathDisplay}`;
+
+    case 'response-schema-changed':
+      return `Response schema changed at ${pathDisplay}`;
+
+    case 'security-changed':
+      return `Security changed at ${pathDisplay}`;
+
+    case 'server-changed':
+      return `Server changed at ${pathDisplay}`;
+
     case 'unknown-change':
     default:
       return `Unknown change at ${pathDisplay}`;
   }
+}
+
+/**
+ * Decode a JSON Pointer path for human-readable display (RFC 6901)
+ * ~1 → /
+ * ~0 → ~
+ */
+function decodeJsonPointer(path: string): string {
+  return path.replace(/~1/g, '/').replace(/~0/g, '~');
 }
 
 /**
