@@ -1,6 +1,6 @@
 {
   "name": "@contractual/differs.core",
-  "version": "0.1.0-next.0",
+  "version": "0.1.0-dev.5",
   "description": "Core schema diffing primitives — walker, classifiers, ref-resolver — shared across Contractual differs",
   "license": "MIT",
   "type": "module",
