@@ -158,6 +158,31 @@ export function formatChangeMessage(change: RawChange): string {
     case 'server-changed':
       return `Server changed at ${pathDisplay}`;
 
+    // Composition changes
+    case 'anyof-option-added':
+      return `anyOf option added at ${pathDisplay}`;
+
+    case 'anyof-option-removed':
+      return `anyOf option removed at ${pathDisplay}`;
+
+    case 'oneof-option-added':
+      return `oneOf option added at ${pathDisplay}`;
+
+    case 'oneof-option-removed':
+      return `oneOf option removed at ${pathDisplay}`;
+
+    case 'allof-member-added':
+      return `allOf member added at ${pathDisplay}`;
+
+    case 'allof-member-removed':
+      return `allOf member removed at ${pathDisplay}`;
+
+    case 'not-schema-changed':
+      return `not schema changed at ${pathDisplay}`;
+
+    case 'if-then-else-changed':
+      return `Conditional schema (if/then/else) changed at ${pathDisplay}`;
+
     case 'unknown-change':
     default:
       return `Unknown change at ${pathDisplay}`;
