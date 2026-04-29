@@ -191,11 +191,23 @@ export function formatChangeMessage(change: RawChange): string {
 
 /**
  * Decode a JSON Pointer path for human-readable display (RFC 6901)
- * ~1 → /
- * ~0 → ~
+ * Decodes each segment individually so that slashes within keys
+ * (e.g. OpenAPI path keys like /v1/extract) are kept intact
+ * rather than being confused with segment separators.
  */
 function decodeJsonPointer(path: string): string {
-  return path.replace(/~1/g, '/').replace(/~0/g, '~');
+  if (!path.startsWith('/')) return path;
+
+  const segments = path.split('/');
+  // segments[0] is '' (before the leading /)
+  const decoded = segments.map((seg, i) => {
+    if (i === 0) return seg;
+    const value = seg.replace(/~1/g, '/').replace(/~0/g, '~');
+    if (value.includes('/')) return `[${value}]`;
+    return value;
+  });
+
+  return decoded.join('/');
 }
 
 /**
