@@ -77,6 +77,9 @@ importers:
       '@types/semver':
         specifier: ^7.5.8
         version: 7.7.1
+      vitest:
+        specifier: ^3.0.3
+        version: 3.2.4(@types/node@22.19.11)(yaml@2.8.2)
 
   packages/cli:
     dependencies:

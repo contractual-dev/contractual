@@ -63,18 +63,87 @@ function updateJsonSpec(specPath: string, fieldPath: readonly string[], newVersi
 }
 
 /**
+ * Render a string as a YAML scalar matching the quoting style of an existing node.
+ * Plain versions like `4.0.0` stay plain; quoted nodes keep their quote style so a
+ * value that would otherwise parse as a number (e.g. `1.0`) is preserved as a string.
+ */
+function renderScalar(value: string, originalType: string | undefined): string {
+  if (originalType === 'QUOTE_DOUBLE') {
+    return JSON.stringify(value);
+  }
+  if (originalType === 'QUOTE_SINGLE') {
+    return `'${value.replace(/'/g, "''")}'`;
+  }
+  // PLAIN or unknown: quote only if the value could be misread as a non-string scalar
+  return /^[\w.-]+$/.test(value) && !/^[+-]?(\d|\.\d|true|false|null|~)/i.test(value)
+    ? value
+    : JSON.stringify(value);
+}
+
+/**
+ * Surgically replace just the target scalar's source range, leaving the rest of the
+ * file byte-for-byte intact. Used when the document has parse errors elsewhere and
+ * cannot be re-stringified as a whole. Returns true if the field was found and updated.
+ */
+function spliceScalarInPlace(
+  specPath: string,
+  content: string,
+  doc: ReturnType<typeof parseDocument>,
+  fieldPath: readonly string[],
+  newVersion: string
+): boolean {
+  const node = doc.getIn([...fieldPath], true) as
+    | { range?: [number, number, number]; type?: string }
+    | undefined;
+
+  // No range means the field lives in (or past) a malformed region we cannot edit safely.
+  if (!node?.range) {
+    return false;
+  }
+
+  const [start, valueEnd] = node.range;
+  const replacement = renderScalar(newVersion, node.type);
+  const updated = content.slice(0, start) + replacement + content.slice(valueEnd);
+  writeFileSync(specPath, updated, 'utf-8');
+  return true;
+}
+
+/**
  * Update the version field inside a YAML spec file.
  * Uses parseDocument() to preserve comments, formatting, and key ordering.
  * Creates missing intermediate keys if needed.
+ *
+ * If the document has recoverable parse errors elsewhere (e.g. a malformed
+ * description deep in the file), `Document.toString()` would refuse to serialize.
+ * In that case we fall back to a surgical in-place edit of the target scalar so a
+ * defect unrelated to the version field never takes down the release. If even that
+ * is not possible, we skip the sync with a clear warning rather than throwing.
  */
 function updateYamlSpec(specPath: string, fieldPath: readonly string[], newVersion: string): void {
   const content = readFileSync(specPath, 'utf-8');
   const doc = parseDocument(content);
 
-  // setIn creates intermediate nodes automatically
-  doc.setIn([...fieldPath], newVersion);
+  if (doc.errors.length === 0) {
+    // setIn creates intermediate nodes automatically
+    doc.setIn([...fieldPath], newVersion);
+    writeFileSync(specPath, doc.toString(), 'utf-8');
+    return;
+  }
 
-  writeFileSync(specPath, doc.toString(), 'utf-8');
+  // Document has parse errors; toString() would throw. Edit the field in place.
+  const first = doc.errors[0]!;
+  const where = first.linePos?.[0] ? ` (e.g. ${first.code} at line ${first.linePos[0].line})` : '';
+
+  if (spliceScalarInPlace(specPath, content, doc, fieldPath, newVersion)) {
+    console.warn(
+      `Spec "${specPath}" has YAML parse issues${where}; synced "${fieldPath.join('.')}" via in-place edit. Consider fixing the spec.`
+    );
+    return;
+  }
+
+  console.warn(
+    `Skipped version sync for "${specPath}": the file has YAML parse errors${where} and "${fieldPath.join('.')}" could not be located. The version field was not changed.`
+  );
 }
 
 /**

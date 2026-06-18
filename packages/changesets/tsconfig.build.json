@@ -9,5 +9,6 @@
   },
   "references": [
     { "path": "../types/tsconfig.build.json" }
-  ]
+  ],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }
