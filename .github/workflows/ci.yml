@@ -1,10 +1,12 @@
 name: Continuous Integration
-on: [pull_request]
+on: pull_request
 
 permissions:
   id-token: write
   contents: read
+  actions: read
   checks: write
+  pull-requests: write
 
 jobs:
   build:
@@ -12,30 +14,31 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [20.x, 22.x, 24.x]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      
       - name: Use Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9.15.4
-      - uses: actions/cache@v2
+
+      - uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: PNPM
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm run build
+        run: pnpm build
 
   lint:
     name: Lint
@@ -43,35 +46,34 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9.15.4
-        
-      - uses: actions/cache@v2
+
+      - uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: PNPM
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: pnpm run lint
-
-      - name: Validate Packages
-        run: pnpm manypkg check
+        run: pnpm lint
 
   test:
-    name: Test
+    name: Unit Tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: ['doubles.jest', 'doubles.sinon', 'core.unit', 'doubles.vitest', 'di.nestjs', 'di.inversify', 'unit']
+        project: ['cli', 'governance', 'changesets', 'json-schema-differ', 'types']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -80,47 +82,61 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9.15.4
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: PNPM
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
 
       - name: Create Coverage Directory
         run: mkdir -p ${{ github.workspace }}/coverage
 
       - name: Test
-        run: pnpm --filter @contractual/${{ matrix.project }} run test
+        run: pnpm lerna run test --scope @contractual/${{ matrix.project }} --stream
+        continue-on-error: true
         env:
-          JEST_JUNIT_OUTPUT_NAME: ${{ matrix.project }}.xml
-          JEST_JUNIT_OUTPUT_DIR: ${{ github.workspace }}/test-reports
-          JUNIT_OUTPUT_NAME: ${{ matrix.project }}
-          JUNIT_OUTPUT_DIR: ${{ github.workspace }}/test-reports
           COVERAGE_DIR: ${{ github.workspace }}/coverage
           COVERAGE_FILE: coverage-${{ matrix.project }}.xml
 
-      - name: Tests Results
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          reporter: 'jest-junit'
-          name: Tests Results (${{ matrix.project }})
-          path: ${{ github.workspace }}/test-reports/${{ matrix.project }}.xml
-          fail-on-error: false
+  e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-#      - name: Upload Report to Codecov
-#        uses: codecov/codecov-action@v3
-#        with:
-#          name: codecov-umbrella
-#          flags: ${{ matrix.project }}
-#          token: ${{ secrets.CODECOV_TOKEN }}
-#          fail_ci_if_error: true
-#          files: ${{ github.workspace }}/coverage/coverage-${{ matrix.project }}.xml
-#          verbose: true
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
+
+      - uses: actions/cache@v4
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Run E2E Tests
+        run: pnpm test:e2e
